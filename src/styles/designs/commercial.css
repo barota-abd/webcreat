@@ -2674,3 +2674,21 @@ p {
   color: rgba(255, 255, 255, 0.55);
   max-width: 90ch;
 }
+
+
+/* ======================================================= contrat partagé ==
+   Cinq jetons que tout design doit fournir. Les composants n'ont le droit de
+   citer que ceux-là dans leurs styles en ligne ; ils ne connaissent donc
+   jamais le nom des couleurs propres à un design.
+
+   Les variables CSS se résolvent au moment de l'usage : ce bloc unique suit
+   donc automatiquement le thème clair ou sombre actif.
+   ======================================================================== */
+
+:root {
+  --c-accent: var(--bleu);  /* couleur d'appui, liens et données */
+  --c-action: var(--orange);  /* réservée aux actions */
+  --c-ok: var(--vert);      /* résultat positif, validation */
+  --c-faible: var(--encre-faible);  /* texte secondaire */
+  --f-titre: var(--titre);   /* famille des titres */
+}

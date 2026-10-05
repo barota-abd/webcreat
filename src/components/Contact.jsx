@@ -100,7 +100,7 @@ export default function Contact() {
             </div>
 
             <div className="coord__l">
-              <span className="tuile" style={{ "--t": "var(--orange)" }}>
+              <span className="tuile" style={{ "--t": "var(--c-action)" }}>
                 <Ico nom="courriel" taille={18} />
               </span>
               <span className="coord__t">
@@ -111,7 +111,7 @@ export default function Contact() {
             </div>
 
             <div className="coord__l">
-              <span className="tuile" style={{ "--t": "var(--vert)" }}>
+              <span className="tuile" style={{ "--t": "var(--c-ok)" }}>
                 <Ico nom="epingle" taille={18} />
               </span>
               <span className="coord__t">

@@ -15,6 +15,7 @@ import Ia from "./components/Ia.jsx";
 import Legal from "./components/Legal.jsx";
 import Partners from "./components/Partners.jsx";
 import Process from "./components/Process.jsx";
+import SelecteurDesign from "./components/SelecteurDesign.jsx";
 import ServiceTabs from "./components/ServiceTabs.jsx";
 import Stats from "./components/Stats.jsx";
 import Team from "./components/Team.jsx";
@@ -66,6 +67,7 @@ export default function App() {
       </main>
 
       <Footer liens={liens} />
+      <SelecteurDesign />
     </>
   );
 }

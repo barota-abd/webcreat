@@ -7,7 +7,7 @@ import { Ico } from "./Icons.jsx";
  */
 export default function Attente({
   icone = "image",
-  teinte = "var(--orange)",
+  teinte = "var(--c-action)",
   titre,
   texte,
   fichier,

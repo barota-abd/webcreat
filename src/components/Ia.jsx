@@ -50,7 +50,7 @@ export default function Ia() {
         {/* Ce qui distingue une mission IA : l'audit precede l'outil. Le
             deroule complet vit dans la section Methode, pas ici. */}
         <div className="ia-promesse" data-reveal>
-          <span className="tuile tuile--grande" style={{ "--t": "var(--vert)" }}>
+          <span className="tuile tuile--grande" style={{ "--t": "var(--c-ok)" }}>
             <Ico nom="bouclier" taille={22} />
           </span>
           <div>

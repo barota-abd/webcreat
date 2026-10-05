@@ -108,32 +108,91 @@ puis un script qui, pour chaque fichier, produit une version 1400 px et une
 version 700 px en WebP, et un `srcset` dans `<Media>`. Seule la photo du héros
 se charge immédiatement ; les cinq autres sont déjà en `loading="lazy"`.
 
-## Système visuel
+## Cinq designs, un seul projet
 
-Les jetons sont en haut de `src/styles/global.css`, dans le bloc `:root` :
+Le site existe en **cinq habillages complets**. Contenu, composants et
+comportement sont identiques : seules changent la feuille de styles et les
+polices.
 
-- **Couleur** — fond blanc et gris bleuté alternés, bleu pour la confiance et
-  les liens, orange réservé aux boutons d'action, vert pour les résultats
-  positifs. Le bandeau de chiffres en bleu plein est le seul moment contrasté.
-- **Type** — Plus Jakarta Sans (titres), Hanken Grotesk (texte courant),
-  IBM Plex Mono (chiffres et étiquettes techniques).
-- **Structure** — cartes arrondies à ombre douce, grille qui se replie à une
-  colonne sur téléphone.
-- **Largeur** — `--cadre: 1920px` avec des gouttières fluides
-  (`--marge: clamp(1.1rem, 3.5vw, 4.5rem)`). En pratique la page occupe tout
-  l'écran jusqu'en 1920 px ; au-delà elle se centre pour que les lignes de
-  texte ne deviennent pas illisibles. Pour aller vraiment bord à bord sur les
-  écrans ultra-larges, retirez `max-width` de `.wrap`.
+| Clé | Design | Direction |
+|---|---|---|
+| `commercial` | Commercial | bleu et orange sur fond clair, cartes arrondies |
+| `pilotage` | Poste de pilotage | HUD aérospatial, cyan de données, angles coupés |
+| `neon` | Néon | enseigne de nuit, magenta et cyan, contours allumés |
+| `holographique` | Holographique | verre dépoli, irisation violet-cyan-rose |
+| `terminal` | Terminal phosphore | écran cathodique, monospace partout |
 
-Deux séries de règles accompagnent cette largeur, en bas de la feuille de
-styles : à partir de 1200 px les listes se figent sur un nombre de colonnes
-choisi et les visuels cessent de grandir en hauteur ; à partir de 1600 px les
-grilles de cartes gagnent une colonne au lieu d'élargir chaque carte.
+Chacun a ses **deux thèmes**, clair et sombre.
 
-Le thème clair est la valeur par défaut (`:root`), le sombre est défini sous
-`prefers-color-scheme: dark` **et** sous `[data-theme="dark"]` pour que le
-bouton de bascule gagne dans les deux sens. Toute nouvelle couleur doit passer
-par un jeton, jamais par une valeur littérale dans une règle de composant.
+### Changer de design
+
+Une ligne, dans **`design.config.js`** à la racine :
+
+```js
+export default "pilotage";
+```
+
+C'est la seule source de vérité : `vite.config.js` la lit pour savoir quelle
+feuille inclure, et l'application la lit pour le reste.
+
+### En développement, un sélecteur
+
+Sous `npm run dev`, un petit panneau en bas à gauche permet de **basculer
+entre les cinq designs** sans toucher au code. Le choix est retenu dans le
+navigateur et la page se recharge — changer de design revient à charger une
+autre feuille de styles, une bascule à chaud laisserait deux systèmes en
+mémoire.
+
+Ce panneau n'existe pas dans le site construit, et un choix stocké dans un
+navigateur ne décide jamais de l'apparence du site pour les visiteurs.
+
+### Ce qui part en production
+
+**Un seul design.** Vérifié sur le bundle : les quatre autres n'y laissent
+aucune trace, ni feuille, ni nom, ni adresse de police.
+
+La feuille retenue est importée **statiquement**, donc Vite pose un
+`<link rel="stylesheet">` dans l'en-tête. Polices, couleur de barre système et
+favicon y sont écrits aussi, à la construction, par un petit greffon de
+`vite.config.js`. Rien de visuel n'attend l'exécution du script — c'était le
+défaut de la première version, où le CSS et les polices étaient injectés en
+JavaScript.
+
+### Le contrat de jetons
+
+Les composants ne connaissent **aucune couleur de design**. Ils ne citent que
+cinq jetons sémantiques, que chaque feuille doit déclarer à la fin, dans son
+bloc « contrat partagé » :
+
+| Jeton | Rôle |
+|---|---|
+| `--c-accent` | couleur d'appui, liens et données |
+| `--c-action` | réservée aux actions |
+| `--c-ok` | résultat positif, validation |
+| `--c-faible` | texte secondaire |
+| `--f-titre` | famille des titres |
+
+Les variables CSS se résolvant au moment de l'usage, un seul bloc d'alias par
+design suffit : il suit automatiquement le thème clair ou sombre actif.
+
+### Ajouter un design
+
+1. Déposez une feuille dans `src/styles/designs/`.
+2. Terminez-la par le bloc « contrat partagé » (copiez celui d'un design
+   existant).
+3. Ajoutez sa fiche dans `src/designs.meta.js` — nom, résumé, polices,
+   couleurs de barre, couleurs du favicon.
+4. Ajoutez son chargeur dans `src/designs.js`.
+
+Aucune ligne de JSX à toucher.
+
+### Une réserve
+
+Les cinq feuilles sont **autonomes**, pas factorisées : elles répètent chacune
+la grille, les points de rupture et la structure des sections. C'est voulu —
+ce sont cinq systèmes visuels réellement différents, et une base commune les
+aurait tous tirés vers le compromis. Le prix : une correction de mise en page
+structurelle doit être reportée dans les cinq fichiers.
 
 ## Contexte : entreprise québécoise
 
