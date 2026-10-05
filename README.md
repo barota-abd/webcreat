@@ -108,32 +108,43 @@ puis un script qui, pour chaque fichier, produit une version 1400 px et une
 version 700 px en WebP, et un `srcset` dans `<Media>`. Seule la photo du héros
 se charge immédiatement ; les cinq autres sont déjà en `loading="lazy"`.
 
-## Système visuel
+## Système visuel — « Néon »
 
-Les jetons sont en haut de `src/styles/global.css`, dans le bloc `:root` :
+Direction : enseigne de nuit. Les jetons sont en haut de
+`src/styles/global.css`.
 
-- **Couleur** — fond blanc et gris bleuté alternés, bleu pour la confiance et
-  les liens, orange réservé aux boutons d'action, vert pour les résultats
-  positifs. Le bandeau de chiffres en bleu plein est le seul moment contrasté.
-- **Type** — Plus Jakarta Sans (titres), Hanken Grotesk (texte courant),
-  IBM Plex Mono (chiffres et étiquettes techniques).
-- **Structure** — cartes arrondies à ombre douce, grille qui se replie à une
-  colonne sur téléphone.
-- **Largeur** — `--cadre: 1920px` avec des gouttières fluides
-  (`--marge: clamp(1.1rem, 3.5vw, 4.5rem)`). En pratique la page occupe tout
-  l'écran jusqu'en 1920 px ; au-delà elle se centre pour que les lignes de
-  texte ne deviennent pas illisibles. Pour aller vraiment bord à bord sur les
-  écrans ultra-larges, retirez `max-width` de `.wrap`.
+- **Couleur** — fond violet-noir `#07050C`, surfaces `#120B1C`.
+  **Magenta** `#FF2E88` et **cyan** `#00E5FF` saturés.
+- **Type** — Orbitron (uniquement les deux plus grands niveaux de titre, au
+  delà elle fatigue), Rajdhani (titres courants et texte), Space Mono
+  (données).
+- **Formes** — rayon de 4 px, et surtout : **les contours ne sont pas peints,
+  ils sont allumés.** Un dégradé magenta → cyan posé en bordure par masquage
+  (`mask-composite: exclude`), à demi éteint au repos, allumé au survol. C'est
+  ce qui remplace les ombres portées.
+- **Atmosphère** — deux lueurs fixes très diluées en fond de page, un faisceau
+  oblique qui dérive lentement derrière le héros, et des lignes de balayage à
+  la limite du perceptible.
+- **Sections** — séparées par un filet lui-même en dégradé, magenta à gauche,
+  cyan à droite, éteint sur les bords.
 
-Deux séries de règles accompagnent cette largeur, en bas de la feuille de
-styles : à partir de 1200 px les listes se figent sur un nombre de colonnes
-choisi et les visuels cessent de grandir en hauteur ; à partir de 1600 px les
-grilles de cartes gagnent une colonne au lieu d'élargir chaque carte.
+Trois règles tiennent l'ensemble, sinon la page devient une vitrine d'arcade :
 
-Le thème clair est la valeur par défaut (`:root`), le sombre est défini sous
-`prefers-color-scheme: dark` **et** sous `[data-theme="dark"]` pour que le
-bouton de bascule gagne dans les deux sens. Toute nouvelle couleur doit passer
-par un jeton, jamais par une valeur littérale dans une règle de composant.
+1. **Le magenta mène, le cyan répond** — jamais les deux à intensité égale.
+2. **Le halo n'apparaît qu'au survol et au focus**, jamais au repos : sinon
+   plus rien ne ressort.
+3. **Le texte de lecture reste blanc cassé**, jamais néon. Seuls le mot clé du
+   héros et les chiffres portent un dégradé.
+
+Le **thème clair** est une enseigne de jour, et l'inverse d'une inversion : le
+fond devient un blanc violacé, les néons s'assombrissent (`#CC0059`, `#006B80`)
+pour tenir sur du clair, et les halos deviennent des ombres colorées.
+
+- **Largeur** — `--cadre: 1920px` avec des gouttières fluides.
+
+Les composants n'ont pas changé : tout le contenu vit dans `src/data/`, et la
+refonte n'a touché que la feuille de styles, `index.html` (polices) et les
+couleurs du favicon.
 
 ## Contexte : entreprise québécoise
 
