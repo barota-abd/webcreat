@@ -1,61 +1,90 @@
 # Orbite — site d'agence web
 
-Site commercial d'une agence de création de sites web, d'applications et de
-référencement. React 18 + Vite, CSS maison, aucune dépendance au-delà de React.
+Site d'une agence québécoise de création de sites web, d'applications et de
+référencement. React 18 + Vite, CSS maison, **aucune dépendance au-delà de
+React**.
 
-Direction visuelle inspirée des sites d'agence à forte densité commerciale
-(devis gratuit visible partout, téléphone en tête de page, services en
-onglets, chiffres de preuve, calculateur de budget) avec sa propre palette,
-sa propre typographie et ses propres textes.
+Le site existe en **cinq habillages visuels complets**, interchangeables par
+une ligne de configuration. Le contenu et les composants sont identiques dans
+les cinq : seules changent la feuille de styles et les polices.
 
 ## Démarrer
 
 ```bash
 npm install
 npm run dev      # http://localhost:5173
-npm run build    # bundle de production dans dist/
-npm run preview  # servir le bundle construit
+npm run build    # site statique dans dist/
+npm run preview  # servir le site construit, pour le voir tel qu'il sera publié
 ```
+
+> `npm run dev` affiche deux aides qui **n'existent pas** dans le site
+> construit : le sélecteur de design en bas à gauche, et les blocs d'attente
+> des sections encore vides. Pour voir le site tel que le verra un visiteur,
+> utilisez `npm run preview`.
 
 ## Organisation
 
 ```
-index.html                 polices Google, métadonnées, Open Graph
-public/images/             vos photos réelles (voir A-LIRE.txt)
-src/main.jsx               point d'entrée, marque <html class="has-js">
-src/App.jsx                ordre des sections
+design.config.js           LE DESIGN SERVI — une ligne, c'est ici qu'on change
+vite.config.js             choisit la feuille de styles et écrit l'en-tête
+index.html                 métadonnées et Open Graph
+
+public/images/             les photos (voir A-LIRE.txt pour la liste)
+
+src/main.jsx               point d'entrée : pose le design puis démarre React
+src/App.jsx                l'ordre des sections de la page
+src/designs.js             registre des designs, chargeurs de développement
+src/designs.meta.js        fiche de chaque design : polices, couleurs, favicon
+
 src/data/site.js           TOUT le contenu éditorial
 src/data/medias.js         TOUTES les images, en un seul endroit
-src/styles/global.css      jetons de design + styles, dans l'ordre des sections
+
+src/styles/designs/        une feuille complète et autonome par design
+    commercial.css
+    pilotage.css
+    neon.css
+    holographique.css
+    terminal.css
+    _vide.css              remplace la feuille en développement
+
 src/hooks/
-  useTheme.js              thème clair/sombre, mémorisé dans le navigateur
-  useReveal.js             apparition des blocs au défilement
-  useActiveSection.js      surlignage du lien de nav de la section courante
+    useTheme.js            thème clair/sombre, mémorisé dans le navigateur
+    useReveal.js           apparition des blocs au défilement
+    useActiveSection.js    surlignage du lien de nav de la section courante
+
 src/components/            une section par fichier
 ```
+
+**Les deux fichiers que vous éditerez le plus** sont `src/data/site.js` pour
+les textes et `design.config.js` pour l'apparence.
 
 ### Sections, dans l'ordre
 
 | Composant | Rôle |
 |---|---|
-| `Topbar` | téléphone, e-mail, délai de devis, sélecteur de langue |
-| `Header` | nav collante, section active, thème, bouton Devis gratuit |
-| `Hero` | accroche, photo, carte de positions Google |
-| `Partners` | bandeau défilant de certifications |
+| `Topbar` | téléphone, courriel, délai de devis |
+| `Header` | nav collante, section active, bascule clair/sombre, Devis gratuit |
+| `Hero` | accroche, photo, carte de positions de recherche |
+| `Partners` | bandeau défilant de certifications — masqué tant que vide |
 | `Why` | quatre arguments différenciants |
-| `ServiceTabs` | six services en onglets accessibles au clavier |
-| `Ia` | offre IA : 6 prestations, méthode en 4 étapes, 4 engagements |
-| `Stats` | bandeau bleu, chiffres animés à l'entrée dans le cadre |
+| `ServiceTabs` | six services en onglets, pilotables au clavier et adressables |
+| `Stats` | bandeau de chiffres animés — masqué tant que vide |
 | `Process` | la méthode, unique : six étapes, dont les variantes IA |
-| `Work` | six réalisations avec le résultat obtenu |
-| `Testimonials` | avis clients et note globale |
-| `Team` | l'agence, mosaïque de bureaux, fiche du cofondateur |
-| `Articles` | trois ressources |
-| `Faq` | huit questions en accordéon |
+| `Ia` | offre IA : six prestations, la promesse d'audit, quatre engagements |
+| `Work` | réalisations — masqué tant que vide |
+| `Testimonials` | avis clients — masqué tant que vide |
+| `Team` | l'agence, mosaïque de locaux, fiche de contact |
+| `Articles` | ressources — masqué tant que vide |
+| `Faq` | douze questions en accordéon |
 | `CallToAction` | rappel téléphone + devis |
 | `Contact` | coordonnées et formulaire |
 | `Legal` | mentions légales, confidentialité, conditions (repliées) |
-| `Footer` | services, bureaux, secteurs, mentions |
+| `Footer` | prestations, offre IA, plan du site, contact, secteurs |
+| `SelecteurDesign` | **développement uniquement** : bascule entre les cinq designs |
+
+L'ordre réel est dans `src/App.jsx`. Cinq sections disparaissent du site
+construit tant que leurs données sont vides — voir « Contenus de preuve »
+plus bas.
 
 ## Changer le contenu
 
@@ -124,27 +153,74 @@ polices.
 
 Chacun a ses **deux thèmes**, clair et sombre.
 
-### Changer de design
+### Changer de design — deux méthodes
 
-Une ligne, dans **`design.config.js`** à la racine :
+**Aucune des deux ne passe par une commande à taper dans le terminal.**
 
-```js
-export default "pilotage";
+#### Méthode 1 — le sélecteur, pour comparer
+
+```bash
+npm run dev
 ```
 
-C'est la seule source de vérité : `vite.config.js` la lit pour savoir quelle
-feuille inclure, et l'application la lit pour le reste.
+Un panneau apparaît **en bas à gauche de la page** : `● Design : Commercial`.
+Cliquez dessus, choisissez, la page se recharge. Rien à éditer, et c'est la
+façon la plus rapide d'essayer les cinq.
 
-### En développement, un sélecteur
+Le choix est retenu dans votre navigateur. Il **ne décide jamais** de
+l'apparence du site pour les visiteurs, et le panneau n'existe pas dans le
+site construit.
 
-Sous `npm run dev`, un petit panneau en bas à gauche permet de **basculer
-entre les cinq designs** sans toucher au code. Le choix est retenu dans le
-navigateur et la page se recharge — changer de design revient à charger une
-autre feuille de styles, une bascule à chaud laisserait deux systèmes en
-mémoire.
+#### Méthode 2 — le fichier, pour le site publié
 
-Ce panneau n'existe pas dans le site construit, et un choix stocké dans un
-navigateur ne décide jamais de l'apparence du site pour les visiteurs.
+Ouvrez **`design.config.js`** à la racine du projet et changez le mot de la
+dernière ligne :
+
+```js
+export default "terminal";
+```
+
+Puis `npm run build`. C'est ce design-là qui part, et lui seul.
+
+> **Cette ligne s'écrit dans le fichier, jamais dans le terminal.**
+>
+> C'est du JavaScript. Si vous la tapez dans PowerShell, vous obtiendrez
+> `Le terme «export» n'est pas reconnu…`, et c'est normal : PowerShell ne lit
+> pas de JavaScript.
+>
+> Le mot-clé `export` de JavaScript n'a rien à voir avec la commande `export`
+> de bash, qui sert à déclarer une variable d'environnement. Ce projet ne lit
+> aucune variable d'environnement pour choisir le design — tout passe par
+> `design.config.js`.
+
+Les cinq valeurs acceptées, en minuscules et sans accent :
+
+| Valeur | Design |
+|---|---|
+| `"commercial"` | Commercial |
+| `"pilotage"` | Poste de pilotage |
+| `"neon"` | Néon — pas `"néon"` |
+| `"holographique"` | Holographique |
+| `"terminal"` | Terminal phosphore |
+
+Une valeur inconnue **fait échouer la construction** avec un message de Vite
+disant qu'il ne trouve pas la feuille. C'est voulu : mieux vaut un build qui
+refuse de passer qu'un site publié avec un design par défaut silencieux.
+
+`design.config.js` est la seule source de vérité : `vite.config.js` la lit
+pour savoir quelle feuille inclure, et l'application la lit pour le reste.
+
+### Changer de thème clair ou sombre
+
+Rien à configurer : **le bouton rond dans l'en-tête**, à gauche de
+« Devis gratuit ». Chacun des cinq designs a ses deux versions.
+
+Par défaut le site suit le réglage du système d'exploitation du visiteur ;
+dès qu'il clique, son choix est retenu dans son navigateur.
+
+Pour **imposer** un thème à tout le monde, c'est dans
+`src/hooks/useTheme.js` : la valeur initiale renvoyée par `lire()` est `null`
+(suivre le système), remplacez-la par `"dark"` ou `"light"`.
 
 ### Ce qui part en production
 
@@ -323,17 +399,21 @@ Deux règles pour les remplir :
 
 ## À faire avant une vraie mise en production
 
-- Renseigner `studio` dans `src/data/site.js` : nom, téléphone, e-mail,
-  adresse, SIRET, année de création. **Les valeurs actuelles sont des
-  gabarits, pas des coordonnées réelles.**
-- Remplir les sept jeux de données de preuve listés plus haut, au fur et à
-  mesure que vous avez de quoi les remplir honnêtement.
-- Optimiser les images (voir « Poids des images ») et vérifier leur licence.
-- Ne mettre dans `badges` que les certifications réellement détenues : ce sont
-  des marques déposées et des engagements opposables.
-- Brancher le formulaire.
-- Écrire les pages Mentions légales, Confidentialité et Conditions, aujourd'hui
-  en lien mort dans le pied de page.
-- Traduire le site si vous gardez le sélecteur de langue du bandeau haut, qui
-  n'est pour l'instant qu'un repère visuel.
-- Fournir une image Open Graph (`og:image`) pour l'aperçu des partages.
+Par ordre d'importance :
+
+1. **Renseigner `studio` dans `src/data/site.js`** — nom, téléphone, courriel,
+   adresse, NEQ, taxes, responsable de la protection des renseignements
+   personnels. Les valeurs actuelles sont des gabarits, et le numéro de
+   téléphone est volontairement faux (plage 555-01XX, réservée à la fiction).
+2. **Faire relire les trois documents légaux par un juriste.** La Loi 25 n'est
+   pas une formalité décorative.
+3. **Brancher le formulaire** (voir « Formulaire »), et protéger le point
+   d'entrée contre les envois automatisés.
+4. **Vérifier la marque** auprès de l'Office de la propriété intellectuelle du
+   Canada, classes 42 et 35, avant d'utiliser le nom.
+5. **Optimiser les images** (voir « Poids des images ») et vérifier leur
+   licence d'usage commercial.
+6. **Choisir le design définitif** dans `design.config.js`.
+7. Remplir les jeux de données de preuve au fur et à mesure que vous avez de
+   quoi les remplir honnêtement.
+8. Fournir une image Open Graph (`og:image`) pour l'aperçu des partages.
