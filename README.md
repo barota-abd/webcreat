@@ -108,32 +108,46 @@ puis un script qui, pour chaque fichier, produit une version 1400 px et une
 version 700 px en WebP, et un `srcset` dans `<Media>`. Seule la photo du héros
 se charge immédiatement ; les cinq autres sont déjà en `loading="lazy"`.
 
-## Système visuel
+## Système visuel — « Terminal phosphore »
 
-Les jetons sont en haut de `src/styles/global.css`, dans le bloc `:root` :
+Direction : écran cathodique à phosphore vert. Noir absolu, **une seule
+police à chasse fixe**, lignes de balayage et halo de phosphore. Le
+vocabulaire vient du terminal : invites `>`, commentaires `//`, crochets
+autour des boutons, curseur clignotant, états `[ok]`.
 
-- **Couleur** — fond blanc et gris bleuté alternés, bleu pour la confiance et
-  les liens, orange réservé aux boutons d'action, vert pour les résultats
-  positifs. Le bandeau de chiffres en bleu plein est le seul moment contrasté.
-- **Type** — Plus Jakarta Sans (titres), Hanken Grotesk (texte courant),
-  IBM Plex Mono (chiffres et étiquettes techniques).
-- **Structure** — cartes arrondies à ombre douce, grille qui se replie à une
-  colonne sur téléphone.
-- **Largeur** — `--cadre: 1920px` avec des gouttières fluides
-  (`--marge: clamp(1.1rem, 3.5vw, 4.5rem)`). En pratique la page occupe tout
-  l'écran jusqu'en 1920 px ; au-delà elle se centre pour que les lignes de
-  texte ne deviennent pas illisibles. Pour aller vraiment bord à bord sur les
-  écrans ultra-larges, retirez `max-width` de `.wrap`.
+- **Couleur** — noir `#000`, phosphore `#00FF9C`, et **ambre `#FFB000`**,
+  l'autre phosphore historique, réservé aux actions. Deux couleurs, deux
+  fonctions.
+- **Type** — JetBrains Mono, et rien d'autre.
+- **Formes** — aucun rayon, aucune ombre. Les grilles se collent par des
+  filets d'un pixel : la page est un tableau de cellules, pas un empilement
+  de cartes.
+- **Tube** — lignes de balayage à période de 3 px (au-delà, moiré), et
+  vignettage, parce que les bords d'un cathodique sont toujours plus sombres.
+- **Images** — passées en duotone noir / vert par filtre CSS, avec leurs
+  propres lignes de balayage : une photo affichée sur un tube monochrome.
 
-Deux séries de règles accompagnent cette largeur, en bas de la feuille de
-styles : à partir de 1200 px les listes se figent sur un nombre de colonnes
-choisi et les visuels cessent de grandir en hauteur ; à partir de 1600 px les
-grilles de cartes gagnent une colonne au lieu d'élargir chaque carte.
+### Le risque de lisibilité, et comment il est tenu
 
-Le thème clair est la valeur par défaut (`:root`), le sombre est défini sous
-`prefers-color-scheme: dark` **et** sous `[data-theme="dark"]` pour que le
-bouton de bascule gagne dans les deux sens. Toute nouvelle couleur doit passer
-par un jeton, jamais par une valeur littérale dans une règle de composant.
+C'est la direction la plus fragile des quatre. Trois règles la tiennent :
+
+1. **Le vert saturé ne touche jamais un paragraphe.** Il est réservé aux
+   titres, aux invites, aux données et aux états actifs.
+2. **Le texte courant est en blanc-phosphore désaturé** (`#C8DACB`),
+   interligne 1,75, et sa mesure est limitée à **58 caractères** — le
+   monospace est plus large, donc une ligne « normale » y devient trop
+   longue.
+3. **L'ambre est réservé aux actions**, jamais à la décoration.
+
+Le **thème clair** est une sortie papier : fond ivoire, phosphore devenu
+encre verte, balayage réduit à une trame d'imprimante, et le halo supprimé —
+une lueur n'a pas de sens sur du papier.
+
+- **Largeur** — `--cadre: 1920px` avec des gouttières fluides.
+
+Les composants n'ont pas changé : tout le contenu vit dans `src/data/`, et la
+refonte n'a touché que la feuille de styles, `index.html` (police) et les
+couleurs du favicon.
 
 ## Contexte : entreprise québécoise
 
