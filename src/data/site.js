@@ -49,10 +49,10 @@ export const nav = [
    generique : aucune entreprise reelle n'y est nommee ni presentee comme
    cliente. */
 export const rangs = [
-  { n: 1, titre: "Votre entreprise", url: "votre-site.fr", vous: true },
-  { n: 2, titre: "Un concurrent direct", url: "concurrent-a.fr" },
-  { n: 3, titre: "Un autre concurrent", url: "concurrent-b.fr" },
-  { n: 4, titre: "Un annuaire professionnel", url: "annuaire-pro.fr" },
+  { n: 1, titre: "Votre entreprise", url: "votre-site.ca", vous: true },
+  { n: 2, titre: "Un concurrent direct", url: "concurrent-a.ca" },
+  { n: 3, titre: "Un autre concurrent", url: "concurrent-b.ca" },
+  { n: 4, titre: "Un annuaire professionnel", url: "annuaire-pro.ca" },
 ];
 
 /* Chiffres de preuve affiches sous l'accroche du heros.
@@ -219,7 +219,7 @@ export const services = [
       "Mises à jour de sécurité suivies",
       "Surveillance de disponibilité 24/7",
       "2 h d'évolutions incluses chaque mois",
-      "Réponse garantie en 4 h ouvrées",
+      "Réponse garantie en 4 h ouvrables",
     ],
     duree: "Sans engagement, résiliable à 30 jours",
     cta: "Voir les formules de suivi",
@@ -464,7 +464,7 @@ export const avis = [];
    chiffres de performance : relisez-les et gardez celles qui sont vraies. */
 export const equipeArgs = [
   "Un interlocuteur unique, du premier appel à la mise en ligne.",
-  "Réponse sous 4 h ouvrées, par téléphone ou par écrit.",
+  "Réponse sous 4 h ouvrables, par téléphone ou par écrit.",
   "Nous disons non quand une idée ne sert pas votre projet.",
   "Formation de votre équipe comprise : vous êtes autonome à la livraison.",
 ];
