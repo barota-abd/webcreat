@@ -29,9 +29,9 @@ export default function Footer({ liens = nav }) {
               Création de sites web, applications mobiles et référencement.
               Une équipe à {studio.ville} depuis {studio.depuis}.
             </p>
-            {studio.siret && (
-              <p style={{ color: "rgba(255,255,255,0.45)", fontSize: "0.82rem" }}>
-                {studio.siret}
+            {studio.neq && (
+              <p style={{ fontSize: "0.82rem", color: "var(--texte-faible)" }}>
+                {studio.neq}
               </p>
             )}
             <div className="reseaux">

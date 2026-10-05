@@ -60,7 +60,7 @@ export default function Hero() {
             <div className="carte-vis__tete">
               <Ico nom="loupe" taille={15} />
               <span className="carte-vis__url">
-                google.fr — votre métier + votre ville
+                google.ca — votre métier + votre ville
               </span>
             </div>
 
