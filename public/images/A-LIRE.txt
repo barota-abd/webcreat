@@ -1,0 +1,44 @@
+Images du site
+==============
+
+Ces fichiers sont servis par votre propre hébergement. Aucun service externe
+n'est appelé au chargement de la page.
+
+Fichiers en place
+-----------------
+
+  equipe-atelier.jpg        1920 x 1072   héros
+  poste-developpement.jpg   1920 x 1152   service « Création de site web »
+  bureau-mobile.jpg         1920 x 1280   service « Applications mobiles »
+                                          + 3e vignette de la section Agence
+  ecran-code.jpg            1920 x 1280   services « SEO » et « Hébergement »
+  atelier-cadrage.jpg       1920 x 1440   service « Google & Meta Ads »
+                                          + 2e vignette de la section Agence
+  bureaux-plateau.jpg       1440 x 1920   service « IA » + grande vignette Agence
+  ia-intelligence-artificielle.jpg
+                            1920 x 1280   section « Intelligence artificielle »
+
+Le detail du mapping est dans src/data/medias.js.
+
+Pour remplacer une image
+------------------------
+
+1. Deposez le fichier ici.
+2. Dans src/data/medias.js, changez `src`, `l`, `h` et le texte alternatif.
+3. Si un fichier manque, une vignette dessinee prend le relais : rien ne casse.
+
+Deux points de vigilance
+------------------------
+
+DROITS. N'utilisez que des images dont vous detenez les droits d'usage
+commercial. Les fichiers actuels ont ete fournis par vos soins ; c'est a vous
+de verifier leur licence avant la mise en ligne.
+
+PERSONNES RECONNAISSABLES. equipe-atelier.jpg et bureaux-plateau.jpg montrent
+des visages. Ce ne sont pas vos salaries : ne les legendez pas « notre equipe »
+et ne les presentez pas comme vos locaux. Les textes alternatifs de medias.js
+sont deja rediges dans ce sens.
+
+POIDS. Les six fichiers pesent 2,9 Mo au total, en 1920 px de large alors
+qu'ils s'affichent au maximum sur 700 px. Voir la section « Poids des images »
+du README avant la mise en production.
