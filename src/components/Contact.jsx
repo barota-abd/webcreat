@@ -82,7 +82,7 @@ export default function Contact() {
             Dites-nous ce que vous voulez construire
           </h2>
           <p className="chapo">
-            Vous recevez un retour écrit sous 48 h ouvrées : faisabilité,
+            Vous recevez un retour écrit sous 48 h ouvrables : faisabilité,
             fourchette de prix et délai réaliste. Si le projet n'est pas pour
             nous, nous le disons et nous vous orientons ailleurs.
           </p>
@@ -141,7 +141,7 @@ export default function Contact() {
               <h3 className="h-l">Demande enregistrée</h3>
               <p className="chapo">
                 Merci {v.nom.trim().split(" ")[0]}. Nous revenons vers vous à
-                l'adresse {v.email.trim()} sous 48 h ouvrées, avec une première
+                l'adresse {v.email.trim()} sous 48 h ouvrables, avec une première
                 estimation écrite. Si c'est urgent, appelez le {studio.tel}.
               </p>
               <button
@@ -181,7 +181,7 @@ export default function Contact() {
                   value={v.email}
                   onChange={champ("email")}
                   autoComplete="email"
-                  placeholder="prenom@votre-societe.fr"
+                  placeholder="prenom@votre-entreprise.ca"
                 />
                 {err.email && <span className="erreur">{err.email}</span>}
               </div>
