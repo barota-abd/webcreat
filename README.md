@@ -108,32 +108,38 @@ puis un script qui, pour chaque fichier, produit une version 1400 px et une
 version 700 px en WebP, et un `srcset` dans `<Media>`. Seule la photo du héros
 se charge immédiatement ; les cinq autres sont déjà en `loading="lazy"`.
 
-## Système visuel
+## Système visuel — « Poste de pilotage »
 
-Les jetons sont en haut de `src/styles/global.css`, dans le bloc `:root` :
+Direction : instrumentation aérospatiale. Les jetons sont en haut de
+`src/styles/global.css`.
 
-- **Couleur** — fond blanc et gris bleuté alternés, bleu pour la confiance et
-  les liens, orange réservé aux boutons d'action, vert pour les résultats
-  positifs. Le bandeau de chiffres en bleu plein est le seul moment contrasté.
-- **Type** — Plus Jakarta Sans (titres), Hanken Grotesk (texte courant),
-  IBM Plex Mono (chiffres et étiquettes techniques).
-- **Structure** — cartes arrondies à ombre douce, grille qui se replie à une
-  colonne sur téléphone.
-- **Largeur** — `--cadre: 1920px` avec des gouttières fluides
-  (`--marge: clamp(1.1rem, 3.5vw, 4.5rem)`). En pratique la page occupe tout
-  l'écran jusqu'en 1920 px ; au-delà elle se centre pour que les lignes de
-  texte ne deviennent pas illisibles. Pour aller vraiment bord à bord sur les
-  écrans ultra-larges, retirez `max-width` de `.wrap`.
+- **Couleur** — fond bleu-nuit `#05070D`, surfaces `#0A0F1A`, filets `#1B2535`.
+  Deux règles tiennent l'ensemble : le **cyan** `#4DE8E0` ne sert jamais à
+  décorer, seulement à signaler une donnée vivante ; l'**ambre** `#FFB03A` ne
+  sert qu'aux actions, donc il est rare, donc il est vu.
+- **Type** — Chakra Petch (titres, capitales), Barlow (texte courant),
+  JetBrains Mono (toutes les données, étiquettes et chiffres).
+- **Formes** — pas de rayon. Un **angle coupé** en bas à droite et une
+  **équerre de visée** en haut à gauche, repris sur les boutons, les cartes et
+  les panneaux. C'est la signature du jeu.
+- **Fond** — une grille de 72 px fixée sous toute la page, masquée vers le bas
+  pour ne pas gêner la lecture. Le héros porte la seule source de lumière du
+  site : un horizon cyan en bas de section.
+- **Sections** — pas d'alternance de couleur : chaque section est un panneau
+  séparé par un filet d'un pixel, comme deux écrans d'un même tableau de bord.
 
-Deux séries de règles accompagnent cette largeur, en bas de la feuille de
-styles : à partir de 1200 px les listes se figent sur un nombre de colonnes
-choisi et les visuels cessent de grandir en hauteur ; à partir de 1600 px les
-grilles de cartes gagnent une colonne au lieu d'élargir chaque carte.
+Le **thème clair** est un poste de jour : même instrument, éclairage
+différent. Le fond devient un bleu-gris pâle, le cyan s'assombrit pour rester
+lisible sur blanc, l'ambre vire au brun doré. Aucune couleur n'est simplement
+inversée. Il est défini sous `prefers-color-scheme: light` **et** sous
+`[data-theme="light"]`, pour que le bouton de bascule gagne dans les deux sens.
 
-Le thème clair est la valeur par défaut (`:root`), le sombre est défini sous
-`prefers-color-scheme: dark` **et** sous `[data-theme="dark"]` pour que le
-bouton de bascule gagne dans les deux sens. Toute nouvelle couleur doit passer
-par un jeton, jamais par une valeur littérale dans une règle de composant.
+- **Largeur** — `--cadre: 1920px` avec des gouttières fluides. La page occupe
+  tout l'écran jusqu'en 1920 px, puis se centre.
+
+Les composants n'ont pas changé entre les deux designs : tout le contenu vit
+dans `src/data/`, et la refonte n'a touché que la feuille de styles,
+`index.html` (polices) et les icônes de thème.
 
 ## Contexte : entreprise québécoise
 
