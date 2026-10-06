@@ -90,9 +90,11 @@ export default function Header({ theme, basculer, actif, liens = nav }) {
             >
               Devis gratuit <Fleche />
             </a>
-            <a className="btn btn--trait" href={`tel:${studio.telBrut}`}>
-              <Ico nom="telephone" taille={16} /> {studio.tel}
-            </a>
+            {studio.tel && (
+              <a className="btn btn--trait" href={`tel:${studio.telBrut}`}>
+                <Ico nom="telephone" taille={16} /> {studio.tel}
+              </a>
+            )}
           </div>
         </div>
       </div>

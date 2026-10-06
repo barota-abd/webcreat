@@ -8,18 +8,21 @@ export default function CallToAction() {
         <div className="appel" data-reveal>
           <div className="chiffres__halo" aria-hidden="true" />
           <div style={{ position: "relative", minWidth: 0 }}>
-            <h2 className="h-xl">Vous préférez en parler de vive voix ?</h2>
+            <h2 className="h-xl">Un projet en tête ?</h2>
             <p>
-              Vingt minutes au téléphone suffisent pour savoir si votre projet
-              est faisable, combien il coûte et quand il peut être en ligne.
-              Sans engagement, et sans qu'on vous rappelle pendant six mois.
+              Décrivez-le en deux minutes. Vous recevez un retour écrit sous
+              48 h ouvrables : faisabilité, fourchette de prix et délai
+              réaliste. Sans engagement, et sans qu'on vous relance pendant six
+              mois.
             </p>
           </div>
 
           <div className="appel__btns">
-            <a className="btn btn--clair btn--large" href={`tel:${studio.telBrut}`}>
-              <Ico nom="telephone" taille={17} /> {studio.tel}
-            </a>
+            {studio.tel && (
+              <a className="btn btn--clair btn--large" href={`tel:${studio.telBrut}`}>
+                <Ico nom="telephone" taille={17} /> {studio.tel}
+              </a>
+            )}
             <a className="btn btn--action btn--large" href="#contact">
               Devis gratuit <Fleche />
             </a>

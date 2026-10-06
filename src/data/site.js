@@ -4,10 +4,12 @@ export const studio = {
   baseline: "Agence web & applications",
   accroche: "Création de sites web, applications et référencement",
   email: "bonjour@orbite.studio",
-  /* Le 555-01XX est reserve a la fiction en Amerique du Nord : c'est un
-     numero volontairement faux, a remplacer par le votre. */
-  tel: "450 555-0190",
-  telBrut: "+14505550190",
+  /* Laissez vide tant que vous n'avez pas de ligne à publier : tous les
+     boutons d'appel du site disparaissent alors d'eux-mêmes. Renseignez les
+     deux champs pour les faire revenir — `tel` pour l'affichage, `telBrut`
+     pour le lien, au format +1XXXXXXXXXX. */
+  tel: "",
+  telBrut: "",
   ville: "Repentigny",
   region: "Lanaudière",
 
@@ -374,7 +376,7 @@ export const etapes = [
     n: "01",
     titre: "Appel de cadrage",
     texte:
-      "Une heure au téléphone ou dans nos bureaux pour comprendre ce que vous vendez, à qui, et ce qui vous bloque aujourd'hui. Nous repartons avec vos textes, vos photos et vos accès : c'est ce qui rend la suite possible en quelques jours. Pour un projet d'IA, cette étape devient un audit des tâches.",
+      "Une heure en visioconférence pour comprendre ce que vous vendez, à qui, et ce qui vous bloque aujourd'hui. Nous repartons avec vos textes, vos photos et vos accès : c'est ce qui rend la suite possible en quelques jours. Pour un projet d'IA, cette étape devient un audit des tâches.",
     duree: "Avant de démarrer",
   },
   {
@@ -603,7 +605,7 @@ export const legal = [
       {
         t: "Communication à des tiers",
         lignes: [
-          "Vos renseignements ne sont ni vendus, ni loués, ni échangés. Ils ne sont communiqués qu'aux fournisseurs strictement nécessaires à l'exploitation de notre site, de notre messagerie et de notre mesure d'audience, liés par contrat et tenus à la même confidentialité.",
+          "Vos renseignements ne sont ni vendus, ni loués, ni échangés. Ils ne sont communiqués qu'aux fournisseurs strictement nécessaires à l'exploitation de notre site, de notre messagerie, de notre mesure d'audience et de notre assistant automatisé, liés par contrat et tenus à la même confidentialité.",
           "Avant toute communication de renseignements personnels à l'extérieur du Québec, nous procédons à l'évaluation des facteurs relatifs à la vie privée prévue par la Loi 25.",
         ],
       },
@@ -624,6 +626,15 @@ export const legal = [
         t: "Incident de confidentialité",
         lignes: [
           "Nous tenons un registre des incidents de confidentialité. En cas d'incident présentant un risque de préjudice sérieux, nous en avisons sans délai les personnes concernées ainsi que la Commission d'accès à l'information.",
+        ],
+      },
+      {
+        t: "Assistant automatisé",
+        lignes: [
+          "Le site propose un assistant qui vous aide à décrire votre projet. Ce que vous y écrivez est transmis à Anthropic, notre fournisseur de modèle de langage, pour produire la réponse — et à personne d'autre.",
+          "N'y inscrivez pas de renseignement sensible : décrivez votre projet, pas votre vie privée. La conversation n'est pas conservée après la fermeture de la fenêtre, et elle ne sert ni à entraîner un modèle, ni à vous profiler.",
+          "Ce traitement implique une communication de renseignements à l'extérieur du Québec. Nous avons réalisé l'évaluation des facteurs relatifs à la vie privée prévue par la Loi 25, et vous pouvez en demander les conclusions.",
+          "Vous pouvez évidemment nous écrire par le formulaire sans jamais utiliser l'assistant.",
         ],
       },
       {

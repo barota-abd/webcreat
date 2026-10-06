@@ -80,8 +80,8 @@ export default function Footer({ liens = nav }) {
 
           <div className="pied__col">
             <h4>Nous joindre</h4>
-            <a href={`tel:${studio.telBrut}`}>{studio.tel}</a>
-            <a href={`mailto:${studio.email}`}>{studio.email}</a>
+            <a href="#contact">Demander un devis</a>
+            {studio.tel && <a href={`tel:${studio.telBrut}`}>{studio.tel}</a>}
             <p>{studio.ville}</p>
             <p>Du lundi au vendredi, 9 h – 18 h</p>
             <p style={{ color: "var(--c-action)" }}>{studio.delai}</p>

@@ -331,6 +331,69 @@ aux entrées de `services` et `servicesIA` dans `src/data/site.js`, puis
 affichez-le dans `ServiceTabs.jsx` et `Ia.jsx` — les deux endroits portent
 aujourd'hui une mention « sur devis » à remplacer.
 
+## Assistant de qualification (IA)
+
+Un bouton flottant ouvre un assistant qui aide le visiteur à décrire son
+projet, puis lui rend un résumé à coller dans le formulaire.
+
+### Architecture, et pourquoi elle est ainsi
+
+```
+Chatbox.jsx  ──POST──▶  /api/besoin.js  ──▶  API Anthropic
+(navigateur)            (fonction Vercel)     (clé ici, et nulle part ailleurs)
+```
+
+**La clé d'API ne doit jamais atteindre le navigateur.** Un appel depuis le
+front l'exposerait à quiconque ouvre l'inspecteur, et la facture suivrait.
+C'est l'unique raison d'être de la fonction serveur : `@anthropic-ai/sdk`
+n'est importé que dans `api/besoin.js`, jamais dans `src/`.
+
+### Mise en service
+
+Dans Vercel → Settings → Environment Variables :
+
+| Nom | Valeur |
+|---|---|
+| `ANTHROPIC_API_KEY` | votre clé, depuis la console Anthropic |
+
+Ne la mettez **jamais** dans un fichier du dépôt. Redéployez après l'avoir
+ajoutée.
+
+### En local
+
+`npm run dev` ne sert pas le dossier `/api` — c'est Vite, pas Vercel.
+L'assistant affichera une erreur de connexion. Pour le tester :
+
+```bash
+npx vercel dev
+```
+
+### Réglages du modèle
+
+Dans `api/besoin.js` :
+
+- **Modèle** `claude-opus-5-5`
+- **Effort `low`** — l'échange est conversationnel et doit répondre vite ; le
+  défaut de ce modèle est `medium`, donc il est posé explicitement
+- **`max_tokens: 1024`** — l'assistant pose une question, il ne rédige pas un
+  dossier
+- **Garde-fous** : 24 messages et 2000 caractères par message au maximum,
+  revalidés côté serveur
+
+### Ce que l'assistant ne fait pas
+
+Le prompt système le lui interdit explicitement : annoncer un prix, promettre
+un délai autre que celui du site, prétendre être humain, inventer des
+références. Si vous changez les tarifs ou les délais sur le site, **relisez ce
+prompt** — c'est le seul endroit où ces règles sont redites.
+
+### Conséquence sur la vie privée
+
+Ce que le visiteur écrit part chez Anthropic. La politique de confidentialité
+le déclare, signale la communication hors Québec et renvoie à l'évaluation des
+facteurs relatifs à la vie privée exigée par la Loi 25. **Si vous retirez
+l'assistant, retirez aussi ce bloc** — et inversement.
+
 ## Formulaire
 
 Le formulaire de contact valide côté client puis affiche l'accusé de réception.

@@ -98,9 +98,9 @@ export const medias = {
   avis: {},
 
   /* ----------------------------------------------------------------- agence */
-  /* Mosaïque de la section « L'agence ». La première image occupe toute la
-     largeur, les deux suivantes se partagent la ligne du dessous. */
-  bureaux: [BUREAUX_PLATEAU, ATELIER_CADRAGE, BUREAU_MOBILE],
+  /* Pas de mosaïque de locaux : le site ne présente aucun bureau visitable.
+     Les trois photos correspondantes restent utilisées par les onglets de
+     services. */
 
   /* Portrait de la personne mise en avant dans la section Agence. */
   direction: null,

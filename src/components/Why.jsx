@@ -9,7 +9,7 @@ export default function Why() {
         <SectionHead
           etiquette={`Pourquoi ${studio.nom}`}
           titre="Ce que vous obtenez en travaillant avec nous"
-          texte="Nous ne sommes pas la moins chère des agences du Grand Montréal. Voici ce que vous obtenez à la place."
+          texte="Un site rapide, qu'on trouve sur Google et qui vous appartient. Voici les quatre choses sur lesquelles nous ne transigeons pas, quelle que soit la taille du projet."
         />
 
         <div className="atouts">

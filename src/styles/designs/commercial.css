@@ -2642,3 +2642,223 @@ p {
   --c-faible: var(--encre-faible);  /* texte secondaire */
   --f-titre: var(--titre);   /* famille des titres */
 }
+
+/* ========================================================== assistant IA
+
+   Fenêtre de qualification du besoin, ancrée en bas à droite. Tout est écrit
+   avec les jetons du design en cours : le composant prend donc l'apparence de
+   l'habillage actif sans règle propre à chacun.
+   ------------------------------------------------------------------------ */
+
+.chat-ouvrir {
+  position: fixed;
+  right: 1.25rem;
+  bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
+  z-index: 60;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.8rem 1.2rem;
+  border: 1px solid var(--c-accent);
+  background: var(--c-accent);
+  color: var(--fond, #fff);
+  font-family: var(--f-titre);
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.55);
+  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.2s;
+}
+
+.chat-ouvrir:hover {
+  transform: translateY(-2px);
+}
+
+@media (max-width: 560px) {
+  .chat-ouvrir span {
+    display: none;
+  }
+  .chat-ouvrir {
+    padding: 0.85rem;
+  }
+}
+
+.chat {
+  position: fixed;
+  right: 1.25rem;
+  bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
+  z-index: 60;
+  width: min(23rem, calc(100vw - 2.5rem));
+  max-height: min(34rem, calc(100vh - 8rem));
+  display: flex;
+  flex-direction: column;
+  background: var(--surface, var(--papier, #fff));
+  border: 1px solid var(--filet, var(--bord, rgba(0, 0, 0, 0.12)));
+  box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.6);
+}
+
+.chat__tete {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid var(--filet, var(--bord, rgba(0, 0, 0, 0.12)));
+}
+
+.chat__titre {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--f-titre);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--c-accent);
+}
+
+.chat__fermer {
+  background: none;
+  border: 0;
+  padding: 0.25rem;
+  cursor: pointer;
+  color: var(--c-faible);
+}
+
+.chat__fermer:hover {
+  color: var(--c-accent);
+}
+
+.chat__fil {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.9rem 1rem;
+  display: grid;
+  gap: 0.6rem;
+  align-content: start;
+}
+
+.chat__bulle {
+  max-width: 92%;
+  padding: 0.6rem 0.8rem;
+  font-size: 0.89rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.chat__bulle--assistant {
+  justify-self: start;
+  background: color-mix(in srgb, var(--c-accent) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--c-accent) 25%, transparent);
+}
+
+.chat__bulle--user {
+  justify-self: end;
+  background: color-mix(in srgb, var(--c-action) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--c-action) 28%, transparent);
+}
+
+/* Trois points qui respirent pendant l'attente. */
+.chat__attente {
+  display: inline-flex;
+  gap: 0.3rem;
+  align-items: center;
+}
+
+.chat__attente span {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: var(--c-accent);
+  animation: chatPouls 1.1s ease-in-out infinite;
+}
+
+.chat__attente span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.chat__attente span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes chatPouls {
+  0%,
+  60%,
+  100% {
+    opacity: 0.25;
+  }
+  30% {
+    opacity: 1;
+  }
+}
+
+.chat__erreur {
+  font-size: 0.82rem;
+  line-height: 1.5;
+  padding: 0.55rem 0.7rem;
+  color: var(--rouge, #c0303f);
+  border: 1px solid color-mix(in srgb, var(--rouge, #c0303f) 40%, transparent);
+  background: color-mix(in srgb, var(--rouge, #c0303f) 8%, transparent);
+}
+
+.chat__saisie {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.7rem;
+  border-top: 1px solid var(--filet, var(--bord, rgba(0, 0, 0, 0.12)));
+}
+
+.chat__label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.chat__saisie input {
+  flex: 1;
+  min-width: 0;
+  font-family: inherit;
+  font-size: 0.89rem;
+  color: inherit;
+  background: var(--fond, var(--papier, #fff));
+  border: 1px solid var(--filet, var(--bord, rgba(0, 0, 0, 0.12)));
+  padding: 0.55rem 0.7rem;
+}
+
+.chat__saisie input:focus {
+  outline: none;
+  border-color: var(--c-accent);
+}
+
+.chat__envoyer {
+  flex: none;
+  width: 2.4rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--c-action);
+  background: var(--c-action);
+  color: var(--fond, #fff);
+  cursor: pointer;
+}
+
+.chat__envoyer:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.chat__note {
+  padding: 0 1rem 0.8rem;
+  font-size: 0.72rem;
+  line-height: 1.45;
+  color: var(--c-faible);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chat__attente span {
+    animation: none;
+    opacity: 0.6;
+  }
+}

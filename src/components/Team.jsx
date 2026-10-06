@@ -19,9 +19,9 @@ export default function Team() {
             Vous saurez toujours qui travaille sur votre projet
           </h2>
           <p className="chapo">
-            Nous sommes à {studio.ville}, et vous pouvez passer nous voir. Pas
-            de plateau commercial qui vend puis d'équipe inconnue qui exécute :
-            c'est le même interlocuteur du premier appel à la mise en ligne.
+            Une seule personne suit votre projet, du premier appel à la mise
+            en ligne. Vous n'aurez jamais à réexpliquer votre affaire à
+            quelqu'un de nouveau.
           </p>
 
           <ul className="equipe__liste">
@@ -32,17 +32,6 @@ export default function Team() {
               </li>
             ))}
           </ul>
-
-          <div className="mosaique" style={{ marginTop: "1.75rem" }}>
-            {medias.bureaux.map((b, i) => (
-              <Media
-                key={b.local}
-                media={b}
-                ratio={i === 0 ? "16 / 9" : "4 / 3"}
-                repli="Photo de vos locaux"
-              />
-            ))}
-          </div>
         </div>
 
         <div className="carte carte--large carte--forte fiche" data-reveal style={{ "--d": "120ms" }}>
@@ -75,8 +64,8 @@ export default function Team() {
                 <Ico nom="telephone" taille={22} />
               </span>
               <p className="h-m" style={{ lineHeight: 1.45 }}>
-                Vingt minutes au téléphone suffisent pour savoir si votre projet
-                est faisable, combien il coûte et quand il peut être en ligne.
+                Décrivez votre projet en deux minutes. Vous saurez s'il est
+                faisable, ce qu'il coûte et quand il peut être en ligne.
               </p>
               {/* Consigne de développement : absente du site construit. */}
               {import.meta.env.DEV && (
@@ -93,12 +82,20 @@ export default function Team() {
             Du lundi au vendredi, 9 h – 18 h
           </span>
 
-          <a className="btn btn--bleu btn--large" href={`tel:${studio.telBrut}`}>
-            <Ico nom="telephone" taille={17} /> {studio.tel}
-          </a>
-          <a className="lien" href="#contact">
-            Ou écrire en deux minutes <Fleche taille={15} />
-          </a>
+          {studio.tel ? (
+            <>
+              <a className="btn btn--bleu btn--large" href={`tel:${studio.telBrut}`}>
+                <Ico nom="telephone" taille={17} /> {studio.tel}
+              </a>
+              <a className="lien" href="#contact">
+                Ou écrire en deux minutes <Fleche taille={15} />
+              </a>
+            </>
+          ) : (
+            <a className="btn btn--bleu btn--large" href="#contact">
+              Décrire mon projet <Fleche taille={17} />
+            </a>
+          )}
         </div>
       </div>
     </section>

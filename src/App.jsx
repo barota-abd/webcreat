@@ -10,6 +10,7 @@ import { useTheme } from "./hooks/useTheme.js";
 
 import Articles from "./components/Articles.jsx";
 import CallToAction from "./components/CallToAction.jsx";
+import Chatbox from "./components/Chatbox.jsx";
 import Contact from "./components/Contact.jsx";
 import Faq from "./components/Faq.jsx";
 import Footer from "./components/Footer.jsx";
@@ -71,6 +72,7 @@ export default function App() {
       </main>
 
       <Footer liens={liens} />
+      <Chatbox />
       <Analytics />
       <SelecteurDesign />
     </>
