@@ -1,3 +1,7 @@
+/* Mesure d'audience Vercel. L'import se fait bien par « /react » : la variante
+   « /next » de la documentation ne vaut que pour un projet Next.js, et ce site
+   tourne sous Vite. La sonde ne transmet rien en développement. */
+import { Analytics } from "@vercel/analytics/react";
 import { useMemo } from "react";
 import { nav, realisations } from "./data/site.js";
 import { useActiveSection } from "./hooks/useActiveSection.js";
@@ -67,6 +71,7 @@ export default function App() {
       </main>
 
       <Footer liens={liens} />
+      <Analytics />
       <SelecteurDesign />
     </>
   );

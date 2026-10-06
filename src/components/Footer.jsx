@@ -109,7 +109,7 @@ export default function Footer({ liens = nav }) {
 
         <div className="pied__bas">
           <span>© {studio.depuis}–2026 {studio.complet}. Tous droits réservés.</span>
-          <span>Aucun traceur publicitaire, aucun cookie tiers</span>
+          <span>Aucun traceur publicitaire · Mesure d'audience sans témoin</span>
           <span>
             <a href="#mentions-legales">Mentions légales</a> ·{" "}
             <a href="#confidentialite">Confidentialité</a> ·{" "}

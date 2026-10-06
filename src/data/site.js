@@ -603,7 +603,7 @@ export const legal = [
       {
         t: "Communication à des tiers",
         lignes: [
-          "Vos renseignements ne sont ni vendus, ni loués, ni échangés. Ils ne sont communiqués qu'aux fournisseurs strictement nécessaires à l'exploitation de notre messagerie et de notre site, liés par contrat et tenus à la même confidentialité.",
+          "Vos renseignements ne sont ni vendus, ni loués, ni échangés. Ils ne sont communiqués qu'aux fournisseurs strictement nécessaires à l'exploitation de notre site, de notre messagerie et de notre mesure d'audience, liés par contrat et tenus à la même confidentialité.",
           "Avant toute communication de renseignements personnels à l'extérieur du Québec, nous procédons à l'évaluation des facteurs relatifs à la vie privée prévue par la Loi 25.",
         ],
       },
@@ -627,9 +627,11 @@ export const legal = [
         ],
       },
       {
-        t: "Témoins de connexion",
+        t: "Témoins et mesure d'audience",
         lignes: [
-          "Ce site ne dépose aucun témoin publicitaire et n'utilise aucun traceur tiers. Seules les préférences d'affichage que vous choisissez, comme le thème clair ou sombre, sont conservées dans votre navigateur et ne nous sont jamais transmises.",
+          "Ce site ne dépose aucun témoin publicitaire et ne vous suit pas d'un site à l'autre.",
+          "Nous mesurons la fréquentation avec Vercel Analytics, qui compte les pages vues sans déposer de témoin, sans identifiant persistant et sans profilage. Les données sont agrégées : elles ne permettent pas de vous identifier, et nous ne cherchons pas à le faire.",
+          "Les préférences d'affichage que vous choisissez, comme le thème clair ou sombre, restent dans votre navigateur et ne nous sont jamais transmises.",
         ],
       },
     ],
