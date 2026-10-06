@@ -28,6 +28,12 @@ export default function Chatbox() {
   const [enCours, setEnCours] = useState(false);
   const [erreur, setErreur] = useState(null);
 
+  /* Envoi de la fiche à l'agence. Jamais automatique : c'est le visiteur qui
+     déclenche, et c'est ce qui rend le traitement licite. */
+  const [envoiOuvert, setEnvoiOuvert] = useState(false);
+  const [courriel, setCourriel] = useState("");
+  const [envoiEtat, setEnvoiEtat] = useState(null); // null | "cours" | "ok"
+
   const filRef = useRef(null);
   const champRef = useRef(null);
 
@@ -51,6 +57,31 @@ export default function Chatbox() {
     window.addEventListener("keydown", onEchap);
     return () => window.removeEventListener("keydown", onEchap);
   }, []);
+
+  async function envoyerRapport(e) {
+    e.preventDefault();
+    if (envoiEtat === "cours") return;
+    setEnvoiEtat("cours");
+    setErreur(null);
+
+    try {
+      const r = await fetch("/api/rapport", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: messages.slice(1), courriel }),
+      });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok || d.erreur) throw new Error(d.erreur || "L'envoi a échoué.");
+      setEnvoiEtat("ok");
+    } catch (err) {
+      setEnvoiEtat(null);
+      setErreur(
+        err.message === "Failed to fetch"
+          ? "Connexion impossible. Utilisez le formulaire ci-dessous."
+          : err.message
+      );
+    }
+  }
 
   async function envoyer(e) {
     e.preventDefault();
@@ -142,6 +173,51 @@ export default function Chatbox() {
 
           {erreur && <p className="chat__erreur">{erreur}</p>}
         </div>
+
+        {/* Proposé seulement une fois l'échange engagé : avant, il n'y a
+            rien à résumer. */}
+        {messages.length >= 4 && envoiEtat !== "ok" && (
+          <div className="chat__envoi">
+            {!envoiOuvert ? (
+              <button
+                type="button"
+                className="chat__lien"
+                onClick={() => setEnvoiOuvert(true)}
+              >
+                Envoyer ce résumé à l'agence
+              </button>
+            ) : (
+              <form onSubmit={envoyerRapport}>
+                <label htmlFor="chat-courriel">
+                  Votre courriel, pour qu'on puisse vous répondre (facultatif)
+                </label>
+                <div className="chat__envoi-ligne">
+                  <input
+                    id="chat-courriel"
+                    type="email"
+                    value={courriel}
+                    onChange={(e) => setCourriel(e.target.value)}
+                    placeholder="vous@votre-entreprise.ca"
+                    autoComplete="email"
+                  />
+                  <button
+                    type="submit"
+                    className="btn btn--action"
+                    disabled={envoiEtat === "cours"}
+                  >
+                    {envoiEtat === "cours" ? "Envoi…" : "Envoyer"}
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
+        )}
+
+        {envoiEtat === "ok" && (
+          <p className="chat__envoi chat__envoi--ok">
+            Fiche envoyée. Vous aurez un retour écrit sous 48 h ouvrables.
+          </p>
+        )}
 
         <form className="chat__saisie" onSubmit={envoyer}>
           <label className="chat__label" htmlFor="chat-champ">

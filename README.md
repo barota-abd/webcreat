@@ -387,6 +387,41 @@ un délai autre que celui du site, prétendre être humain, inventer des
 références. Si vous changez les tarifs ou les délais sur le site, **relisez ce
 prompt** — c'est le seul endroit où ces règles sont redites.
 
+### Recevoir la fiche par courriel
+
+Après quelques échanges, un lien « Envoyer ce résumé à l'agence » apparaît dans
+la fenêtre. Le visiteur peut y joindre son courriel, puis valider :
+`api/rapport.js` demande à Claude une fiche structurée — activité, clientèle,
+existant, objectif, type de projet, échéance, contenus, points à clarifier,
+signaux — et vous l'envoie avec la transcription complète.
+
+**Rien ne part automatiquement.** L'envoi n'a lieu que sur action explicite du
+visiteur : c'est ce qui rend le traitement licite.
+
+Variables à ajouter dans Vercel :
+
+| Nom | Rôle |
+|---|---|
+| `RESEND_API_KEY` | clé de l'expéditeur, depuis resend.com |
+| `RAPPORT_DESTINATAIRE` | l'adresse qui reçoit les fiches |
+| `RAPPORT_EXPEDITEUR` | facultatif — voir ci-dessous |
+
+#### Sans nom de domaine
+
+Tant qu'aucun domaine n'est vérifié chez Resend, l'expéditeur reste
+`onboarding@resend.dev`, le compte de test. Sa limite habituelle : **il ne
+livre qu'à l'adresse du titulaire du compte Resend**. Ce n'est pas bloquant
+ici, puisque la fiche part vers vous et non vers le visiteur — mais vérifiez
+dans votre tableau de bord Resend, les conditions du compte de test peuvent
+changer.
+
+Le jour où vous avez un domaine : vérifiez-le chez Resend, puis renseignez
+`RAPPORT_EXPEDITEUR` avec une adresse de ce domaine.
+
+Si `RESEND_API_KEY` ou `RAPPORT_DESTINATAIRE` manque, l'endpoint répond
+proprement et l'interface renvoie le visiteur vers le formulaire — rien ne
+casse.
+
 ### Conséquence sur la vie privée
 
 Ce que le visiteur écrit part chez Anthropic. La politique de confidentialité

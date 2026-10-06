@@ -632,7 +632,8 @@ export const legal = [
         t: "Assistant automatisé",
         lignes: [
           "Le site propose un assistant qui vous aide à décrire votre projet. Ce que vous y écrivez est transmis à Anthropic, notre fournisseur de modèle de langage, pour produire la réponse — et à personne d'autre.",
-          "N'y inscrivez pas de renseignement sensible : décrivez votre projet, pas votre vie privée. La conversation n'est pas conservée après la fermeture de la fenêtre, et elle ne sert ni à entraîner un modèle, ni à vous profiler.",
+          "N'y inscrivez pas de renseignement sensible : décrivez votre projet, pas votre vie privée. La conversation ne sert ni à entraîner un modèle, ni à vous profiler.",
+          "Par défaut, elle n'est conservée nulle part : elle disparaît à la fermeture de la fenêtre. Elle ne nous est transmise que si vous cliquez vous-même sur « Envoyer ce résumé à l'agence » — auquel cas nous en recevons une fiche et la transcription, conservées comme toute demande entrante, trois ans après le dernier contact.",
           "Ce traitement implique une communication de renseignements à l'extérieur du Québec. Nous avons réalisé l'évaluation des facteurs relatifs à la vie privée prévue par la Loi 25, et vous pouvez en demander les conclusions.",
           "Vous pouvez évidemment nous écrire par le formulaire sans jamais utiliser l'assistant.",
         ],

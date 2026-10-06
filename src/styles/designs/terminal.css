@@ -2662,3 +2662,58 @@ p {
     animation: none;
   }
 }
+
+/* Envoi de la fiche à l'agence, depuis la fenêtre d'assistant. */
+.chat__envoi {
+  padding: 0.7rem 1rem;
+  border-top: 1px solid var(--filet, var(--bord, rgba(0, 0, 0, 0.12)));
+  font-size: 0.8rem;
+}
+
+.chat__envoi label {
+  display: block;
+  margin-bottom: 0.4rem;
+  color: var(--c-faible);
+  line-height: 1.4;
+}
+
+.chat__envoi-ligne {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.chat__envoi input {
+  flex: 1;
+  min-width: 0;
+  font-family: inherit;
+  font-size: 0.85rem;
+  color: inherit;
+  background: var(--fond, var(--papier, #fff));
+  border: 1px solid var(--filet, var(--bord, rgba(0, 0, 0, 0.12)));
+  padding: 0.5rem 0.6rem;
+}
+
+.chat__envoi input:focus {
+  outline: none;
+  border-color: var(--c-accent);
+}
+
+.chat__envoi .btn {
+  padding: 0.5rem 0.9rem;
+  font-size: 0.78rem;
+}
+
+.chat__lien {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  color: var(--c-accent);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.chat__envoi--ok {
+  color: var(--c-ok);
+  line-height: 1.5;
+}
