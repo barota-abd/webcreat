@@ -271,14 +271,14 @@ export function Logo() {
         cy="16"
         r="12.5"
         fill="none"
-        stroke="var(--bleu)"
+        stroke="var(--c-accent)"
         strokeWidth="2"
         opacity="0.3"
       />
       <g className="logo__orbe">
-        <circle cx="26.8" cy="9.2" r="3.7" fill="var(--orange)" />
+        <circle cx="26.8" cy="9.2" r="3.7" fill="var(--c-action)" />
       </g>
-      <circle cx="16" cy="16" r="5.2" fill="var(--bleu)" />
+      <circle cx="16" cy="16" r="5.2" fill="var(--c-accent)" />
     </svg>
   );
 }

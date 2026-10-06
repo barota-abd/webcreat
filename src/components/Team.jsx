@@ -62,9 +62,9 @@ export default function Team() {
                 </blockquote>
               )}
               <div>
-                <b style={{ fontFamily: "var(--titre)" }}>{direction.nom}</b>
+                <b style={{ fontFamily: "var(--f-titre)" }}>{direction.nom}</b>
                 <br />
-                <span style={{ color: "var(--encre-faible)", fontSize: "0.88rem" }}>
+                <span style={{ color: "var(--c-faible)", fontSize: "0.88rem" }}>
                   {direction.role}
                 </span>
               </div>
@@ -80,7 +80,7 @@ export default function Team() {
               </p>
               {/* Consigne de développement : absente du site construit. */}
               {import.meta.env.DEV && (
-                <p style={{ fontSize: "0.88rem", color: "var(--encre-faible)" }}>
+                <p style={{ fontSize: "0.88rem", color: "var(--c-faible)" }}>
                   Pour mettre une personne en avant ici, renseignez{" "}
                   <code>direction</code> dans <code>src/data/site.js</code>.
                 </p>

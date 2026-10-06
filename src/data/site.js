@@ -124,7 +124,7 @@ export const services = [
       "Hébergement et certificat la première année",
       "Formation de votre équipe incluse",
     ],
-    duree: "4 à 6 semaines",
+    duree: "1 semaine",
     cta: "Je veux un site web",
   },
   {
@@ -374,8 +374,8 @@ export const etapes = [
     n: "01",
     titre: "Appel de cadrage",
     texte:
-      "Une heure au téléphone ou dans nos bureaux pour comprendre ce que vous vendez, à qui, et ce qui vous bloque aujourd'hui. Pour un projet d'IA, cette étape devient un audit des tâches : nous chronométrons ce qui se répète chez vous avant de proposer quoi que ce soit.",
-    duree: "Jour 1 à 3",
+      "Une heure au téléphone ou dans nos bureaux pour comprendre ce que vous vendez, à qui, et ce qui vous bloque aujourd'hui. Nous repartons avec vos textes, vos photos et vos accès : c'est ce qui rend la suite possible en quelques jours. Pour un projet d'IA, cette étape devient un audit des tâches.",
+    duree: "Avant de démarrer",
   },
   {
     n: "02",
@@ -388,22 +388,22 @@ export const etapes = [
     n: "03",
     titre: "Design",
     texte:
-      "Arborescence puis maquettes Figma. Deux séries de corrections comprises, validées avant la première ligne de code. Sur un projet d'IA, cette étape est remplacée par un pilote : une seule tâche, mise entre les mains de votre équipe et mesurée sur des dossiers réels.",
-    duree: "Semaines 1 à 3",
+      "Maquette de la page d'accueil, présentée en visioconférence et corrigée avec vous pendant l'appel plutôt qu'en allers-retours par courriel. Sur un projet d'IA, cette étape est remplacée par un pilote : une seule tâche, mise entre les mains de votre équipe et mesurée sur des dossiers réels.",
+    duree: "Lundi et mardi",
   },
   {
     n: "04",
     titre: "Développement",
     texte:
-      "Un lien de préproduction dès le premier jour, mis à jour en continu. Vous suivez l'avancement au lieu d'attendre la livraison.",
-    duree: "Semaines 3 à 7",
+      "Un lien de préproduction mis à jour en continu, que vous pouvez ouvrir à tout moment. Vous suivez la construction heure par heure au lieu d'attendre une livraison.",
+    duree: "Mercredi et jeudi",
   },
   {
     n: "05",
     titre: "Mise en ligne",
     texte:
-      "Recette sur appareils réels, formation de votre équipe, bascule du nom de domaine. Puis 30 jours de garantie sur tout correctif lié à notre travail.",
-    duree: "Semaine 8",
+      "Recette sur appareils réels, formation de votre équipe, bascule du nom de domaine. Le site est en ligne. Puis 30 jours de garantie sur tout correctif lié à notre travail.",
+    duree: "Vendredi",
   },
   {
     n: "06",
@@ -496,8 +496,8 @@ export const faq = [
     a: "Nous ne publions pas de grille de prix, parce que deux sites de cinq pages peuvent demander un travail du simple au triple selon les contenus à produire, les connexions à vos outils et le niveau de design attendu. Une fourchette affichée serait fausse dans un sens ou dans l'autre. En revanche, après l'appel de cadrage, vous recevez sous 48 h un devis ferme et détaillé poste par poste — et ce prix ne bouge plus ensuite, sauf si vous ajoutez du périmètre, ce que vous validez avant.",
   },
   {
-    q: "En combien de temps mon site sera-t-il en ligne ?",
-    a: "Quatre à six semaines pour un site vitrine, à condition de recevoir vos textes et vos images durant la première semaine. C'est là que les plannings glissent, donc nous vous envoyons dès le cadrage la liste précise de ce qu'il faut fournir.",
+    q: "Une semaine pour un site, c'est sérieux ?",
+    a: "Oui, et c'est un engagement, pas un argument. Le cadrage et le devis se font avant. Ensuite nous bloquons cinq jours pour vous, et rien d'autre : maquette validée en direct lundi et mardi, construction mercredi et jeudi, mise en ligne vendredi. Ce qui rend ce rythme possible, c'est que nous repartons du cadrage avec vos textes, vos photos et vos accès. Si ces éléments manquent, le compteur ne démarre pas — nous préférons décaler d'une semaine que livrer un site rempli de faux texte. Les projets plus lourds, boutique, application ou plateforme, gardent leurs délais propres, indiqués sur chaque prestation.",
   },
   {
     q: "Qui est propriétaire du site, du code et des comptes publicitaires ?",

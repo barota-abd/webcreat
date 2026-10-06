@@ -22,8 +22,8 @@ export default function Hero() {
           <p className="chapo">
             Un site qui s'affiche en moins d'une seconde, qui sort sur les
             recherches de votre métier, et qui transforme les visiteurs en
-            demandes de devis. Vous appelez, nous écoutons, nous chiffrons sous
-            48 h — et sous huit semaines, c'est en ligne.
+            demandes de devis. Vous appelez, nous chiffrons sous 48 h, et nous
+            bloquons cinq jours : le vendredi suivant, votre site est en ligne.
           </p>
 
           <div className="hero__cta">

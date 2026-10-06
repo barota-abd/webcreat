@@ -30,7 +30,7 @@ export default function Footer({ liens = nav }) {
               Une équipe à {studio.ville} depuis {studio.depuis}.
             </p>
             {studio.neq && (
-              <p style={{ fontSize: "0.82rem", color: "var(--texte-faible)" }}>
+              <p style={{ fontSize: "0.82rem", color: "var(--c-faible)" }}>
                 {studio.neq}
               </p>
             )}
@@ -84,7 +84,7 @@ export default function Footer({ liens = nav }) {
             <a href={`mailto:${studio.email}`}>{studio.email}</a>
             <p>{studio.ville}</p>
             <p>Du lundi au vendredi, 9 h – 18 h</p>
-            <p style={{ color: "var(--orange)" }}>{studio.delai}</p>
+            <p style={{ color: "var(--c-action)" }}>{studio.delai}</p>
           </div>
         </div>
 
