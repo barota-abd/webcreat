@@ -8,8 +8,8 @@ export default function Process() {
       <div className="wrap">
         <SectionHead
           etiquette="Notre méthode"
-          titre="Du premier appel à la mise en ligne"
-          texte="La numérotation suit le déroulé réel d'un projet : chaque étape se valide avant que la suivante démarre, et vous savez à tout moment où vous en êtes."
+          titre="Du premier appel au site en ligne, en une semaine"
+          texte="Cinq jours bloqués pour vous, du lundi au vendredi. Chaque étape se valide avant que la suivante démarre, et vous savez à tout moment où vous en êtes. Les projets plus lourds — boutique, application, plateforme — suivent le même déroulé sur une durée adaptée."
         />
 
         <ol className="etapes">
