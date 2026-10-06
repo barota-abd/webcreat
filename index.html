@@ -13,6 +13,21 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <!-- Polices, couleur de barre système et favicon sont posés par
          src/main.jsx, car ils dépendent du design retenu. -->
+
+    <!-- Le thème est posé avant le premier affichage : si on attendait React,
+         la page clignoterait en clair chez les visiteurs dont le système est
+         en clair. Le site est sombre par défaut ; un choix explicite retenu
+         dans le navigateur l'emporte. -->
+    <script>
+      (function () {
+        var t = "dark";
+        try {
+          var v = localStorage.getItem("orbite-theme");
+          if (v === "light" || v === "dark") t = v;
+        } catch (e) {}
+        document.documentElement.setAttribute("data-theme", t);
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

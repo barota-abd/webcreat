@@ -18,8 +18,10 @@ function enTeteDuDesign() {
       return [
         { tag: 'link', attrs: { rel: 'stylesheet', href: fiche.polices }, injectTo: 'head' },
         { tag: 'link', attrs: { rel: 'icon', type: 'image/svg+xml', href: faviconSVG(fiche.marque) }, injectTo: 'head' },
-        { tag: 'meta', attrs: { name: 'theme-color', media: '(prefers-color-scheme: light)', content: fiche.barre.clair }, injectTo: 'head' },
-        { tag: 'meta', attrs: { name: 'theme-color', media: '(prefers-color-scheme: dark)', content: fiche.barre.sombre }, injectTo: 'head' },
+        /* Une seule couleur, la sombre : le site l'est par défaut, quel que
+         * soit le réglage du système. Une paire de media queries indiquerait
+         * au navigateur une couleur que la page n'affiche pas. */
+        { tag: 'meta', attrs: { name: 'theme-color', content: fiche.barre.sombre }, injectTo: 'head' },
       ]
     },
   }

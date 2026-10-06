@@ -2,41 +2,43 @@ import { useCallback, useEffect, useState } from "react";
 
 const CLE = "orbite-theme";
 
+/** Thème servi à qui n'a jamais touché au bouton. */
+export const THEME_DEFAUT = "dark";
+
 function lire() {
   try {
     const v = localStorage.getItem(CLE);
-    return v === "light" || v === "dark" ? v : null;
+    if (v === "light" || v === "dark") return v;
   } catch {
-    return null;
+    /* navigation privée ou stockage bloqué */
   }
+  return THEME_DEFAUT;
 }
 
 /**
- * Thème : « null » suit le réglage du système, sinon le choix explicite est
- * posé sur <html data-theme> et retenu dans le navigateur.
+ * Le site est sombre par défaut, et ne suit pas le réglage du système : c'est
+ * un parti pris d'image de marque, pas une préférence d'affichage. Le visiteur
+ * reste libre de basculer en clair, et son choix est retenu dans son
+ * navigateur.
+ *
+ * L'attribut est aussi posé par un script en tête de index.html, avant le
+ * premier affichage, sinon la page clignoterait en clair le temps que React
+ * démarre.
  */
 export function useTheme() {
   const [theme, setTheme] = useState(lire);
 
   useEffect(() => {
-    const racine = document.documentElement;
-    if (theme) racine.setAttribute("data-theme", theme);
-    else racine.removeAttribute("data-theme");
-
+    document.documentElement.setAttribute("data-theme", theme);
     try {
-      if (theme) localStorage.setItem(CLE, theme);
-      else localStorage.removeItem(CLE);
+      localStorage.setItem(CLE, theme);
     } catch {
-      /* navigation privée ou stockage bloqué : le thème reste valable pour la session */
+      /* sans stockage, le choix ne survit pas au rechargement */
     }
   }, [theme]);
 
   const basculer = useCallback(() => {
-    setTheme((actuel) => {
-      if (actuel) return actuel === "dark" ? "light" : "dark";
-      const sombreSysteme = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      return sombreSysteme ? "light" : "dark";
-    });
+    setTheme((actuel) => (actuel === "dark" ? "light" : "dark"));
   }, []);
 
   return { theme, basculer };

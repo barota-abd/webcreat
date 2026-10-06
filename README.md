@@ -210,17 +210,28 @@ refuse de passer qu'un site publié avec un design par défaut silencieux.
 `design.config.js` est la seule source de vérité : `vite.config.js` la lit
 pour savoir quelle feuille inclure, et l'application la lit pour le reste.
 
-### Changer de thème clair ou sombre
+### Clair ou sombre
 
-Rien à configurer : **le bouton rond dans l'en-tête**, à gauche de
-« Devis gratuit ». Chacun des cinq designs a ses deux versions.
+**Le site est sombre par défaut**, et ne suit pas le réglage du système
+d'exploitation : c'est un parti pris d'image de marque, pas une préférence
+d'affichage.
 
-Par défaut le site suit le réglage du système d'exploitation du visiteur ;
-dès qu'il clique, son choix est retenu dans son navigateur.
+Le visiteur reste libre de basculer en clair avec **le bouton rond de
+l'en-tête**, à gauche de « Devis gratuit ». Son choix est alors retenu dans
+son navigateur et l'emporte sur le défaut.
 
-Pour **imposer** un thème à tout le monde, c'est dans
-`src/hooks/useTheme.js` : la valeur initiale renvoyée par `lire()` est `null`
-(suivre le système), remplacez-la par `"dark"` ou `"light"`.
+Le thème est posé par un petit script en tête de `index.html`, **avant le
+premier affichage**. Sans lui, la page clignoterait en clair chez les
+visiteurs dont le système est réglé en clair, le temps que React démarre.
+
+Pour changer le défaut, une constante dans `src/hooks/useTheme.js` :
+
+```js
+export const THEME_DEFAUT = "light";
+```
+
+Pensez alors à ajuster la valeur en dur dans le script de `index.html`, qui
+s'exécute avant tout module JavaScript et ne peut donc pas la lire.
 
 ### Ce qui part en production
 
