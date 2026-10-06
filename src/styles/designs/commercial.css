@@ -1607,58 +1607,12 @@ p {
   }
 }
 
-.coord {
-  display: grid;
-  gap: 0.75rem;
-  margin-top: 1.75rem;
-}
 
-.coord__l {
-  display: flex;
-  align-items: center;
-  gap: 0.85rem;
-  background: var(--papier);
-  border: 1px solid var(--bord);
-  border-radius: var(--r);
-  padding: 0.85rem 1rem;
-  min-width: 0;
-}
 
-.coord__t {
-  min-width: 0;
-}
 
-.coord__t b {
-  display: block;
-  font-family: var(--titre);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  color: var(--encre-faible);
-}
 
-.coord__t span {
-  font-size: 0.96rem;
-  overflow-wrap: anywhere;
-}
 
-.copier {
-  margin-left: auto;
-  background: none;
-  border: 1px solid var(--bord);
-  border-radius: var(--r-pill);
-  padding: 0.22rem 0.6rem;
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: var(--bleu);
-  cursor: pointer;
-  flex: none;
-}
 
-.copier:hover {
-  border-color: var(--bleu);
-}
 
 .form {
   background: var(--papier);
@@ -1947,10 +1901,6 @@ p {
 .article,
 .projet,
 .chiffre,
-.coord__l,
-.champ {
-  min-width: 0;
-}
 
 /* ================================================================= images */
 

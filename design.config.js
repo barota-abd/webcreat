@@ -10,4 +10,4 @@
    bundle, et par l'application.
    ========================================================================== */
 
-export default "terminal";
+export default "pilotage";

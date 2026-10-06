@@ -2012,58 +2012,12 @@ p {
   }
 }
 
-.coord {
-  display: grid;
-  gap: 0.6rem;
-  margin-top: 1.75rem;
-}
 
-.coord__l {
-  display: flex;
-  align-items: center;
-  gap: 0.85rem;
-  background: var(--surface);
-  border: 1px solid var(--filet);
-  padding: 0.8rem 1rem;
-  min-width: 0;
-}
 
-.coord__t {
-  min-width: 0;
-}
 
-.coord__t b {
-  display: block;
-  font-family: var(--data);
-  font-size: 0.66rem;
-  font-weight: 400;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--texte-faible);
-}
 
-.coord__t span {
-  font-size: 0.95rem;
-  overflow-wrap: anywhere;
-}
 
-.copier {
-  margin-left: auto;
-  background: none;
-  border: 1px solid var(--filet-vif);
-  padding: 0.2rem 0.6rem;
-  font-family: var(--data);
-  font-size: 0.68rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--cyan);
-  cursor: pointer;
-  flex: none;
-}
 
-.copier:hover {
-  border-color: var(--cyan);
-}
 
 .form {
   background: var(--surface);

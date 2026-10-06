@@ -22,33 +22,6 @@ function valider(v) {
   return e;
 }
 
-/** Le presse-papiers peut être refusé : on retombe sur la sélection du texte. */
-function Copier({ valeur, cible }) {
-  const [fait, setFait] = useState(false);
-
-  async function copier() {
-    try {
-      await navigator.clipboard.writeText(valeur);
-      setFait(true);
-      setTimeout(() => setFait(false), 1800);
-    } catch {
-      const el = document.getElementById(cible);
-      if (!el) return;
-      const sel = window.getSelection();
-      const plage = document.createRange();
-      plage.selectNodeContents(el);
-      sel.removeAllRanges();
-      sel.addRange(plage);
-    }
-  }
-
-  return (
-    <button type="button" className="copier" onClick={copier}>
-      {fait ? "copié" : "copier"}
-    </button>
-  );
-}
-
 export default function Contact() {
   const [v, setV] = useState(vide);
   const [err, setErr] = useState({});
@@ -86,50 +59,6 @@ export default function Contact() {
             fourchette de prix et délai réaliste. Si le projet n'est pas pour
             nous, nous le disons et nous vous orientons ailleurs.
           </p>
-
-          <div className="coord">
-            <div className="coord__l">
-              <span className="tuile">
-                <Ico nom="telephone" taille={18} />
-              </span>
-              <span className="coord__t">
-                <b>Téléphone</b>
-                <span id="co-tel">{studio.tel}</span>
-              </span>
-              <Copier valeur={studio.tel} cible="co-tel" />
-            </div>
-
-            <div className="coord__l">
-              <span className="tuile" style={{ "--t": "var(--c-action)" }}>
-                <Ico nom="courriel" taille={18} />
-              </span>
-              <span className="coord__t">
-                <b>E-mail</b>
-                <span id="co-mail">{studio.email}</span>
-              </span>
-              <Copier valeur={studio.email} cible="co-mail" />
-            </div>
-
-            <div className="coord__l">
-              <span className="tuile" style={{ "--t": "var(--c-ok)" }}>
-                <Ico nom="epingle" taille={18} />
-              </span>
-              <span className="coord__t">
-                <b>Bureaux</b>
-                <span>{studio.adresse || `${studio.ville} (Québec)`}</span>
-              </span>
-            </div>
-
-            <div className="coord__l">
-              <span className="tuile" style={{ "--t": "#7c4dd4" }}>
-                <Ico nom="horloge" taille={18} />
-              </span>
-              <span className="coord__t">
-                <b>Horaires</b>
-                <span>Du lundi au vendredi, 9 h – 18 h</span>
-              </span>
-            </div>
-          </div>
         </div>
 
         {envoye ? (

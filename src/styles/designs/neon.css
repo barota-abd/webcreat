@@ -2134,66 +2134,13 @@ p {
   }
 }
 
-.coord {
-  display: grid;
-  gap: 0.6rem;
-  margin-top: 1.75rem;
-}
 
-.coord__l {
-  display: flex;
-  align-items: center;
-  gap: 0.85rem;
-  background: var(--surface);
-  border: 1px solid var(--filet);
-  border-radius: var(--r);
-  padding: 0.8rem 1rem;
-  min-width: 0;
-  transition: border-color 0.2s;
-}
 
-.coord__l:hover {
-  border-color: var(--filet-vif);
-}
 
-.coord__t {
-  min-width: 0;
-}
 
-.coord__t b {
-  display: block;
-  font-family: var(--data);
-  font-size: 0.64rem;
-  font-weight: 400;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--texte-faible);
-}
 
-.coord__t span {
-  font-size: 0.97rem;
-  overflow-wrap: anywhere;
-}
 
-.copier {
-  margin-left: auto;
-  background: none;
-  border: 1px solid var(--filet-vif);
-  border-radius: 999px;
-  padding: 0.2rem 0.65rem;
-  font-family: var(--data);
-  font-size: 0.66rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--cyan);
-  cursor: pointer;
-  flex: none;
-}
 
-.copier:hover {
-  border-color: var(--cyan);
-  box-shadow: var(--halo-c);
-}
 
 .form {
   position: relative;
