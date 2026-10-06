@@ -2589,3 +2589,23 @@ p {
     opacity: 0.6;
   }
 }
+
+/* Le widget surgit après un délai : il entre en glissant plutôt qu'en
+   apparaissant d'un coup, pour ne pas donner l'impression d'un surgissement
+   publicitaire. */
+@keyframes chatEntree {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+.chat-ouvrir {
+  animation: chatEntree 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chat-ouvrir {
+    animation: none;
+  }
+}

@@ -10,10 +10,16 @@ import { Fleche, Ico } from "./Icons.jsx";
  * Le premier message est écrit en dur plutôt que demandé au modèle : il est
  * toujours le même, et le faire générer coûterait un appel pour rien.
  */
+/* Le widget n'apparaît pas à l'arrivée : il attend que le visiteur ait eu le
+   temps de lire. Surgir immédiatement, c'est la fenêtre qu'on ferme par
+   réflexe avant même de l'avoir lue. */
+const DELAI_APPARITION = 20000;
+
 const ACCUEIL =
   "Bonjour. Je suis un assistant automatisé. Décrivez-moi votre projet en quelques mots et je vous aide à le mettre au clair — vous pourrez ensuite coller le résumé dans le formulaire.";
 
 export default function Chatbox() {
+  const [visible, setVisible] = useState(false);
   const [ouvert, setOuvert] = useState(false);
   const [messages, setMessages] = useState([
     { role: "assistant", content: ACCUEIL },
@@ -24,6 +30,11 @@ export default function Chatbox() {
 
   const filRef = useRef(null);
   const champRef = useRef(null);
+
+  useEffect(() => {
+    const t = setTimeout(() => setVisible(true), DELAI_APPARITION);
+    return () => clearTimeout(t);
+  }, []);
 
   // Le fil suit toujours le dernier message.
   useEffect(() => {
@@ -78,6 +89,8 @@ export default function Chatbox() {
       setEnCours(false);
     }
   }
+
+  if (!visible) return null;
 
   return (
     <>
