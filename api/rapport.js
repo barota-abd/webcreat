@@ -30,6 +30,11 @@ const MAX_CARACTERES = 2000;
 
 const EXPEDITEUR = process.env.RAPPORT_EXPEDITEUR || "onboarding@resend.dev";
 
+/* L'expéditeur de test de Resend ne livre qu'au titulaire du compte : tant
+   qu'aucun domaine vérifié n'est configuré, la copie au visiteur est refusée.
+   Autant ne pas la lui proposer. */
+const COPIE_POSSIBLE = Boolean(process.env.RAPPORT_EXPEDITEUR);
+
 const FICHE_AGENCE = `Tu transformes une conversation en fiche de qualification
 pour une agence web. Tu écris pour l'équipe, pas pour le visiteur : factuel,
 dense, sans politesse.
@@ -123,6 +128,11 @@ export default async function handler(req, res) {
       ? courriel.trim().slice(0, 254)
       : null;
 
+  if (versClient && !COPIE_POSSIBLE) {
+    return res.status(503).json({
+      erreur: "L'envoi d'une copie n'est pas disponible pour le moment.",
+    });
+  }
   if (versClient && !adresse) {
     return res.status(400).json({ erreur: "Adresse courriel invalide." });
   }
@@ -200,7 +210,7 @@ export default async function handler(req, res) {
       });
     }
 
-    return res.status(200).json({ ok: true });
+    return res.status(200).json({ ok: true, copiePossible: COPIE_POSSIBLE });
   } catch (e) {
     if (e instanceof Anthropic.RateLimitError) {
       return res.status(429).json({ erreur: "Trop de demandes. Réessayez." });

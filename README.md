@@ -419,7 +419,7 @@ Variables à ajouter dans Vercel :
 | `RAPPORT_DESTINATAIRE` | l'adresse de l'agence |
 | `RAPPORT_EXPEDITEUR` | facultatif — voir ci-dessous |
 
-#### Sans nom de domaine : le courriel au visiteur ne partira pas
+#### Sans nom de domaine, la copie au visiteur est désactivée
 
 Tant qu'aucun domaine n'est vérifié chez Resend, l'expéditeur reste
 `onboarding@resend.dev`, le compte de test. Sa limite : **il ne livre qu'à
@@ -430,9 +430,10 @@ Conséquence concrète :
 - le courriel **vers l'agence** arrive, puisque c'est votre propre adresse ;
 - le courriel **vers le visiteur** est refusé par Resend.
 
-Le code en tient compte : l'échec de l'envoi au visiteur est consigné dans les
-journaux mais n'interrompt rien, et la fiche part quand même. Vérifiez vos
-journaux Vercel pour le constater.
+Le code en tient compte, et ne propose pas ce qu'il ne peut pas tenir : tant
+que `RAPPORT_EXPEDITEUR` n'est pas renseignée, **le champ « Recevoir une copie »
+n'apparaît pas** dans la fenêtre d'assistant. Le serveur le signale à
+l'interface dans sa réponse ; rien n'est codé en dur côté navigateur.
 
 **Pour que le visiteur reçoive vraiment son résumé**, il faut un domaine :
 vérifiez-le chez Resend, puis renseignez `RAPPORT_EXPEDITEUR` avec une adresse

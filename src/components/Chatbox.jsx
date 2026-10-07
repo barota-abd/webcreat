@@ -54,6 +54,9 @@ export default function Chatbox() {
      quelque chose à faire. */
   const [courriel, setCourriel] = useState("");
   const [copie, setCopie] = useState(null); // null | "cours" | "ok" | "ko"
+  /* Le serveur dit s'il sait expédier une copie : inutile de la promettre
+     tant qu'aucun expéditeur vérifié n'est configuré. */
+  const [copiePossible, setCopiePossible] = useState(false);
 
   const filRef = useRef(null);
   const champRef = useRef(null);
@@ -90,6 +93,7 @@ export default function Chatbox() {
       });
       const d = await r.json().catch(() => ({}));
       if (!r.ok || d.erreur) throw new Error(d.erreur || "Envoi impossible.");
+      setCopiePossible(Boolean(d.copiePossible));
       setTermine("ok");
     } catch (err) {
       setTermine("ko");
@@ -255,7 +259,7 @@ export default function Chatbox() {
           {erreur && <p className="chat__erreur">{erreur}</p>}
         </div>
 
-        {termine && copie !== "ok" && (
+        {termine === "ok" && copiePossible && copie !== "ok" && (
           <form className="chat__copie" onSubmit={envoyerCopie}>
             <label htmlFor="chat-courriel">
               Recevoir une copie de ce résumé par courriel
