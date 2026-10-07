@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { urlMedia } from "../data/medias.js";
 
 /**
@@ -20,6 +20,14 @@ export default function Media({
   const src = urlMedia(media);
   const [pret, setPret] = useState(false);
   const [ko, setKo] = useState(false);
+
+  /* Une image déjà en cache finit de charger AVANT que React n'attache
+     `onLoad` : l'événement ne part jamais et l'image resterait invisible,
+     puisque sa visibilité en dépend. On interroge donc `complete` au moment
+     où le nœud apparaît, en plus d'écouter l'événement. */
+  const auMontage = useCallback((el) => {
+    if (el?.complete && el.naturalWidth > 0) setPret(true);
+  }, []);
 
   const style = {
     aspectRatio: rond ? "1 / 1" : ratio,
@@ -49,6 +57,7 @@ export default function Media({
         alt={media?.alt || ""}
         width={media?.l}
         height={media?.h}
+        ref={auMontage}
         loading={priorite ? "eager" : "lazy"}
         decoding="async"
         onLoad={() => setPret(true)}
