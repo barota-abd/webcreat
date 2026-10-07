@@ -229,7 +229,7 @@ export default function Chatbox() {
             ref={champRef}
             value={saisie}
             onChange={(e) => setSaisie(e.target.value)}
-            placeholder={termine ? "Conversation terminée" : "Je tiens un café…"}
+            placeholder={termine ? "Conversation terminée" : "Décrivez votre projet…"}
             maxLength={2000}
             autoComplete="off"
             disabled={enCours || Boolean(termine)}
