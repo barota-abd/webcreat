@@ -18,7 +18,14 @@ import { Fleche, Ico } from "./Icons.jsx";
    réflexe avant même de l'avoir lue. */
 const DELAI_APPARITION = 20000;
 
-const MARQUEUR = "[[RAPPORT]]";
+/* Le modèle doit clore l'échange par ce marqueur. On le reconnaît avec
+   tolérance — espaces, casse — parce qu'un marqueur mal formé ne doit pas
+   coûter un rapport. */
+const MARQUEUR = /\[\[\s*RAPPORT\s*\]\]/i;
+
+/* Filet de sécurité : si le modèle oublie le marqueur alors que le visiteur a
+   donné son adresse, l'échange est de toute façon arrivé à son terme. */
+const COURRIEL = /[^\s@<>()[\]{},;:"]+@[^\s@<>()[\]{},;:"]+\.[a-zA-Z]{2,}/;
 
 const ACCUEIL =
   "Bonjour ! Racontez-moi ce que vous avez en tête — même en deux mots. Je vous aide à y voir clair, et je prépare un résumé pour l'équipe.";
@@ -110,12 +117,13 @@ export default function Chatbox() {
       }
 
       const d = await r.json();
-      const fini = d.reply.includes(MARQUEUR);
+      const marque = MARQUEUR.test(d.reply);
+      const adresseDonnee = COURRIEL.test(propre);
       const propreReply = d.reply.replace(MARQUEUR, "").trim();
       const complet = [...suite, { role: "assistant", content: propreReply }];
 
       setMessages(complet);
-      if (fini) envoyerRapport(complet);
+      if (marque || adresseDonnee) envoyerRapport(complet);
     } catch (err) {
       setErreur(
         err.message === "Failed to fetch"

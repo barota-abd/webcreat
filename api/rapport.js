@@ -163,8 +163,20 @@ export default async function handler(req, res) {
     });
 
     if (versAgence.error) {
-      console.error("Resend (agence)", versAgence.error);
-      return res.status(502).json({ erreur: "L'envoi a échoué." });
+      /* Cause la plus fréquente : sans domaine vérifié, l'expéditeur de test
+         de Resend ne livre qu'à l'adresse du titulaire du compte. Si
+         RAPPORT_DESTINATAIRE n'est pas exactement celle-là, l'envoi est
+         refusé. Le détail est journalisé pour qu'on puisse le lire. */
+      console.error(
+        "Resend a refusé l'envoi vers l'agence.",
+        "destinataire:", process.env.RAPPORT_DESTINATAIRE,
+        "expéditeur:", EXPEDITEUR,
+        "détail:", JSON.stringify(versAgence.error)
+      );
+      return res.status(502).json({
+        erreur:
+          "Le résumé n'a pas pu être expédié. Écrivez-nous par le formulaire, nous ne perdrons rien.",
+      });
     }
 
     /* Le courriel au visiteur ne doit jamais faire échouer l'opération : la
