@@ -47,6 +47,14 @@ export default function Ia() {
           ))}
         </div>
 
+        <Media
+          media={medias.ia}
+          ratio="24 / 7"
+          className="ia-bandeau"
+          repli="Intelligence artificielle"
+          data-reveal
+        />
+
         {/* Ce qui distingue une mission IA : l'audit precede l'outil. Le
             deroule complet vit dans la section Methode, pas ici. */}
         <div className="ia-promesse" data-reveal>

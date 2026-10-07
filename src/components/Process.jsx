@@ -1,5 +1,7 @@
+import { medias } from "../data/medias.js";
 import { etapes } from "../data/site.js";
 import { Fleche, Ico } from "./Icons.jsx";
+import Media from "./Media.jsx";
 import SectionHead from "./SectionHead.jsx";
 
 export default function Process() {
@@ -10,6 +12,14 @@ export default function Process() {
           etiquette="Notre méthode"
           titre="Du premier appel au site en ligne, en une semaine"
           texte="Cinq jours bloqués pour vous, du lundi au vendredi. Chaque étape se valide avant que la suivante démarre, et vous savez à tout moment où vous en êtes. Les projets plus lourds — boutique, application, plateforme — suivent le même déroulé sur une durée adaptée."
+        />
+
+        <Media
+          media={medias.services.ads}
+          ratio="24 / 7"
+          className="methode-bandeau"
+          repli="Atelier de cadrage"
+          data-reveal
         />
 
         <ol className="etapes">

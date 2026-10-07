@@ -2776,3 +2776,11 @@ p {
 .chat__tete .chat__fermer:hover {
   color: #fff;
 }
+
+/* Bandeaux de section : une image panoramique qui respire, sans voler la
+   vedette au texte qu'elle accompagne. */
+.ia-bandeau,
+.methode-bandeau {
+  margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
+  max-height: 16rem;
+}
