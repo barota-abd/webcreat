@@ -395,7 +395,7 @@ l'affichage et déclenche `api/rapport.js`, qui envoie :
 
 | Destinataire | Contenu |
 |---|---|
-| **L'agence**, toujours | Fiche structurée — activité, clientèle, existant, objectif, type de projet, échéance, contenus, points à clarifier, **signaux** — plus la transcription complète |
+| **L'agence**, toujours | Analyse du dossier — qui c'est, demande affichée contre besoin réel, ce que nous proposerions, leviers les plus payants, ce qui peut coincer, température du prospect, angle pour l'appel, ce qu'il reste à savoir. **Pas de verbatim de l'échange** |
 | **Le visiteur**, s'il a laissé son adresse | Son projet raconté pour lui, avec ce que vous attendez de son côté |
 
 Les deux textes sont rédigés en parallèle : ils ne dépendent pas l'un de

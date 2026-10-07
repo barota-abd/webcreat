@@ -5,6 +5,7 @@
 
      cible "agence"  déclenché dès que l'assistant a fini de qualifier.
                      Part toujours, même si le visiteur s'en va ensuite.
+                     Contient une analyse du dossier, pas l'échange lui-même.
      cible "client"  déclenché quand le visiteur dépose son adresse dans le
                      champ prévu. N'envoie que sa copie, sans refaire la
                      fiche de l'agence.
@@ -35,26 +36,50 @@ const EXPEDITEUR = process.env.RAPPORT_EXPEDITEUR || "onboarding@resend.dev";
    Autant ne pas la lui proposer. */
 const COPIE_POSSIBLE = Boolean(process.env.RAPPORT_EXPEDITEUR);
 
-const FICHE_AGENCE = `Tu transformes une conversation en fiche de qualification
-pour une agence web. Tu écris pour l'équipe, pas pour le visiteur : factuel,
-dense, sans politesse.
+const ANALYSE_AGENCE = `Tu es le stratège d'une agence web québécoise. Tu viens
+de lire l'échange entre l'assistant et un visiteur. Tu n'en restitues pas le
+déroulé : tu livres ton analyse, celle qu'un collègue d'expérience écrirait à
+l'équipe la veille de l'appel de cadrage.
+
+Tu écris pour l'interne : dense, direct, sans préambule ni politesse.
 
 Rends exactement ces rubriques, dans cet ordre, en texte simple :
 
-ACTIVITÉ
-CLIENTÈLE
-CE QUI EXISTE AUJOURD'HUI
-CE QUE LE PROJET DOIT CHANGER
-TYPE DE PROJET PRESSENTI
-ÉCHÉANCE
-CONTENUS — qui fournit textes et photos
-POINTS À CLARIFIER AU CADRAGE
-SIGNAUX — urgence, budget serré, projet hors périmètre, hésitation
+QUI C'EST
+Le métier, la taille apparente, la clientèle visée. Une phrase.
+
+CE QU'ON DEMANDE, CE QU'IL FAUT VRAIMENT
+D'abord ce que la personne réclame, puis le besoin réel derrière. Les deux
+diffèrent souvent : dis en quoi, et sur quoi tu t'appuies pour le dire.
+
+CE QUE NOUS PROPOSERIONS
+Le projet concret : type de site, pages et fonctions à prévoir, ce qu'on écarte
+et pourquoi. Assez précis pour que l'équipe puisse chiffrer en lisant.
+
+CE QUI RAPPORTERA LE PLUS À CE COMMERCE
+Deux ou trois leviers propres à son métier, le plus payant d'abord.
+
+CE QUI PEUT COINCER
+Contenus introuvables, attente irréaliste, décideur absent de l'échange,
+échéance tendue, moyens probablement serrés, demande hors de notre périmètre.
+Nomme-le franchement.
+
+TEMPÉRATURE
+Froid, tiède ou chaud — et ce qui te le fait dire.
+
+L'ANGLE POUR L'APPEL
+Par quoi ouvrir, quoi montrer, quelle question poser en premier.
+
+CE QU'IL RESTE À SAVOIR
+Ce que l'échange n'a pas éclairci et qu'il faudra demander.
 
 Règles :
-- Une à trois lignes par rubrique.
-- Si la conversation n'en dit rien, écris « non abordé ». N'invente jamais.
-- N'avance aucun prix et aucun délai : ce n'est pas ton rôle.`;
+- Trois lignes par rubrique au maximum.
+- Chaque jugement s'appuie sur ce que la personne a dit. Quand tu déduis,
+  écris « probablement ». Quand l'échange n'en dit rien, écris-le. N'invente
+  aucun fait, aucun chiffre, aucune intention.
+- N'avance aucun prix et aucun délai : ce n'est pas ton rôle.
+- Pas de rubrique vide, pas de rubrique en plus.`;
 
 const RESUME_CLIENT = `Tu écris le courriel qu'une agence web québécoise envoie
 à quelqu'un qui vient de discuter avec son assistant.
@@ -74,10 +99,12 @@ N'annonce aucun prix et aucun délai de livraison. Signe « L'équipe ».`;
 
 const MOTIF_COURRIEL = /^[^\s@<>()[\]{},;:"]+@[^\s@<>()[\]{},;:"]+\.[a-zA-Z]{2,}$/;
 
-async function rediger(systeme, transcription, maxTokens) {
+async function rediger(systeme, transcription, maxTokens, effort = "low") {
   const r = await claude.messages.create({
     model: "claude-opus-5-5",
-    output_config: { effort: "low" },
+    /* Le résumé du visiteur reformule ce qui a été dit ; l'analyse de l'équipe
+       doit raisonner sur ce qui ne l'a pas été. D'où deux efforts. */
+    output_config: { effort },
     max_tokens: maxTokens,
     system: systeme,
     messages: [{ role: "user", content: transcription }],
@@ -176,9 +203,9 @@ export default async function handler(req, res) {
       return res.status(200).json({ ok: true });
     }
 
-    /* ------------------------------------------------ la fiche de l'agence */
-    const fiche = await rediger(FICHE_AGENCE, transcription, 2048);
-    if (!fiche) {
+    /* --------------------------------------------- l'analyse pour l'équipe */
+    const analyse = await rediger(ANALYSE_AGENCE, transcription, 3072, "medium");
+    if (!analyse) {
       return res.status(502).json({ erreur: "Résumé impossible." });
     }
 
@@ -189,12 +216,13 @@ export default async function handler(req, res) {
       subject: adresse
         ? `Nouvelle qualification — ${adresse}`
         : "Nouvelle qualification — sans adresse",
+      /* Pas de verbatim : l'équipe veut une lecture du dossier, pas une
+         relecture de l'échange. */
       text:
-        fiche +
+        analyse +
         "\n\n— — —\nCourriel du visiteur : " +
         (adresse || "non fourni") +
-        "\n\nTranscription complète :\n\n" +
-        transcription,
+        "\nAnalyse rédigée automatiquement à partir de l'échange.",
     });
 
     if (envoi.error) {
