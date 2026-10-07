@@ -83,10 +83,15 @@ export const medias = {
   },
 
   /* --------------------------------------------------------------- offre IA */
-  /* Bandeau de la section « Intelligence artificielle ». Le visuel de robot
-     sert à l'onglet de service du même nom, pas ici : les deux se suivent à
-     l'écran, et la même image deux fois ferait doublon. */
-  ia: BUREAUX_PLATEAU,
+  /* Bandeau de la section « Intelligence artificielle ». Le même visuel sert
+     à l'onglet de service du même nom : les deux ne sont jamais à l'écran en
+     même temps, la section Méthode les sépare. */
+  ia: IA_VISUEL,
+
+  /* ---------------------------------------------------------------- contact */
+  /* Posé à côté du formulaire. Scène de travail générique : ce ne sont ni vos
+     salariés ni vos locaux, et le texte alternatif ne le prétend pas. */
+  contact: BUREAUX_PLATEAU,
 
   /* ----------------------------------------------------------- réalisations */
   /* Une entrée par réalisation, la clé étant le `nom` défini dans site.js.

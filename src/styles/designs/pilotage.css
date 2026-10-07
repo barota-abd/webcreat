@@ -2720,3 +2720,16 @@ p {
   margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
   max-height: 16rem;
 }
+
+/* Visuel de la colonne de gauche de la section Contact, en vis-à-vis du
+   formulaire. Il comble l'espace laissé par le bloc de coordonnées retiré. */
+.contact__visuel {
+  margin-top: clamp(1.5rem, 3vw, 2.25rem);
+  max-height: 22rem;
+}
+
+@media (max-width: 920px) {
+  .contact__visuel {
+    max-height: 14rem;
+  }
+}

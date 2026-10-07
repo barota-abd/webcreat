@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { medias } from "../data/medias.js";
 import { besoins, echeances, studio } from "../data/site.js";
 import { Coche, Fleche, Ico } from "./Icons.jsx";
+import Media from "./Media.jsx";
 
 const vide = {
   nom: "",
@@ -59,6 +61,13 @@ export default function Contact() {
             fourchette de prix et délai réaliste. Si le projet n'est pas pour
             nous, nous le disons et nous vous orientons ailleurs.
           </p>
+
+          <Media
+            media={medias.contact}
+            ratio="4 / 3"
+            className="contact__visuel"
+            repli="Équipe au travail"
+          />
         </div>
 
         {envoye ? (
