@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { medias } from "../data/medias.js";
 import { Fleche, Ico } from "./Icons.jsx";
-import Media from "./Media.jsx";
 
 /**
  * Assistant de qualification du besoin.
@@ -153,15 +151,7 @@ export default function Chatbox() {
         aria-label="Assistant de qualification du besoin"
         hidden={!ouvert}
       >
-        {/* L'image de la section IA sert de bandeau : la fenêtre et la
-            section qu'elle prolonge se reconnaissent du premier coup d'œil. */}
         <div className="chat__tete">
-          <Media
-            media={medias.ia}
-            ratio="24 / 7"
-            className="chat__fond"
-            repli=""
-          />
           <span className="chat__avatar" aria-hidden="true">
             <Ico nom="etincelle" taille={17} />
           </span>

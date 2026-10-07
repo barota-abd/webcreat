@@ -78,13 +78,15 @@ export const medias = {
     apps: BUREAU_MOBILE,
     seo: ECRAN_CODE,
     ads: ATELIER_CADRAGE,
-    ia: BUREAUX_PLATEAU,
+    ia: IA_VISUEL,
     suivi: ECRAN_CODE,
   },
 
   /* --------------------------------------------------------------- offre IA */
-  /* Visuel de la section « Intelligence artificielle », à côté de la méthode. */
-  ia: IA_VISUEL,
+  /* Bandeau de la section « Intelligence artificielle ». Le visuel de robot
+     sert à l'onglet de service du même nom, pas ici : les deux se suivent à
+     l'écran, et la même image deux fois ferait doublon. */
+  ia: BUREAUX_PLATEAU,
 
   /* ----------------------------------------------------------- réalisations */
   /* Une entrée par réalisation, la clé étant le `nom` défini dans site.js.
