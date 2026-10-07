@@ -1,17 +1,17 @@
 /* ==========================================================================
    Fonction serveur — rapport de qualification
 
-   Déclenchée automatiquement quand l'assistant a terminé son résumé. Elle
-   produit deux courriels :
+   Deux appels distincts, parce qu'ils n'arrivent pas au même moment :
 
-     • à l'agence   — une fiche de qualification structurée, plus la
-                      transcription complète ;
-     • au visiteur  — le même projet raconté pour lui, s'il a laissé son
-                      adresse pendant l'échange.
+     cible "agence"  déclenché dès que l'assistant a fini de qualifier.
+                     Part toujours, même si le visiteur s'en va ensuite.
+     cible "client"  déclenché quand le visiteur dépose son adresse dans le
+                     champ prévu. N'envoie que sa copie, sans refaire la
+                     fiche de l'agence.
 
    Le visiteur est prévenu dès l'ouverture de la fenêtre que l'échange est
    transmis à l'agence : c'est cette information préalable qui rend le
-   traitement licite, puisqu'il n'y a plus de clic de confirmation.
+   traitement licite, puisqu'il n'y a pas de clic de confirmation.
 
    Variables (réglages Vercel, jamais dans le dépôt) :
      ANTHROPIC_API_KEY     déjà en place pour /api/besoin
@@ -67,18 +67,7 @@ Structure, en texte simple et sans titre de rubrique :
 
 N'annonce aucun prix et aucun délai de livraison. Signe « L'équipe ».`;
 
-/* L'adresse est cherchée dans ce que le visiteur a écrit, et nulle part
-   ailleurs : l'assistant la lui demande à la fin de l'échange. */
-const MOTIF_COURRIEL = /[^\s@<>()[\]{},;:"]+@[^\s@<>()[\]{},;:"]+\.[a-zA-Z]{2,}/;
-
-function trouverCourriel(messages) {
-  for (let i = messages.length - 1; i >= 0; i--) {
-    if (messages[i].role !== "user") continue;
-    const t = messages[i].content.match(MOTIF_COURRIEL);
-    if (t) return t[0].slice(0, 254);
-  }
-  return null;
-}
+const MOTIF_COURRIEL = /^[^\s@<>()[\]{},;:"]+@[^\s@<>()[\]{},;:"]+\.[a-zA-Z]{2,}$/;
 
 async function rediger(systeme, transcription, maxTokens) {
   const r = await claude.messages.create({
@@ -108,7 +97,8 @@ export default async function handler(req, res) {
     return res.status(503).json({ erreur: "Envoi non configuré." });
   }
 
-  const { messages } = req.body || {};
+  const { messages, courriel, cible } = req.body || {};
+  const versClient = cible === "client";
 
   if (!Array.isArray(messages) || messages.length < 2) {
     return res.status(400).json({ erreur: "Conversation trop courte." });
@@ -128,50 +118,81 @@ export default async function handler(req, res) {
     propres.push({ role: m.role, content: m.content.slice(0, MAX_CARACTERES) });
   }
 
-  const courriel = trouverCourriel(propres);
+  const adresse =
+    typeof courriel === "string" && MOTIF_COURRIEL.test(courriel.trim())
+      ? courriel.trim().slice(0, 254)
+      : null;
+
+  if (versClient && !adresse) {
+    return res.status(400).json({ erreur: "Adresse courriel invalide." });
+  }
+
   const transcription = propres
     .map((m) => (m.role === "user" ? "VISITEUR : " : "ASSISTANT : ") + m.content)
     .join("\n\n");
 
   try {
-    /* Les deux textes sont rédigés en parallèle : ils ne dépendent pas l'un de
-       l'autre, et l'attente du visiteur ne doit pas doubler. */
-    const [fiche, resume] = await Promise.all([
-      rediger(FICHE_AGENCE, transcription, 2048),
-      courriel ? rediger(RESUME_CLIENT, transcription, 1536) : Promise.resolve(null),
-    ]);
+    const resend = new Resend(process.env.RESEND_API_KEY);
 
+    /* ----------------------------------------------- la copie du visiteur */
+    if (versClient) {
+      const resume = await rediger(RESUME_CLIENT, transcription, 1536);
+      if (!resume) {
+        return res.status(502).json({ erreur: "Résumé impossible." });
+      }
+
+      const envoi = await resend.emails.send({
+        from: EXPEDITEUR,
+        to: adresse,
+        subject: "Votre projet, tel que nous l'avons compris",
+        text: resume,
+      });
+
+      if (envoi.error) {
+        /* Sans domaine vérifié, l'expéditeur de test de Resend ne livre qu'au
+           titulaire du compte : c'est précisément cet envoi-là qu'il refuse. */
+        console.error(
+          "Resend a refusé la copie au visiteur.",
+          "destinataire:", adresse,
+          "expéditeur:", EXPEDITEUR,
+          "détail:", JSON.stringify(envoi.error)
+        );
+        return res.status(502).json({
+          erreur:
+            "Nous n'avons pas pu vous envoyer la copie, mais l'équipe a bien reçu votre demande.",
+        });
+      }
+
+      return res.status(200).json({ ok: true });
+    }
+
+    /* ------------------------------------------------ la fiche de l'agence */
+    const fiche = await rediger(FICHE_AGENCE, transcription, 2048);
     if (!fiche) {
       return res.status(502).json({ erreur: "Résumé impossible." });
     }
 
-    const resend = new Resend(process.env.RESEND_API_KEY);
-
-    const versAgence = await resend.emails.send({
+    const envoi = await resend.emails.send({
       from: EXPEDITEUR,
       to: process.env.RAPPORT_DESTINATAIRE,
-      replyTo: courriel || undefined,
-      subject: courriel
-        ? `Nouvelle qualification — ${courriel}`
+      replyTo: adresse || undefined,
+      subject: adresse
+        ? `Nouvelle qualification — ${adresse}`
         : "Nouvelle qualification — sans adresse",
       text:
         fiche +
         "\n\n— — —\nCourriel du visiteur : " +
-        (courriel || "non fourni") +
+        (adresse || "non fourni") +
         "\n\nTranscription complète :\n\n" +
         transcription,
     });
 
-    if (versAgence.error) {
-      /* Cause la plus fréquente : sans domaine vérifié, l'expéditeur de test
-         de Resend ne livre qu'à l'adresse du titulaire du compte. Si
-         RAPPORT_DESTINATAIRE n'est pas exactement celle-là, l'envoi est
-         refusé. Le détail est journalisé pour qu'on puisse le lire. */
+    if (envoi.error) {
       console.error(
         "Resend a refusé l'envoi vers l'agence.",
         "destinataire:", process.env.RAPPORT_DESTINATAIRE,
         "expéditeur:", EXPEDITEUR,
-        "détail:", JSON.stringify(versAgence.error)
+        "détail:", JSON.stringify(envoi.error)
       );
       return res.status(502).json({
         erreur:
@@ -179,25 +200,7 @@ export default async function handler(req, res) {
       });
     }
 
-    /* Le courriel au visiteur ne doit jamais faire échouer l'opération : la
-       fiche est déjà partie, et sans domaine vérifié cet envoi-là est
-       précisément celui que Resend refuse. On le signale sans bloquer. */
-    let visiteurServi = false;
-    if (courriel && resume) {
-      const versVisiteur = await resend.emails.send({
-        from: EXPEDITEUR,
-        to: courriel,
-        subject: "Votre projet, tel que nous l'avons compris",
-        text: resume,
-      });
-      if (versVisiteur.error) {
-        console.error("Resend (visiteur)", versVisiteur.error);
-      } else {
-        visiteurServi = true;
-      }
-    }
-
-    return res.status(200).json({ ok: true, courriel: visiteurServi });
+    return res.status(200).json({ ok: true });
   } catch (e) {
     if (e instanceof Anthropic.RateLimitError) {
       return res.status(429).json({ erreur: "Trop de demandes. Réessayez." });

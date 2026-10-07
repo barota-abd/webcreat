@@ -2901,3 +2901,55 @@ p {
     max-height: 14rem;
   }
 }
+
+/* Champ de copie, affiché une fois la qualification terminée. */
+.chat__copie {
+  padding: 0.75rem 1rem;
+  border-top: 1px solid var(--filet, var(--bord, rgba(0, 0, 0, 0.12)));
+  background: color-mix(in srgb, var(--c-action) 7%, transparent);
+  font-size: 0.8rem;
+}
+
+.chat__copie label {
+  display: block;
+  margin-bottom: 0.45rem;
+  font-weight: 700;
+}
+
+.chat__copie-ligne {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.chat__copie input {
+  flex: 1;
+  min-width: 0;
+  font-family: inherit;
+  font-size: 0.85rem;
+  color: inherit;
+  background: var(--fond, var(--papier, #fff));
+  border: 1px solid var(--filet, var(--bord, rgba(0, 0, 0, 0.12)));
+  padding: 0.5rem 0.6rem;
+}
+
+.chat__copie input:focus {
+  outline: none;
+  border-color: var(--c-action);
+}
+
+.chat__copie .btn {
+  padding: 0.5rem 0.9rem;
+  font-size: 0.78rem;
+}
+
+.chat__copie-note {
+  margin-top: 0.4rem;
+  font-size: 0.73rem;
+  line-height: 1.4;
+  color: var(--c-faible);
+}
+
+.chat__copie--ok {
+  font-weight: 700;
+  color: var(--c-ok);
+}

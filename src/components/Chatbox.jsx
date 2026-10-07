@@ -47,7 +47,13 @@ export default function Chatbox() {
   const [saisie, setSaisie] = useState("");
   const [enCours, setEnCours] = useState(false);
   const [erreur, setErreur] = useState(null);
-  const [termine, setTermine] = useState(null); // null | "cours" | "ok"
+  const [termine, setTermine] = useState(null); // null | "cours" | "ok" | "ko"
+
+  /* Copie au visiteur : un champ dédié plutôt qu'une adresse tapée dans le
+     fil. On sait alors que c'en est une, et le visiteur comprend qu'il a
+     quelque chose à faire. */
+  const [courriel, setCourriel] = useState("");
+  const [copie, setCopie] = useState(null); // null | "cours" | "ok" | "ko"
 
   const filRef = useRef(null);
   const champRef = useRef(null);
@@ -72,22 +78,47 @@ export default function Chatbox() {
     return () => window.removeEventListener("keydown", onEchap);
   }, []);
 
+  /* La fiche part vers l'équipe dès la fin de la qualification, sans attendre
+     l'adresse : un visiteur qui s'en va ne doit pas emporter sa demande. */
   async function envoyerRapport(fil) {
     setTermine("cours");
     try {
       const r = await fetch("/api/rapport", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: fil.slice(1) }),
+        body: JSON.stringify({ messages: fil.slice(1), cible: "agence" }),
       });
       const d = await r.json().catch(() => ({}));
       if (!r.ok || d.erreur) throw new Error(d.erreur || "Envoi impossible.");
       setTermine("ok");
     } catch (err) {
-      setTermine(null);
+      setTermine("ko");
       setErreur(
         "Le résumé n'a pas pu être transmis. Écrivez-nous par le formulaire ci-dessous, nous ne perdrons rien."
       );
+      console.error(err);
+    }
+  }
+
+  async function envoyerCopie(e) {
+    e.preventDefault();
+    if (copie === "cours") return;
+    setCopie("cours");
+    try {
+      const r = await fetch("/api/rapport", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: messages.slice(1),
+          courriel,
+          cible: "client",
+        }),
+      });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok || d.erreur) throw new Error(d.erreur || "Envoi impossible.");
+      setCopie("ok");
+    } catch (err) {
+      setCopie("ko");
       console.error(err);
     }
   }
@@ -212,7 +243,9 @@ export default function Chatbox() {
             </div>
           )}
 
-          {termine === "cours" && <p className="chat__etat">Envoi du résumé…</p>}
+          {termine === "cours" && (
+            <p className="chat__etat">Transmission à l'équipe…</p>
+          )}
           {termine === "ok" && (
             <p className="chat__etat chat__etat--ok">
               C'est transmis. L'équipe revient vers vous sous 48 h ouvrables.
@@ -221,6 +254,44 @@ export default function Chatbox() {
 
           {erreur && <p className="chat__erreur">{erreur}</p>}
         </div>
+
+        {termine && copie !== "ok" && (
+          <form className="chat__copie" onSubmit={envoyerCopie}>
+            <label htmlFor="chat-courriel">
+              Recevoir une copie de ce résumé par courriel
+            </label>
+            <div className="chat__copie-ligne">
+              <input
+                id="chat-courriel"
+                type="email"
+                required
+                value={courriel}
+                onChange={(e) => setCourriel(e.target.value)}
+                placeholder="vous@votre-entreprise.ca"
+                autoComplete="email"
+                disabled={copie === "cours"}
+              />
+              <button
+                type="submit"
+                className="btn btn--action"
+                disabled={copie === "cours"}
+              >
+                {copie === "cours" ? "Envoi…" : "Recevoir"}
+              </button>
+            </div>
+            {copie === "ko" && (
+              <p className="chat__copie-note">
+                La copie n'a pas pu partir, mais l'équipe a bien votre demande.
+              </p>
+            )}
+          </form>
+        )}
+
+        {copie === "ok" && (
+          <p className="chat__copie chat__copie--ok">
+            Copie envoyée à {courriel}.
+          </p>
+        )}
 
         <form
           className="chat__saisie"
