@@ -2744,12 +2744,6 @@ p {
   cursor: not-allowed;
 }
 
-.chat__note {
-  padding: 0 1rem 0.8rem;
-  font-size: 0.72rem;
-  line-height: 1.45;
-  color: var(--c-faible);
-}
 
 @media (prefers-reduced-motion: reduce) {
   .chat__attente span {
@@ -2778,79 +2772,111 @@ p {
   }
 }
 
-/* Envoi de la fiche à l'agence, depuis la fenêtre d'assistant. */
-.chat__envoi {
-  padding: 0.7rem 1rem;
-  border-top: 1px solid var(--filet, var(--bord, rgba(0, 0, 0, 0.12)));
-  font-size: 0.8rem;
+
+
+
+
+
+
+
+
+
+
+
+/* ------------------------------------------------ assistant : habillage */
+
+.chat__avatar {
+  width: 2rem;
+  height: 2rem;
+  flex: none;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--c-accent) 16%, transparent);
+  border: 1px solid color-mix(in srgb, var(--c-accent) 40%, transparent);
+  color: var(--c-accent);
 }
 
-.chat__envoi label {
-  display: block;
-  margin-bottom: 0.4rem;
-  color: var(--c-faible);
-  line-height: 1.4;
-}
-
-.chat__envoi-ligne {
-  display: flex;
-  gap: 0.4rem;
-}
-
-.chat__envoi input {
+.chat__titre {
+  display: grid;
+  gap: 0.1rem;
   flex: 1;
   min-width: 0;
-  font-family: inherit;
-  font-size: 0.85rem;
-  color: inherit;
-  background: var(--fond, var(--papier, #fff));
-  border: 1px solid var(--filet, var(--bord, rgba(0, 0, 0, 0.12)));
-  padding: 0.5rem 0.6rem;
 }
 
-.chat__envoi input:focus {
-  outline: none;
+.chat__titre small {
+  font-family: inherit;
+  font-size: 0.68rem;
+  font-weight: 400;
+  color: var(--c-faible);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* Prévenir avant l'échange, pas après : c'est ce qui rend la transmission
+   automatique loyale. */
+.chat__avis {
+  padding: 0.6rem 1rem;
+  font-size: 0.73rem;
+  line-height: 1.45;
+  color: var(--c-faible);
+  border-bottom: 1px solid var(--filet, var(--bord, rgba(0, 0, 0, 0.12)));
+  background: color-mix(in srgb, var(--c-accent) 5%, transparent);
+}
+
+/* Trois entrées en main : le champ vide est ce qui fait abandonner une
+   fenêtre de discussion. */
+.chat__amorces {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.2rem;
+}
+
+.chat__amorce {
+  font-family: inherit;
+  font-size: 0.78rem;
+  padding: 0.4rem 0.7rem;
+  background: none;
+  border: 1px solid color-mix(in srgb, var(--c-accent) 40%, transparent);
+  color: var(--c-accent);
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.18s, border-color 0.18s;
+}
+
+.chat__amorce:hover {
+  background: color-mix(in srgb, var(--c-accent) 12%, transparent);
   border-color: var(--c-accent);
 }
 
-.chat__envoi .btn {
-  padding: 0.5rem 0.9rem;
+.chat__etat {
   font-size: 0.78rem;
-}
-
-.chat__lien {
-  background: none;
-  border: 0;
-  padding: 0;
-  font: inherit;
-  color: var(--c-accent);
-  cursor: pointer;
-  text-decoration: underline;
-}
-
-.chat__envoi--ok {
-  color: var(--c-ok);
   line-height: 1.5;
-}
-
-/* L'envoi de la fiche était un lien souligné, trop discret pour qu'on
-   comprenne qu'il faut cliquer. C'est maintenant un appel à l'action. */
-.chat__envoi-titre {
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-}
-
-.chat__envoi-cta {
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  padding: 0.6rem 1rem;
-  font-size: 0.82rem;
-}
-
-.chat__envoi-note {
-  margin-top: 0.45rem;
-  font-size: 0.72rem;
-  line-height: 1.4;
+  padding: 0.5rem 0.7rem;
   color: var(--c-faible);
+  border-left: 2px solid var(--c-faible);
+}
+
+.chat__etat--ok {
+  color: var(--c-ok);
+  border-left-color: var(--c-ok);
+  font-weight: 600;
+}
+
+/* Les bulles entrent au lieu d'apparaître d'un coup. */
+.chat__bulle {
+  animation: chatBulle 0.3s ease;
+}
+
+@keyframes chatBulle {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chat__bulle {
+    animation: none;
+  }
 }

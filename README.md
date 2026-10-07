@@ -387,42 +387,58 @@ un délai autre que celui du site, prétendre être humain, inventer des
 références. Si vous changez les tarifs ou les délais sur le site, **relisez ce
 prompt** — c'est le seul endroit où ces règles sont redites.
 
-### Recevoir la fiche par courriel
+### Les deux courriels, envoyés automatiquement
 
-Après quelques échanges, un lien « Envoyer ce résumé à l'agence » apparaît dans
-la fenêtre. Le visiteur peut y joindre son courriel, puis valider :
-`api/rapport.js` demande à Claude une fiche structurée — activité, clientèle,
-existant, objectif, type de projet, échéance, contenus, points à clarifier,
-signaux — et vous l'envoie avec la transcription complète.
+Quand l'assistant a résumé le projet et demandé son adresse au visiteur, il
+termine son message par un marqueur `[[RAPPORT]]`. Le composant le retire de
+l'affichage et déclenche `api/rapport.js`, qui envoie :
 
-**Rien ne part automatiquement.** L'envoi n'a lieu que sur action explicite du
-visiteur : c'est ce qui rend le traitement licite.
+| Destinataire | Contenu |
+|---|---|
+| **L'agence**, toujours | Fiche structurée — activité, clientèle, existant, objectif, type de projet, échéance, contenus, points à clarifier, **signaux** — plus la transcription complète |
+| **Le visiteur**, s'il a laissé son adresse | Son projet raconté pour lui, avec ce que vous attendez de son côté |
+
+Les deux textes sont rédigés en parallèle : ils ne dépendent pas l'un de
+l'autre, et l'attente ne doit pas doubler.
+
+**Le visiteur n'a rien à cliquer.** C'est pourquoi la fenêtre l'informe dès son
+ouverture, avant qu'il n'écrive quoi que ce soit : « Votre échange est transmis
+à l'équipe à la fin de la conversation. » Cette information préalable est ce
+qui rend la transmission loyale, puisqu'il n'y a plus de clic de confirmation.
+**Ne la retirez pas de `Chatbox.jsx`.**
+
+L'adresse est repérée par motif dans ce que le visiteur a écrit — l'assistant
+la lui demande explicitement à la fin. S'il n'en donne pas, l'agence reçoit
+quand même la fiche.
 
 Variables à ajouter dans Vercel :
 
 | Nom | Rôle |
 |---|---|
 | `RESEND_API_KEY` | clé de l'expéditeur, depuis resend.com |
-| `RAPPORT_DESTINATAIRE` | l'adresse qui reçoit les fiches |
+| `RAPPORT_DESTINATAIRE` | l'adresse de l'agence |
 | `RAPPORT_EXPEDITEUR` | facultatif — voir ci-dessous |
 
-#### Sans nom de domaine
+#### Sans nom de domaine : le courriel au visiteur ne partira pas
 
 Tant qu'aucun domaine n'est vérifié chez Resend, l'expéditeur reste
-`onboarding@resend.dev`, le compte de test. Sa limite habituelle : **il ne
-livre qu'à l'adresse du titulaire du compte Resend**. Ce n'est pas bloquant
-ici, puisque la fiche part vers vous et non vers le visiteur — mais vérifiez
-dans votre tableau de bord Resend, les conditions du compte de test peuvent
-changer.
+`onboarding@resend.dev`, le compte de test. Sa limite : **il ne livre qu'à
+l'adresse du titulaire du compte Resend**.
 
-Le jour où vous avez un domaine : vérifiez-le chez Resend, puis renseignez
-`RAPPORT_EXPEDITEUR` avec une adresse de ce domaine.
+Conséquence concrète :
 
-Si `RESEND_API_KEY` ou `RAPPORT_DESTINATAIRE` manque, l'endpoint répond
-proprement et l'interface renvoie le visiteur vers le formulaire — rien ne
-casse.
+- le courriel **vers l'agence** arrive, puisque c'est votre propre adresse ;
+- le courriel **vers le visiteur** est refusé par Resend.
 
-### Conséquence sur la vie privée
+Le code en tient compte : l'échec de l'envoi au visiteur est consigné dans les
+journaux mais n'interrompt rien, et la fiche part quand même. Vérifiez vos
+journaux Vercel pour le constater.
+
+**Pour que le visiteur reçoive vraiment son résumé**, il faut un domaine :
+vérifiez-le chez Resend, puis renseignez `RAPPORT_EXPEDITEUR` avec une adresse
+de ce domaine. C'est la seule étape manquante.
+
+### Conséquence sur la vie privée### Conséquence sur la vie privée
 
 Ce que le visiteur écrit part chez Anthropic. La politique de confidentialité
 le déclare, signale la communication hors Québec et renvoie à l'évaluation des

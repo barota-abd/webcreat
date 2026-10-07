@@ -7,16 +7,29 @@ import { Fleche, Ico } from "./Icons.jsx";
  * Il ne parle jamais directement à Anthropic : tout passe par /api/besoin, où
  * vit la clé. Le composant n'a donc aucun secret à protéger.
  *
- * Le premier message est écrit en dur plutôt que demandé au modèle : il est
- * toujours le même, et le faire générer coûterait un appel pour rien.
+ * Fin d'échange : quand l'assistant a résumé le projet et demandé l'adresse
+ * courriel, il termine son message par un marqueur. Le composant le retire de
+ * l'affichage et déclenche l'envoi des rapports. Le visiteur n'a rien à
+ * cliquer — il est prévenu dès l'ouverture que l'échange part à l'équipe.
  */
+
 /* Le widget n'apparaît pas à l'arrivée : il attend que le visiteur ait eu le
    temps de lire. Surgir immédiatement, c'est la fenêtre qu'on ferme par
    réflexe avant même de l'avoir lue. */
 const DELAI_APPARITION = 20000;
 
+const MARQUEUR = "[[RAPPORT]]";
+
 const ACCUEIL =
-  "Bonjour. Je suis un assistant automatisé. Décrivez-moi votre projet en quelques mots et je vous aide à le mettre au clair — vous pourrez ensuite coller le résumé dans le formulaire.";
+  "Bonjour ! Racontez-moi ce que vous avez en tête — même en deux mots. Je vous aide à y voir clair, et je prépare un résumé pour l'équipe.";
+
+/* Trois entrées en main pour éviter le champ vide, qui est ce qui fait
+   abandonner une fenêtre de discussion. */
+const AMORCES = [
+  "Je n'ai pas encore de site",
+  "Mon site est vieux, je veux le refaire",
+  "Je veux vendre en ligne",
+];
 
 export default function Chatbox() {
   const [visible, setVisible] = useState(false);
@@ -27,12 +40,7 @@ export default function Chatbox() {
   const [saisie, setSaisie] = useState("");
   const [enCours, setEnCours] = useState(false);
   const [erreur, setErreur] = useState(null);
-
-  /* Envoi de la fiche à l'agence. Jamais automatique : c'est le visiteur qui
-     déclenche, et c'est ce qui rend le traitement licite. */
-  const [envoiOuvert, setEnvoiOuvert] = useState(false);
-  const [courriel, setCourriel] = useState("");
-  const [envoiEtat, setEnvoiEtat] = useState(null); // null | "cours" | "ok"
+  const [termine, setTermine] = useState(null); // null | "cours" | "ok"
 
   const filRef = useRef(null);
   const champRef = useRef(null);
@@ -42,11 +50,10 @@ export default function Chatbox() {
     return () => clearTimeout(t);
   }, []);
 
-  // Le fil suit toujours le dernier message.
   useEffect(() => {
     const el = filRef.current;
     if (el) el.scrollTop = el.scrollHeight;
-  }, [messages, enCours]);
+  }, [messages, enCours, termine]);
 
   useEffect(() => {
     if (ouvert) champRef.current?.focus();
@@ -58,37 +65,31 @@ export default function Chatbox() {
     return () => window.removeEventListener("keydown", onEchap);
   }, []);
 
-  async function envoyerRapport(e) {
-    e.preventDefault();
-    if (envoiEtat === "cours") return;
-    setEnvoiEtat("cours");
-    setErreur(null);
-
+  async function envoyerRapport(fil) {
+    setTermine("cours");
     try {
       const r = await fetch("/api/rapport", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: messages.slice(1), courriel }),
+        body: JSON.stringify({ messages: fil.slice(1) }),
       });
       const d = await r.json().catch(() => ({}));
-      if (!r.ok || d.erreur) throw new Error(d.erreur || "L'envoi a échoué.");
-      setEnvoiEtat("ok");
+      if (!r.ok || d.erreur) throw new Error(d.erreur || "Envoi impossible.");
+      setTermine("ok");
     } catch (err) {
-      setEnvoiEtat(null);
+      setTermine(null);
       setErreur(
-        err.message === "Failed to fetch"
-          ? "Connexion impossible. Utilisez le formulaire ci-dessous."
-          : err.message
+        "Le résumé n'a pas pu être transmis. Écrivez-nous par le formulaire ci-dessous, nous ne perdrons rien."
       );
+      console.error(err);
     }
   }
 
-  async function envoyer(e) {
-    e.preventDefault();
-    const texte = saisie.trim();
-    if (!texte || enCours) return;
+  async function demander(texte) {
+    const propre = texte.trim();
+    if (!propre || enCours || termine) return;
 
-    const suite = [...messages, { role: "user", content: texte }];
+    const suite = [...messages, { role: "user", content: propre }];
     setMessages(suite);
     setSaisie("");
     setErreur(null);
@@ -109,7 +110,12 @@ export default function Chatbox() {
       }
 
       const d = await r.json();
-      setMessages((m) => [...m, { role: "assistant", content: d.reply }]);
+      const fini = d.reply.includes(MARQUEUR);
+      const propreReply = d.reply.replace(MARQUEUR, "").trim();
+      const complet = [...suite, { role: "assistant", content: propreReply }];
+
+      setMessages(complet);
+      if (fini) envoyerRapport(complet);
     } catch (err) {
       setErreur(
         err.message === "Failed to fetch"
@@ -122,6 +128,8 @@ export default function Chatbox() {
   }
 
   if (!visible) return null;
+
+  const amorcesVisibles = messages.length === 1 && !enCours;
 
   return (
     <>
@@ -144,9 +152,12 @@ export default function Chatbox() {
         hidden={!ouvert}
       >
         <div className="chat__tete">
+          <span className="chat__avatar" aria-hidden="true">
+            <Ico nom="etincelle" taille={17} />
+          </span>
           <span className="chat__titre">
-            <Ico nom="etincelle" taille={16} />
             Analyser mon besoin
+            <small>Assistant automatisé · réponse de l'équipe sous 48 h</small>
           </span>
           <button
             type="button"
@@ -157,6 +168,13 @@ export default function Chatbox() {
             <Ico nom="croix" taille={15} />
           </button>
         </div>
+
+        {/* L'information arrive avant l'échange, pas après : c'est ce qui
+            rend la transmission automatique loyale. */}
+        <p className="chat__avis">
+          Votre échange est transmis à l'équipe à la fin de la conversation.
+          Laissez-nous votre courriel pour en recevoir une copie.
+        </p>
 
         <div className="chat__fil" ref={filRef} aria-live="polite">
           {messages.map((m, i) => (
@@ -171,61 +189,38 @@ export default function Chatbox() {
             </p>
           )}
 
+          {amorcesVisibles && (
+            <div className="chat__amorces">
+              {AMORCES.map((a) => (
+                <button
+                  key={a}
+                  type="button"
+                  className="chat__amorce"
+                  onClick={() => demander(a)}
+                >
+                  {a}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {termine === "cours" && <p className="chat__etat">Envoi du résumé…</p>}
+          {termine === "ok" && (
+            <p className="chat__etat chat__etat--ok">
+              C'est transmis. L'équipe revient vers vous sous 48 h ouvrables.
+            </p>
+          )}
+
           {erreur && <p className="chat__erreur">{erreur}</p>}
         </div>
 
-        {/* Proposé seulement une fois l'échange engagé : avant, il n'y a
-            rien à résumer. */}
-        {messages.length >= 4 && envoiEtat !== "ok" && (
-          <div className="chat__envoi">
-            {!envoiOuvert ? (
-              <>
-                <p className="chat__envoi-titre">Le résumé vous convient ?</p>
-                <button
-                  type="button"
-                  className="btn btn--action chat__envoi-cta"
-                  onClick={() => setEnvoiOuvert(true)}
-                >
-                  Envoyer ce résumé à l'agence <Fleche taille={15} />
-                </button>
-                <p className="chat__envoi-note">
-                  Rien ne nous est transmis tant que vous n'avez pas envoyé.
-                </p>
-              </>
-            ) : (
-              <form onSubmit={envoyerRapport}>
-                <label htmlFor="chat-courriel">
-                  Votre courriel, pour qu'on puisse vous répondre (facultatif)
-                </label>
-                <div className="chat__envoi-ligne">
-                  <input
-                    id="chat-courriel"
-                    type="email"
-                    value={courriel}
-                    onChange={(e) => setCourriel(e.target.value)}
-                    placeholder="vous@votre-entreprise.ca"
-                    autoComplete="email"
-                  />
-                  <button
-                    type="submit"
-                    className="btn btn--action"
-                    disabled={envoiEtat === "cours"}
-                  >
-                    {envoiEtat === "cours" ? "Envoi…" : "Envoyer"}
-                  </button>
-                </div>
-              </form>
-            )}
-          </div>
-        )}
-
-        {envoiEtat === "ok" && (
-          <p className="chat__envoi chat__envoi--ok">
-            Fiche envoyée. Vous aurez un retour écrit sous 48 h ouvrables.
-          </p>
-        )}
-
-        <form className="chat__saisie" onSubmit={envoyer}>
+        <form
+          className="chat__saisie"
+          onSubmit={(e) => {
+            e.preventDefault();
+            demander(saisie);
+          }}
+        >
           <label className="chat__label" htmlFor="chat-champ">
             Votre message
           </label>
@@ -234,26 +229,20 @@ export default function Chatbox() {
             ref={champRef}
             value={saisie}
             onChange={(e) => setSaisie(e.target.value)}
-            placeholder="Je tiens un café et je n'ai pas de site…"
+            placeholder={termine ? "Conversation terminée" : "Je tiens un café…"}
             maxLength={2000}
             autoComplete="off"
-            disabled={enCours}
+            disabled={enCours || Boolean(termine)}
           />
           <button
             type="submit"
             className="chat__envoyer"
-            disabled={enCours || !saisie.trim()}
+            disabled={enCours || Boolean(termine) || !saisie.trim()}
             aria-label="Envoyer"
           >
             <Fleche taille={16} />
           </button>
         </form>
-
-        <p className="chat__note">
-          Assistant automatisé. Votre conversation disparaît à la fermeture de
-          cette fenêtre : elle ne nous est transmise que si vous cliquez sur
-          « Envoyer ce résumé à l'agence ».
-        </p>
       </div>
     </>
   );
