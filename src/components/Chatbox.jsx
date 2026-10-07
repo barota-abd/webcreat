@@ -179,13 +179,19 @@ export default function Chatbox() {
         {messages.length >= 4 && envoiEtat !== "ok" && (
           <div className="chat__envoi">
             {!envoiOuvert ? (
-              <button
-                type="button"
-                className="chat__lien"
-                onClick={() => setEnvoiOuvert(true)}
-              >
-                Envoyer ce résumé à l'agence
-              </button>
+              <>
+                <p className="chat__envoi-titre">Le résumé vous convient ?</p>
+                <button
+                  type="button"
+                  className="btn btn--action chat__envoi-cta"
+                  onClick={() => setEnvoiOuvert(true)}
+                >
+                  Envoyer ce résumé à l'agence <Fleche taille={15} />
+                </button>
+                <p className="chat__envoi-note">
+                  Rien ne nous est transmis tant que vous n'avez pas envoyé.
+                </p>
+              </>
             ) : (
               <form onSubmit={envoyerRapport}>
                 <label htmlFor="chat-courriel">
@@ -244,8 +250,9 @@ export default function Chatbox() {
         </form>
 
         <p className="chat__note">
-          Assistant automatisé. Vos échanges servent à préparer votre demande et
-          ne sont pas conservés après la fermeture de cette fenêtre.
+          Assistant automatisé. Votre conversation disparaît à la fermeture de
+          cette fenêtre : elle ne nous est transmise que si vous cliquez sur
+          « Envoyer ce résumé à l'agence ».
         </p>
       </div>
     </>
