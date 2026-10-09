@@ -395,11 +395,22 @@ l'affichage et déclenche `api/rapport.js`, qui envoie :
 
 | Destinataire | Contenu |
 |---|---|
-| **L'agence**, toujours | Analyse du dossier — qui c'est, demande affichée contre besoin réel, ce que nous proposerions, leviers les plus payants, ce qui peut coincer, température du prospect, angle pour l'appel, ce qu'il reste à savoir. **Pas de verbatim de l'échange** |
+| **L'agence**, toujours | Analyse du dossier, en six rubriques : ce qu'on sait, ce qu'on en déduit (chaque hypothèse signalée comme telle), ce que nous proposerions, ce qui peut coincer, la température du prospect, et les questions à poser à l'appel. **Pas de verbatim de l'échange** |
 | **Le visiteur**, s'il a laissé son adresse | Son projet raconté pour lui, avec ce que vous attendez de son côté |
 
-Les deux textes sont rédigés en parallèle : ils ne dépendent pas l'un de
-l'autre, et l'attente ne doit pas doubler.
+Ce sont deux requêtes distinctes, et c'est voulu : la fiche de l'équipe part
+dès la fin de la qualification, sans attendre une adresse qui ne viendra
+peut-être jamais. Un visiteur qui ferme la fenêtre n'emporte pas sa demande.
+
+L'analyse ne peut pas être plus riche que l'échange — le prompt le pose comme
+règle qui prime sur les autres, et cantonne les hypothèses dans leur propre
+rubrique. Ce que la conversation n'a pas abordé devient une question à poser à
+l'appel, jamais une conclusion.
+
+Quant aux questions elles-mêmes, elles ne sont pas scriptées : `besoin.js`
+donne à l'assistant ce qu'il doit **finir par savoir**, pas l'ordre dans lequel
+le demander. À chaque tour il choisit ce qui manque le plus, s'interdit de
+redemander ce qui a été dit et de questionner ce qu'il peut déduire du métier.
 
 **Le visiteur n'a rien à cliquer.** C'est pourquoi la fenêtre l'informe dès son
 ouverture, avant qu'il n'écrive quoi que ce soit : « Votre échange est transmis
