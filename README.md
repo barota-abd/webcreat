@@ -1,4 +1,4 @@
-# Orbite — site d'agence web
+# Tech Orbit Solution — site d'agence web
 
 Site d'une agence québécoise de création de sites web, d'applications et de
 référencement. React 18 + Vite, CSS maison, **aucune dépendance au-delà de

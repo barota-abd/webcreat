@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
-const CLE = "orbite-theme";
+const CLE = "tos-theme";
 
 /** Thème servi à qui n'a jamais touché au bouton. */
 export const THEME_DEFAUT = "dark";

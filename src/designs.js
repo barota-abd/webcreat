@@ -44,7 +44,7 @@ export const CHARGEURS = {
     : null,
 };
 
-const CLE = "orbite-design";
+const CLE = "tos-design";
 
 /**
  * En développement, un design choisi depuis le sélecteur l'emporte sur la

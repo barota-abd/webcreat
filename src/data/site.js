@@ -1,9 +1,9 @@
 export const studio = {
-  nom: "Orbite",
-  complet: "Orbite Studio",
+  nom: "Tech Orbit Solution",
+  complet: "Tech Orbit Solution",
   baseline: "Agence web & applications",
   accroche: "Création de sites web, applications et référencement",
-  email: "bonjour@orbite.studio",
+  email: "bonjour@tech-orbit-solution.com",
   /* Laissez vide tant que vous n'avez pas de ligne à publier : tous les
      boutons d'appel du site disparaissent alors d'eux-mêmes. Renseignez les
      deux champs pour les faire revenir — `tel` pour l'affichage, `telBrut`
