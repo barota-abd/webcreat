@@ -7,28 +7,38 @@ import { Fleche, Ico } from "./Icons.jsx";
  * Il ne parle jamais directement à Anthropic : tout passe par /api/besoin, où
  * vit la clé. Le composant n'a donc aucun secret à protéger.
  *
- * Fin d'échange : quand l'assistant a résumé le projet et demandé l'adresse
- * courriel, il termine son message par un marqueur. Le composant le retire de
- * l'affichage et déclenche l'envoi des rapports. Le visiteur n'a rien à
- * cliquer — il est prévenu dès l'ouverture que l'échange part à l'équipe.
+ * L'adresse courriel est demandée AVANT le premier message, pas après. Une
+ * qualification sans adresse ne vaut rien : l'équipe lit un beau dossier
+ * qu'elle ne peut rappeler. Le prix de ce choix est connu — une porte avant
+ * le premier mot fait renoncer une partie des visiteurs — mais un volume de
+ * conversations injoignables ne vaut pas mieux que pas de conversation.
+ *
+ * Fin d'échange : l'assistant termine son résumé par un marqueur. Le composant
+ * le retire de l'affichage et transmet la fiche. Le visiteur n'a rien à
+ * cliquer : il est prévenu dès l'ouverture que l'échange part à l'équipe.
  */
 
 /* Le widget n'apparaît pas à l'arrivée : il attend que le visiteur ait eu le
    temps de lire. Surgir immédiatement, c'est la fenêtre qu'on ferme par
    réflexe avant même de l'avoir lue. */
-const DELAI_APPARITION = 20000;
+const DELAI_APPARITION = 1000;
 
 /* Le modèle doit clore l'échange par ce marqueur. On le reconnaît avec
    tolérance — espaces, casse — parce qu'un marqueur mal formé ne doit pas
    coûter un rapport. */
 const MARQUEUR = /\[\[\s*RAPPORT\s*\]\]/i;
 
-/* Filet de sécurité : si le modèle oublie le marqueur alors que le visiteur a
-   donné son adresse, l'échange est de toute façon arrivé à son terme. */
-const COURRIEL = /[^\s@<>()[\]{},;:"]+@[^\s@<>()[\]{},;:"]+\.[a-zA-Z]{2,}/;
+/* Filet : si le modèle n'a toujours pas conclu passé ce nombre d'échanges,
+   on transmet quand même. Une longue conversation perdue serait le pire des
+   résultats. */
+const TOURS_MAX = 12;
+
+/* Même exigence que le serveur : inutile de laisser partir une adresse que
+   l'API refusera ensuite. */
+const COURRIEL = /^[^\s@<>()[\]{},;:"]+@[^\s@<>()[\]{},;:"]+\.[a-zA-Z]{2,}$/;
 
 const ACCUEIL =
-  "Bonjour ! Racontez-moi ce que vous avez en tête — même en deux mots. Je vous aide à y voir clair, et je prépare un résumé pour l'équipe.";
+  "Merci ! Racontez-moi maintenant ce que vous avez en tête — même en deux mots. Je vous aide à y voir clair, et je prépare un résumé pour l'équipe.";
 
 /* Trois entrées en main pour éviter le champ vide, qui est ce qui fait
    abandonner une fenêtre de discussion. */
@@ -41,6 +51,17 @@ const AMORCES = [
 export default function Chatbox() {
   const [visible, setVisible] = useState(false);
   const [ouvert, setOuvert] = useState(false);
+
+  /* Le bouton appelle le regard tant qu'on ne l'a pas ouvert. Après, il se
+     tait pour de bon : une relance sur quelqu'un qui a déjà répondu n'attire
+     plus, elle irrite. */
+  const [sollicite, setSollicite] = useState(true);
+
+  /* Rien ne commence tant qu'on ne sait pas à qui répondre. */
+  const [courriel, setCourriel] = useState("");
+  const [demarre, setDemarre] = useState(false);
+  const [refus, setRefus] = useState(null);
+
   const [messages, setMessages] = useState([
     { role: "assistant", content: ACCUEIL },
   ]);
@@ -49,17 +70,14 @@ export default function Chatbox() {
   const [erreur, setErreur] = useState(null);
   const [termine, setTermine] = useState(null); // null | "cours" | "ok" | "ko"
 
-  /* Copie au visiteur : un champ dédié plutôt qu'une adresse tapée dans le
-     fil. On sait alors que c'en est une, et le visiteur comprend qu'il a
-     quelque chose à faire. */
-  const [courriel, setCourriel] = useState("");
-  const [copie, setCopie] = useState(null); // null | "cours" | "ok" | "ko"
-  /* Le serveur dit s'il sait expédier une copie : inutile de la promettre
-     tant qu'aucun expéditeur vérifié n'est configuré. */
+  /* Le serveur dit s'il sait expédier une copie au visiteur : inutile de la
+     proposer tant qu'aucun expéditeur vérifié n'est configuré. */
   const [copiePossible, setCopiePossible] = useState(false);
+  const [copie, setCopie] = useState(null); // null | "cours" | "ok" | "ko"
 
   const filRef = useRef(null);
   const champRef = useRef(null);
+  const porteRef = useRef(null);
 
   useEffect(() => {
     const t = setTimeout(() => setVisible(true), DELAI_APPARITION);
@@ -71,9 +89,12 @@ export default function Chatbox() {
     if (el) el.scrollTop = el.scrollHeight;
   }, [messages, enCours, termine]);
 
+  /* À l'ouverture le curseur se pose sur la porte d'entrée, puis sur le champ
+     de message une fois celle-ci franchie. */
   useEffect(() => {
-    if (ouvert) champRef.current?.focus();
-  }, [ouvert]);
+    if (!ouvert) return;
+    (demarre ? champRef : porteRef).current?.focus();
+  }, [ouvert, demarre]);
 
   useEffect(() => {
     const onEchap = (e) => e.key === "Escape" && setOuvert(false);
@@ -81,15 +102,31 @@ export default function Chatbox() {
     return () => window.removeEventListener("keydown", onEchap);
   }, []);
 
-  /* La fiche part vers l'équipe dès la fin de la qualification, sans attendre
-     l'adresse : un visiteur qui s'en va ne doit pas emporter sa demande. */
+  function ouvrirLaPorte(e) {
+    e.preventDefault();
+    const propre = courriel.trim();
+    if (!COURRIEL.test(propre)) {
+      setRefus("Cette adresse ne semble pas valide. Vérifiez-la ?");
+      return;
+    }
+    setCourriel(propre);
+    setRefus(null);
+    setDemarre(true);
+  }
+
+  /* La fiche part vers l'équipe dès la fin de la qualification. L'adresse est
+     jointe : c'est tout l'intérêt de l'avoir demandée d'abord. */
   async function envoyerRapport(fil) {
     setTermine("cours");
     try {
       const r = await fetch("/api/rapport", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: fil.slice(1), cible: "agence" }),
+        body: JSON.stringify({
+          messages: fil.slice(1),
+          courriel,
+          cible: "agence",
+        }),
       });
       const d = await r.json().catch(() => ({}));
       if (!r.ok || d.erreur) throw new Error(d.erreur || "Envoi impossible.");
@@ -104,8 +141,7 @@ export default function Chatbox() {
     }
   }
 
-  async function envoyerCopie(e) {
-    e.preventDefault();
+  async function envoyerCopie() {
     if (copie === "cours") return;
     setCopie("cours");
     try {
@@ -153,12 +189,11 @@ export default function Chatbox() {
 
       const d = await r.json();
       const marque = MARQUEUR.test(d.reply);
-      const adresseDonnee = COURRIEL.test(propre);
       const propreReply = d.reply.replace(MARQUEUR, "").trim();
       const complet = [...suite, { role: "assistant", content: propreReply }];
 
       setMessages(complet);
-      if (marque || adresseDonnee) envoyerRapport(complet);
+      if (marque || complet.length >= TOURS_MAX) envoyerRapport(complet);
     } catch (err) {
       setErreur(
         err.message === "Failed to fetch"
@@ -178,8 +213,11 @@ export default function Chatbox() {
     <>
       <button
         type="button"
-        className="chat-ouvrir"
-        onClick={() => setOuvert((v) => !v)}
+        className={`chat-ouvrir${sollicite ? "" : " chat-ouvrir--calme"}`}
+        onClick={() => {
+          setOuvert((v) => !v);
+          setSollicite(false);
+        }}
         aria-expanded={ouvert}
         aria-controls="assistant-besoin"
       >
@@ -212,120 +250,141 @@ export default function Chatbox() {
           </button>
         </div>
 
-        {/* L'information arrive avant l'échange, pas après : c'est ce qui
-            rend la transmission automatique loyale. */}
+        {/* L'information arrive avant l'échange, pas après : c'est ce qui rend
+            la collecte et la transmission loyales. */}
         <p className="chat__avis">
-          Votre échange est transmis à l'équipe à la fin de la conversation.
-          Laissez-nous votre courriel pour en recevoir une copie.
+          Votre adresse sert à vous répondre, rien d'autre. L'échange est
+          transmis à l'équipe à la fin de la conversation.
         </p>
 
-        <div className="chat__fil" ref={filRef} aria-live="polite">
-          {messages.map((m, i) => (
-            <p key={i} className={`chat__bulle chat__bulle--${m.role}`}>
-              {m.content}
-            </p>
-          ))}
-
-          {enCours && (
-            <p className="chat__bulle chat__bulle--assistant chat__attente">
-              <span /> <span /> <span />
-            </p>
-          )}
-
-          {amorcesVisibles && (
-            <div className="chat__amorces">
-              {AMORCES.map((a) => (
-                <button
-                  key={a}
-                  type="button"
-                  className="chat__amorce"
-                  onClick={() => demander(a)}
-                >
-                  {a}
-                </button>
-              ))}
-            </div>
-          )}
-
-          {termine === "cours" && (
-            <p className="chat__etat">Transmission à l'équipe…</p>
-          )}
-          {termine === "ok" && (
-            <p className="chat__etat chat__etat--ok">
-              C'est transmis. L'équipe revient vers vous sous 48 h ouvrables.
-            </p>
-          )}
-
-          {erreur && <p className="chat__erreur">{erreur}</p>}
-        </div>
-
-        {termine === "ok" && copiePossible && copie !== "ok" && (
-          <form className="chat__copie" onSubmit={envoyerCopie}>
+        {!demarre ? (
+          /* La porte d'entrée. Même habillage que le champ de copie : aucune
+             règle de style propre à ajouter dans les cinq designs. */
+          <form className="chat__copie" onSubmit={ouvrirLaPorte}>
             <label htmlFor="chat-courriel">
-              Recevoir une copie de ce résumé par courriel
+              Votre courriel, pour que l'équipe puisse vous répondre
             </label>
             <div className="chat__copie-ligne">
               <input
                 id="chat-courriel"
+                ref={porteRef}
                 type="email"
                 required
                 value={courriel}
                 onChange={(e) => setCourriel(e.target.value)}
                 placeholder="vous@votre-entreprise.ca"
                 autoComplete="email"
-                disabled={copie === "cours"}
+              />
+              <button type="submit" className="btn btn--action">
+                Commencer
+              </button>
+            </div>
+            {refus && <p className="chat__copie-note">{refus}</p>}
+          </form>
+        ) : (
+          <>
+            <div className="chat__fil" ref={filRef} aria-live="polite">
+              {messages.map((m, i) => (
+                <p key={i} className={`chat__bulle chat__bulle--${m.role}`}>
+                  {m.content}
+                </p>
+              ))}
+
+              {enCours && (
+                <p className="chat__bulle chat__bulle--assistant chat__attente">
+                  <span /> <span /> <span />
+                </p>
+              )}
+
+              {amorcesVisibles && (
+                <div className="chat__amorces">
+                  {AMORCES.map((a) => (
+                    <button
+                      key={a}
+                      type="button"
+                      className="chat__amorce"
+                      onClick={() => demander(a)}
+                    >
+                      {a}
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {termine === "cours" && (
+                <p className="chat__etat">Transmission à l'équipe…</p>
+              )}
+              {termine === "ok" && (
+                <p className="chat__etat chat__etat--ok">
+                  C'est transmis. L'équipe revient vers vous sous 48 h
+                  ouvrables, à {courriel}.
+                </p>
+              )}
+
+              {erreur && <p className="chat__erreur">{erreur}</p>}
+            </div>
+
+            {/* L'adresse est déjà connue : plus rien à saisir, un seul geste. */}
+            {termine === "ok" && copiePossible && copie !== "ok" && (
+              <div className="chat__copie">
+                <div className="chat__copie-ligne">
+                  <button
+                    type="button"
+                    className="btn btn--action"
+                    onClick={envoyerCopie}
+                    disabled={copie === "cours"}
+                  >
+                    {copie === "cours" ? "Envoi…" : "M'envoyer une copie"}
+                  </button>
+                </div>
+                {copie === "ko" && (
+                  <p className="chat__copie-note">
+                    La copie n'a pas pu partir, mais l'équipe a bien votre
+                    demande.
+                  </p>
+                )}
+              </div>
+            )}
+
+            {copie === "ok" && (
+              <p className="chat__copie chat__copie--ok">
+                Copie envoyée à {courriel}.
+              </p>
+            )}
+
+            <form
+              className="chat__saisie"
+              onSubmit={(e) => {
+                e.preventDefault();
+                demander(saisie);
+              }}
+            >
+              <label className="chat__label" htmlFor="chat-champ">
+                Votre message
+              </label>
+              <input
+                id="chat-champ"
+                ref={champRef}
+                value={saisie}
+                onChange={(e) => setSaisie(e.target.value)}
+                placeholder={
+                  termine ? "Conversation terminée" : "Décrivez votre projet…"
+                }
+                maxLength={2000}
+                autoComplete="off"
+                disabled={enCours || Boolean(termine)}
               />
               <button
                 type="submit"
-                className="btn btn--action"
-                disabled={copie === "cours"}
+                className="chat__envoyer"
+                disabled={enCours || Boolean(termine) || !saisie.trim()}
+                aria-label="Envoyer"
               >
-                {copie === "cours" ? "Envoi…" : "Recevoir"}
+                <Fleche taille={16} />
               </button>
-            </div>
-            {copie === "ko" && (
-              <p className="chat__copie-note">
-                La copie n'a pas pu partir, mais l'équipe a bien votre demande.
-              </p>
-            )}
-          </form>
+            </form>
+          </>
         )}
-
-        {copie === "ok" && (
-          <p className="chat__copie chat__copie--ok">
-            Copie envoyée à {courriel}.
-          </p>
-        )}
-
-        <form
-          className="chat__saisie"
-          onSubmit={(e) => {
-            e.preventDefault();
-            demander(saisie);
-          }}
-        >
-          <label className="chat__label" htmlFor="chat-champ">
-            Votre message
-          </label>
-          <input
-            id="chat-champ"
-            ref={champRef}
-            value={saisie}
-            onChange={(e) => setSaisie(e.target.value)}
-            placeholder={termine ? "Conversation terminée" : "Décrivez votre projet…"}
-            maxLength={2000}
-            autoComplete="off"
-            disabled={enCours || Boolean(termine)}
-          />
-          <button
-            type="submit"
-            className="chat__envoyer"
-            disabled={enCours || Boolean(termine) || !saisie.trim()}
-            aria-label="Envoyer"
-          >
-            <Fleche taille={16} />
-          </button>
-        </form>
       </div>
     </>
   );

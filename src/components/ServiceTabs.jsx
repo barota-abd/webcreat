@@ -124,9 +124,7 @@ export default function ServiceTabs() {
 
             <div className="panneau__pied">
               <span className="panneau__prix">
-                <b>Délai&nbsp;: {s.duree}</b>
-                <br />
-                Tarif sur devis, chiffré après cadrage
+                Tarif et délai sur devis, chiffrés après cadrage
               </span>
               <a className="btn btn--action" href="#contact">
                 {s.cta} <Fleche />

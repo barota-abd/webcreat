@@ -11,6 +11,18 @@ const GF = "https://fonts.googleapis.com/css2?";
 
 export const META = {
   commercial: {
+    courriel: {
+      fond: "#eef2f9",
+      carte: "#ffffff",
+      filet: "#dce3f1",
+      texte: "#0f1628",
+      doux: "#4f5d7c",
+      faible: "#8291ae",
+      accent: "#1540c9",
+      action: "#e65a12",
+      titre: "'Plus Jakarta Sans', 'Segoe UI', Helvetica, Arial, sans-serif",
+      data: "'IBM Plex Mono', Consolas, monospace",
+    },
     nom: "Commercial",
     resume: "Bleu et orange sur fond clair, cartes arrondies à ombre douce.",
     polices:
@@ -21,6 +33,18 @@ export const META = {
   },
 
   pilotage: {
+    courriel: {
+      fond: "#05070d",
+      carte: "#0a0f1a",
+      filet: "#1b2535",
+      texte: "#dce6f2",
+      doux: "#8da0bb",
+      faible: "#5d7391",
+      accent: "#4de8e0",
+      action: "#ffb03a",
+      titre: "'Chakra Petch', 'Segoe UI', Tahoma, sans-serif",
+      data: "'JetBrains Mono', Consolas, monospace",
+    },
     nom: "Poste de pilotage",
     resume:
       "Instrumentation aérospatiale : bleu-nuit, cyan de données, angles coupés.",
@@ -32,6 +56,18 @@ export const META = {
   },
 
   neon: {
+    courriel: {
+      fond: "#07050c",
+      carte: "#120b1c",
+      filet: "#2e1c42",
+      texte: "#ede4f5",
+      doux: "#a594bc",
+      faible: "#6e5c87",
+      accent: "#00e5ff",
+      action: "#ff2e88",
+      titre: "'Orbitron', 'Segoe UI', Tahoma, sans-serif",
+      data: "'Space Mono', Consolas, monospace",
+    },
     nom: "Néon",
     resume: "Enseigne de nuit : violet-noir, magenta et cyan, contours allumés.",
     polices:
@@ -42,6 +78,18 @@ export const META = {
   },
 
   holographique: {
+    courriel: {
+      fond: "#0b0b12",
+      carte: "#15151c",
+      filet: "#26262f",
+      texte: "#f3f2f8",
+      doux: "#a9a7bb",
+      faible: "#78768c",
+      accent: "#a78bfa",
+      action: "#67e8f9",
+      titre: "'Sora', 'Segoe UI', Helvetica, Arial, sans-serif",
+      data: "'IBM Plex Mono', Consolas, monospace",
+    },
     nom: "Holographique",
     resume: "Verre dépoli sur anthracite, irisation violet-cyan-rose en fond.",
     polices:
@@ -52,6 +100,18 @@ export const META = {
   },
 
   terminal: {
+    courriel: {
+      fond: "#000000",
+      carte: "#070a07",
+      filet: "#13251a",
+      texte: "#c8dacb",
+      doux: "#8ca290",
+      faible: "#5f7464",
+      accent: "#00ff9c",
+      action: "#ffb000",
+      titre: "'JetBrains Mono', Consolas, monospace",
+      data: "'JetBrains Mono', Consolas, monospace",
+    },
     nom: "Terminal phosphore",
     resume: "Écran cathodique : noir absolu, phosphore vert, monospace partout.",
     polices: GF + "family=JetBrains+Mono:wght@400;500;700;800&display=swap",

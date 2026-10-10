@@ -39,7 +39,7 @@ export default function Ia() {
 
               <div className="offre__pied">
                 <b>Sur devis</b>
-                <span>{o.duree}</span>
+                <span>Durée selon le périmètre</span>
               </div>
             </article>
           ))}

@@ -2527,17 +2527,124 @@ p {
 @keyframes chatEntree {
   from {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(14px) scale(0.94);
+  }
+}
+
+/* Deux anneaux qui s'écartent et s'effacent, décalés d'une demi-seconde :
+   un seul passait trop vite pour être vu. Le cycle dure cinq secondes et
+   demie, dont une et demie d'animation — assez pour rattraper un regard,
+   assez espacé pour ne pas devenir un clignotant qu'on finit par ignorer. */
+@keyframes chatHalo {
+  0% {
+    opacity: 0.75;
+    transform: scale(1);
+  }
+  30% {
+    opacity: 0;
+    transform: scale(1.8);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.8);
+  }
+}
+
+/* La lueur passe par box-shadow, pas par transform : le bouton garde son
+   soulèvement au survol, qui occupe déjà cette propriété-là. */
+@keyframes chatLueur {
+  0%,
+  45%,
+  100% {
+    box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.55),
+      0 0 0 0 transparent;
+  }
+  14% {
+    box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.55),
+      0 0 26px 5px color-mix(in srgb, var(--c-accent) 60%, transparent);
+  }
+}
+
+/* L'icône seule s'agite. Animer le bouton entier entrerait en conflit avec
+   son soulèvement au survol. */
+@keyframes chatAppel {
+  0%,
+  26%,
+  100% {
+    transform: rotate(0) scale(1);
+  }
+  5% {
+    transform: rotate(-14deg) scale(1.12);
+  }
+  11% {
+    transform: rotate(12deg) scale(1.12);
+  }
+  17% {
+    transform: rotate(-7deg) scale(1.06);
+  }
+  22% {
+    transform: rotate(3deg) scale(1);
   }
 }
 
 .chat-ouvrir {
-  animation: chatEntree 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+  animation: chatEntree 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
+    chatLueur 5.5s 1.6s ease-out infinite;
 }
 
+.chat-ouvrir::before,
+.chat-ouvrir::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border: 2px solid var(--c-accent);
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  animation: chatHalo 5.5s 1.6s ease-out infinite;
+}
+
+.chat-ouvrir::before {
+  animation-delay: 2.1s;
+}
+
+.chat-ouvrir svg {
+  transform-origin: 50% 60%;
+  animation: chatAppel 5.5s 1.6s ease-in-out infinite;
+}
+
+/* Le bouton se tait pendant le survol — la personne l'a vu — et
+   définitivement dès que la fenêtre a été ouverte une fois. Insister sur
+   quelqu'un qui a déjà répondu, c'est agacer. */
+.chat-ouvrir:hover,
+.chat-ouvrir:hover::before,
+.chat-ouvrir:hover::after,
+.chat-ouvrir:hover svg,
+.chat-ouvrir--calme,
+.chat-ouvrir--calme::before,
+.chat-ouvrir--calme::after,
+.chat-ouvrir--calme svg {
+  animation: none;
+}
+
+.chat-ouvrir--calme::before,
+.chat-ouvrir--calme::after {
+  display: none;
+}
+
+/* Mouvement réduit : on retire tout ce qui se déplace — anneaux, bascule de
+   l'icône — mais on garde la lueur. Elle ne bouge pas, elle respire, et
+   priver ces personnes du repère reviendrait à leur cacher le bouton. */
 @media (prefers-reduced-motion: reduce) {
   .chat-ouvrir {
+    animation: chatLueur 5.5s 1.6s ease-out infinite;
+  }
+  .chat-ouvrir svg {
     animation: none;
+  }
+  .chat-ouvrir::before,
+  .chat-ouvrir::after {
+    display: none;
   }
 }
 

@@ -23,6 +23,7 @@
 
 import Anthropic from "@anthropic-ai/sdk";
 import { Resend } from "resend";
+import { htmlFiche, htmlResume } from "./_courriel.js";
 
 const claude = new Anthropic();
 
@@ -195,6 +196,7 @@ export default async function handler(req, res) {
         to: adresse,
         subject: "Votre projet, tel que nous l'avons compris",
         text: resume,
+        html: htmlResume({ resume }),
       });
 
       if (envoi.error) {
@@ -228,13 +230,14 @@ export default async function handler(req, res) {
       subject: adresse
         ? `Nouvelle qualification — ${adresse}`
         : "Nouvelle qualification — sans adresse",
-      /* Pas de verbatim : l'équipe veut une lecture du dossier, pas une
-         relecture de l'échange. */
+      /* Le texte simple reste : certains clients de messagerie ne lisent
+         que lui, et il sert de repli si le HTML est bloqué. */
       text:
         analyse +
         "\n\n— — —\nCourriel du visiteur : " +
         (adresse || "non fourni") +
         "\nAnalyse rédigée automatiquement à partir de l'échange.",
+      html: htmlFiche({ analyse, adresse }),
     });
 
     if (envoi.error) {

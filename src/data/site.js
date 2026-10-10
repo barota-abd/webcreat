@@ -556,7 +556,7 @@ export const faq = [
   },
   {
     q: "Une semaine pour un site, c'est sérieux ?",
-    a: "Oui, et c'est un engagement, pas un argument. Le cadrage et le devis se font avant. Ensuite nous bloquons cinq jours pour vous, et rien d'autre : maquette validée en direct lundi et mardi, construction mercredi et jeudi, mise en ligne vendredi. Ce qui rend ce rythme possible, c'est que nous repartons du cadrage avec vos textes, vos photos et vos accès. Si ces éléments manquent, le compteur ne démarre pas — nous préférons décaler d'une semaine que livrer un site rempli de faux texte. Les projets plus lourds, boutique, application ou plateforme, gardent leurs délais propres, indiqués sur chaque prestation.",
+    a: "Oui, et c'est un engagement, pas un argument. Le cadrage et le devis se font avant. Ensuite nous bloquons cinq jours pour vous, et rien d'autre : maquette validée en direct lundi et mardi, construction mercredi et jeudi, mise en ligne vendredi. Ce qui rend ce rythme possible, c'est que nous repartons du cadrage avec vos textes, vos photos et vos accès. Si ces éléments manquent, le compteur ne démarre pas — nous préférons décaler d'une semaine que livrer un site rempli de faux texte. Les projets plus lourds — boutique, application, reprise d'un applicatif existant — gardent leurs délais propres, que nous annonçons au cadrage une fois le périmètre arrêté.",
   },
   {
     q: "Qui est propriétaire du site, du code et des comptes publicitaires ?",
@@ -688,9 +688,9 @@ export const legal = [
       {
         t: "Assistant automatisé",
         lignes: [
-          "Le site propose un assistant qui vous aide à décrire votre projet. Ce que vous y écrivez est transmis à Anthropic, notre fournisseur de modèle de langage, pour produire la réponse — et à personne d'autre.",
+          "Le site propose un assistant qui vous aide à décrire votre projet. Votre adresse courriel vous est demandée avant la conversation : elle sert uniquement à vous répondre, et n'est ni revendue ni versée à une liste de diffusion. Ce que vous écrivez ensuite est transmis à Anthropic, notre fournisseur de modèle de langage, pour produire la réponse — et à personne d'autre.",
           "N'y inscrivez pas de renseignement sensible : décrivez votre projet, pas votre vie privée. La conversation ne sert ni à entraîner un modèle, ni à vous profiler.",
-          "À la fin de la conversation, l'échange nous est transmis sous forme d'analyse écrite : ce que nous avons compris de votre projet, et ce que nous vous proposerions. Le texte de la conversation lui-même ne nous est pas transmis et n'est conservé nulle part. La fenêtre vous informe de cette transmission dès son ouverture, avant que vous n'écriviez quoi que ce soit. L'analyse est conservée comme toute demande entrante : trois ans après le dernier contact.",
+          "À la fin de la conversation, l'échange nous est transmis sous forme d'analyse écrite : ce que nous avons compris de votre projet, et ce que nous vous proposerions. Le texte de la conversation lui-même ne nous est pas transmis et n'est conservé nulle part. La fenêtre vous informe de cette transmission dès son ouverture, avant que vous n'écriviez quoi que ce soit. L'analyse et votre adresse sont conservées comme toute demande entrante : trois ans après le dernier contact. Vous pouvez en demander la suppression à tout moment par le formulaire de contact.",
           "Si vous laissez votre adresse courriel, vous recevez vous aussi un résumé de votre projet. Vous n'êtes jamais obligé de la donner — l'assistant ne l'exige pas et n'insiste pas.",
           "Ce traitement implique une communication de renseignements à l'extérieur du Québec. Nous avons réalisé l'évaluation des facteurs relatifs à la vie privée prévue par la Loi 25, et vous pouvez en demander les conclusions.",
           "Vous pouvez évidemment nous écrire par le formulaire sans jamais utiliser l'assistant.",
