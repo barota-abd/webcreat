@@ -74,14 +74,9 @@ export const medias = {
   /* Un seul onglet est visible à la fois : une même photo peut donc servir
      deux services éloignés sans que la répétition se remarque. */
   services: {
-    sites: POSTE_DEVELOPPEMENT,
-    refonte: ECRAN_CODE,
-    apps: BUREAU_MOBILE,
-    audit: ATELIER_CADRAGE,
-    architecture: POSTE_DEVELOPPEMENT,
-    seo: ECRAN_CODE,
-    ads: ATELIER_CADRAGE,
+    web: POSTE_DEVELOPPEMENT,
     ia: IA_VISUEL,
+    apps: BUREAU_MOBILE,
     suivi: ECRAN_CODE,
   },
 
@@ -89,6 +84,12 @@ export const medias = {
   /* Pas de bandeau dans la section « Intelligence artificielle » : les six
      cartes se suffisent, et le visuel coupait la lecture juste avant la
      promesse. IA_VISUEL reste utilisé par l'onglet de service du même nom. */
+
+  /* ---------------------------------------------------------------- méthode */
+  /* Bandeau de la section « Notre méthode ». Entrée à part : elle empruntait
+     celle d'un onglet de service, et l'a perdue le jour où les neuf
+     prestations ont été regroupées en quatre offres. */
+  methode: ATELIER_CADRAGE,
 
   /* ---------------------------------------------------------------- contact */
   /* Posé à côté du formulaire. Scène de travail générique : ce ne sont ni vos

@@ -15,7 +15,7 @@ export default function Process() {
         />
 
         <Media
-          media={medias.services.ads}
+          media={medias.methode}
           ratio="24 / 7"
           className="methode-bandeau"
           repli="Atelier de cadrage"

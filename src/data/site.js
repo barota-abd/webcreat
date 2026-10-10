@@ -10,13 +10,17 @@ export const studio = {
      pour le lien, au format +1XXXXXXXXXX. */
   tel: "",
   telBrut: "",
-  ville: "Repentigny",
-  region: "Lanaudière",
+  /* Vides : le site n'annonce aucune implantation. Comme pour le téléphone,
+     tout ce qui en dépend disparaît de lui-même — la pastille du héros, la
+     ligne du pied de page, la colonne « Nous joindre ». Renseignez-les pour
+     les faire revenir. */
+  ville: "",
+  region: "",
 
   /* Identite legale. Toute ligne laissee vide disparait des mentions. */
   neq: "", // ex. « NEQ 1170123456 » — Registre des entreprises du Québec
   forme: "", // ex. « Société par actions constituée au Québec »
-  adresse: "", // ex. « 123 boulevard Iberville, Repentigny (Québec) J6A 2B3 »
+  adresse: "", // ex. « 123 rue de l'Exemple, Ville (Québec) A1B 2C3 »
   taxes: "", // ex. « TPS 123456789 RT0001 · TVQ 1234567890 TQ0001 »
   directeur: "", // responsable de la publication
   responsablePrp: "", // responsable de la protection des renseignements personnels (Loi 25)
@@ -106,191 +110,169 @@ export const atouts = [
   },
 ];
 
-/* ------------------------------------------------- services en onglets */
+/* --------------------------------------------------- offres en onglets
+
+   Quatre offres, pas neuf prestations. Un commerçant qui arrive ici doit
+   comprendre en un regard ce qu'on peut faire pour lui ; neuf onglets le
+   forçaient à lire une liste de métiers et à deviner lequel le concerne.
+
+   Les prestations n'ont pas disparu : elles vivent à l'intérieur de l'offre
+   qui les regroupe. Le suivi garde son onglet plutôt que d'être relégué en
+   complément — c'est le seul revenu qui rentre quand aucun projet ne signe.
+   --------------------------------------------------------------------- */
 
 export const services = [
   {
-    id: "sites",
+    id: "web",
     icone: "ecran",
     t: "#1540c9",
-    onglet: "Création de site web",
+    onglet: "Création web & visibilité",
+    pour: "Pour attirer des clients et transformer les visites en demandes",
     titre: "Un site qui travaille pour vous, pas l'inverse",
     texte:
-      "Conception, design et développement sur mesure. Votre équipe reprend la main sur les contenus en une heure de formation, sans toucher à une ligne de code.",
-    points: [
-      "Maquette Figma validée avant développement",
-      "Affichage net sur mobile, tablette et grand écran",
-      "Back-office de rédaction simple",
-      "SEO technique et données structurées",
-      "Version bilingue français / anglais si vous en avez besoin",
-      "Hébergement et certificat la première année",
-      "Formation de votre équipe incluse",
+      "Créer le site ou reprendre celui qui existe, puis tout ce qui amène du monde dessus. Votre équipe garde la main sur les contenus après une heure de formation, sans toucher à une ligne de code.",
+    prestations: [
+      {
+        nom: "Création de site web",
+        points: [
+          "Maquette validée avant le moindre développement",
+          "Affichage net sur mobile, tablette et grand écran",
+          "Back-office de rédaction simple, formation incluse",
+          "Version bilingue français / anglais si besoin",
+        ],
+      },
+      {
+        nom: "Modernisation d'un site existant",
+        points: [
+          "Reprise de vos contenus, sans ressaisie",
+          "Redirections en place : aucun acquis de référencement sacrifié",
+          "Temps de chargement et accessibilité corrigés",
+          "Composants obsolètes et failles connues mis à jour",
+        ],
+      },
+      {
+        nom: "Référencement",
+        points: [
+          "Audit technique et sémantique, chantier priorisé",
+          "Recherche des requêtes qui convertissent",
+          "Fiche d'établissement Google et avis clients",
+          "Suivi de vos citations dans ChatGPT et Perplexity",
+          "Rapport mensuel avec positions et trafic",
+        ],
+      },
+      {
+        nom: "Publicité en ligne",
+        points: [
+          "Google, Meta et LinkedIn pilotés au coût par demande",
+          "Pages de destination dédiées, conversions vérifiées",
+          "Budget média séparé de nos honoraires, toujours",
+          "Tableau de bord partagé en continu",
+        ],
+      },
     ],
-    duree: "1 semaine",
     cta: "Je veux un site web",
-  },
-  {
-    id: "refonte",
-    icone: "eclair",
-    t: "#be123c",
-    onglet: "Modernisation de site web",
-    titre: "Reprendre votre site plutôt que le jeter",
-    texte:
-      "Votre site a quelques années, il est lent, il s'affiche mal sur téléphone et plus personne n'ose y toucher. Nous le remettons à niveau en gardant ce que vous avez déjà payé : vos contenus, vos adresses et votre référencement acquis.",
-    points: [
-      "Reprise de vos contenus existants, sans ressaisie",
-      "Redirections en place : aucune adresse perdue, aucun acquis de référencement sacrifié",
-      "Affichage repris sur mobile et tablette",
-      "Temps de chargement et accessibilité corrigés",
-      "Composants obsolètes et failles connues mis à jour",
-      "Back-office rendu utilisable par votre équipe",
-    ],
-    duree: "2 à 4 semaines",
-    cta: "Faire moderniser mon site",
-  },
-  {
-    id: "apps",
-    icone: "mobile",
-    t: "#7c4dd4",
-    onglet: "Applications mobiles",
-    titre: "Une base de code, deux magasins d'applications",
-    texte:
-      "React Native pour iOS et Android. Nous gérons aussi la partie que personne n'aime : les comptes développeur, les visuels de fiche et les allers-retours de validation.",
-    points: [
-      "iOS et Android avec un seul développement",
-      "Mode hors-ligne et synchronisation",
-      "Notifications push segmentées",
-      "Paiement intégré et abonnements",
-      "Dépôt et suivi des validations App Store / Play",
-      "Suivi des plantages en production",
-    ],
-    duree: "10 à 14 semaines",
-    cta: "Estimer mon application",
-  },
-  {
-    id: "audit",
-    icone: "document",
-    t: "#4d7c0f",
-    onglet: "Audit d'application existante",
-    titre: "Savoir ce que vaut votre application avant d'y remettre un sou",
-    texte:
-      "Une application qui tourne depuis dix ans, dont l'auteur est parti, et que plus personne n'ose modifier. Nous l'ouvrons, nous la mesurons, et nous vous remettons un état des lieux chiffré : ce qui tient, ce qui menace, et ce que coûte chaque option.",
-    points: [
-      "Lecture du code, de l'architecture et des dépendances",
-      "Inventaire des composants obsolètes et des failles connues",
-      "Points de rupture : ce qui cassera en premier, et quand",
-      "Trois scénarios chiffrés — maintenir, moderniser, remplacer",
-      "Rapport lisible par la direction, détail technique en annexe",
-      "Restitution d'une heure avec vos équipes",
-    ],
-    duree: "2 à 3 semaines",
-    cta: "Faire auditer mon application",
-  },
-  {
-    id: "architecture",
-    icone: "rouages",
-    t: "#0369a1",
-    onglet: "Modernisation applicative",
-    titre: "Moderniser sans jamais tout arrêter",
-    texte:
-      "La refonte d'un seul coup, un vendredi soir, se passe rarement bien. Nous remplaçons votre existant morceau par morceau, en gardant l'application en service du premier au dernier jour.",
-    points: [
-      "Migration par étapes : l'ancien et le nouveau cohabitent",
-      "Reprise des données avec contrôle de cohérence",
-      "Montée de version du socle technique et des bibliothèques",
-      "Tests automatisés posés avant de toucher au code",
-      "Retour arrière possible à chaque étape",
-      "Documentation et transfert à vos équipes",
-    ],
-    duree: "Par lots de 4 à 8 semaines",
-    cta: "Parler de ma modernisation",
-  },
-  {
-    id: "seo",
-    icone: "loupe",
-    t: "#0d8a51",
-    onglet: "Référencement SEO",
-    titre: "Monter dans les résultats, puis y rester",
-    texte:
-      "Audit chiffré, chantier priorisé, rapport mensuel lisible. Nous vous disons ce qui a bougé, ce que ça rapporte, et ce qui reste à faire.",
-    points: [
-      "Audit technique et sémantique complet",
-      "Recherche des requêtes qui convertissent",
-      "Optimisation des pages existantes",
-      "Netlinking sobre, sans achat de masse",
-      "Fiche d'établissement Google et avis clients",
-      "Structuration des contenus pour les moteurs de réponse",
-      "Suivi de vos citations dans ChatGPT et Perplexity",
-      "Rapport mensuel avec positions et trafic",
-    ],
-    duree: "Résultats visibles sous 3 à 6 mois",
-    cta: "Auditer mon site",
-  },
-  {
-    id: "ads",
-    icone: "megaphone",
-    t: "#e65a12",
-    onglet: "Google & Meta Ads",
-    titre: "Acheter du trafic sans jeter d'argent",
-    texte:
-      "Campagnes Google Ads, Meta et LinkedIn pilotées au coût par demande, pas au nombre de clics. Budget média séparé de nos honoraires, toujours.",
-    points: [
-      "Structure de campagne et mots-clés",
-      "Rédaction et tests d'annonces",
-      "Pages de destination dédiées",
-      "Suivi des conversions vérifié",
-      "Exclusions et listes de remarketing",
-      "Tableau de bord partagé en continu",
-    ],
-    duree: "Lancement en 10 jours",
-    cta: "Lancer mes campagnes",
+    lien: "#contact",
   },
   {
     id: "ia",
     icone: "etincelle",
     t: "#b8318a",
-    onglet: "IA & automatisation",
+    onglet: "Automatisation & IA",
+    pour: "Pour les entreprises qui perdent du temps sur ce qui se répète",
     titre: "Faire traiter par une machine ce qui se répète",
     texte:
-      "Agents conversationnels, tri des demandes, lecture de documents, assistant interne. On commence toujours par un audit des tâches, jamais par l'outil.",
-    points: [
-      "Agent conversationnel sur vos propres contenus",
-      "Tri et brouillons de réponse aux demandes entrantes",
-      "Extraction automatique des factures et bons de livraison",
-      "Assistant interne sur vos procédures",
-      "Validation humaine par défaut, données hébergées en UE",
-      "Conformité au règlement européen sur l'IA",
+      "Nous ne vendons pas de l'IA, nous vendons du temps rendu. On commence par chronométrer une tâche précise, jamais par choisir un outil, et on la met à l'épreuve sur un pilote avant d'engager quoi que ce soit.",
+    prestations: [
+      {
+        nom: "Ce que nous automatisons",
+        points: [
+          "Tri et brouillons de réponse aux demandes entrantes",
+          "Agent conversationnel sur vos propres contenus",
+          "Extraction des factures et bons de livraison",
+          "Assistant interne sur vos procédures",
+          "Qualification des demandes et prise de rendez-vous",
+        ],
+      },
+      {
+        nom: "Comment nous procédons",
+        points: [
+          "Audit d'une tâche : ce qu'elle coûte réellement aujourd'hui",
+          "Pilote mesuré avant tout engagement",
+          "Validation humaine par défaut, sous-traitants documentés",
+          "Décision automatisée signalée, comme l'exige la Loi 25",
+        ],
+      },
     ],
-    duree: "Audit des tâches, puis pilote mesuré en 2 à 3 semaines",
     cta: "Voir l'offre IA en détail",
+    lien: "#ia",
+  },
+  {
+    id: "apps",
+    icone: "mobile",
+    t: "#7c4dd4",
+    onglet: "Applications & solutions",
+    pour: "Pour les besoins qu'un site vitrine ne couvre pas",
+    titre: "Quand le besoin dépasse le site",
+    texte:
+      "Applications métier, espaces clients, et la reprise de ce qui tourne depuis dix ans et que plus personne n'ose modifier.",
+    prestations: [
+      {
+        nom: "Applications mobiles",
+        points: [
+          "iOS et Android avec un seul développement",
+          "Mode hors-ligne et synchronisation",
+          "Paiement intégré et abonnements",
+          "Dépôt et suivi des validations App Store / Play",
+        ],
+      },
+      {
+        nom: "Audit d'application existante",
+        points: [
+          "Lecture du code, de l'architecture et des dépendances",
+          "Points de rupture : ce qui cassera en premier, et quand",
+          "Trois scénarios chiffrés — maintenir, moderniser, remplacer",
+          "Rapport lisible par la direction, détail technique en annexe",
+        ],
+      },
+      {
+        nom: "Modernisation applicative",
+        points: [
+          "Migration par étapes : l'ancien et le nouveau cohabitent",
+          "Reprise des données avec contrôle de cohérence",
+          "Tests automatisés posés avant de toucher au code",
+          "Retour arrière possible à chaque étape",
+        ],
+      },
+    ],
+    cta: "Parler de mon projet",
+    lien: "#contact",
   },
   {
     id: "suivi",
     icone: "bouclier",
     t: "#0a7b8c",
     onglet: "Hébergement & suivi",
+    pour: "Pour que ce qui est en ligne y reste",
     titre: "Un site qui reste en ligne et à jour",
     texte:
       "Hébergement géré, sauvegardes testées pour de vrai, mises à jour de sécurité et un interlocuteur joignable. Sans engagement de durée.",
-    points: [
-      "Hébergement géré, chez nous ou chez votre fournisseur",
-      "Sauvegardes quotidiennes et restauration testée",
-      "Mises à jour de sécurité suivies",
-      "Surveillance de disponibilité 24/7",
-      "2 h d'évolutions incluses chaque mois",
-      "Réponse garantie en 4 h ouvrables",
+    prestations: [
+      {
+        nom: "Ce qui est couvert",
+        points: [
+          "Hébergement géré, chez nous ou chez votre fournisseur",
+          "Sauvegardes quotidiennes et restauration testée",
+          "Mises à jour de sécurité suivies",
+          "Surveillance de disponibilité 24/7",
+          "2 h d'évolutions incluses chaque mois",
+          "Réponse garantie en 4 h ouvrables",
+        ],
+      },
     ],
-    duree: "Sans engagement, résiliable à 30 jours",
-    cta: "Voir les formules de suivi",
+    cta: "Parler du suivi",
+    lien: "#contact",
   },
 ];
-
-/* ========================================================== services IA ==
-   Offre d'intelligence artificielle appliquee. Les prix sont des points de
-   depart commerciaux, pas des resultats clients : rien ici n'affirme ce que
-   l'IA a fait gagner a quelqu'un. Les gains se mesurent pendant le pilote,
-   chez le client, et c'est ce que decrit `etapesIA`.
-   ======================================================================== */
 
 export const servicesIA = [
   {
@@ -418,9 +400,9 @@ export const gardesIA = [
   {
     icone: "balance",
     t: "#7c4dd4",
-    titre: "Conforme au règlement européen sur l'IA",
+    titre: "Conforme à la Loi 25",
     texte:
-      "Registre des usages, information des personnes concernées, possibilité de demander un interlocuteur humain. La documentation est livrée avec le système.",
+      "Registre des usages, information des personnes concernées dès qu'une décision est automatisée, et possibilité d'obtenir un interlocuteur humain qui la réexamine. La documentation est livrée avec le système.",
   },
 ];
 
@@ -595,8 +577,8 @@ export const faq = [
     a: "Si vous servez une clientèle anglophone, oui — et la Charte de la langue française encadre la manière de le faire : la version française doit être disponible et au moins équivalente à l'anglaise, en contenu comme en accessibilité. Nous livrons les deux versions avec un sélecteur de langue, une structure d'adresses distincte pour que chaque version soit indexée correctement, et une terminologie française vérifiée. Ce n'est pas une traduction automatique posée par-dessus le site existant.",
   },
   {
-    q: "Intervenez-vous en dehors de Repentigny ?",
-    a: "Oui. Nous travaillons dans tout le Grand Montréal et Lanaudière, et à distance partout au Québec. Le cadrage se fait sur place si vous êtes à moins d'une heure de route, sinon en visioconférence — le résultat est le même.",
+    q: "Où êtes-vous installés ?",
+    a: "Nous travaillons à distance, partout au Québec. Le cadrage se fait en visioconférence, les échanges par écrit, et vous gardez le même interlocuteur du premier appel à la mise en ligne. Cela nous évite des frais que vous paieriez sans rien y gagner.",
   },
 ];
 
@@ -783,12 +765,25 @@ export const besoins = [
   "Hébergement & suivi",
 ];
 
+/* Le site n'affiche aucun tarif : il dépend trop du périmètre pour qu'une
+   grille publique dise quoi que ce soit d'honnête. Mais arriver au premier
+   appel sans la moindre idée de l'enveloppe fait perdre du temps aux deux
+   parties. D'où cette fourchette — elle qualifie sans engager personne, et
+   « je ne sais pas encore » est une réponse recevable, pas un échec. */
+export const budgets = [
+  "Moins de 2 000 $",
+  "2 000 $ à 5 000 $",
+  "5 000 $ à 15 000 $",
+  "Plus de 15 000 $",
+  "Je ne sais pas encore",
+];
+
 /* --------------------------------------------------------------- pied */
 
 /* Vos implantations.
    Vide : n'annoncez que des bureaux ou vous recevez reellement. Le bloc de
    contact du pied de page reste affiche dans tous les cas.
-   Forme : { ville: "Repentigny - siege", adr: "...", tel: "..." } */
+   Forme : { ville: "Ville - siege", adr: "...", tel: "..." } */
 export const bureaux = [];
 
 export const secteurs = [

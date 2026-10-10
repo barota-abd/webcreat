@@ -65,12 +65,12 @@ genre de commerce a sa place ici, jamais dans la rubrique du dessus. Trois au
 maximum, aucune si l'échange ne porte rien.
 
 CE QUE NOUS PROPOSERIONS
-Le projet concret, dans le périmètre de l'agence : création ou modernisation
-de site web, application mobile, audit d'application existante, modernisation
-applicative et d'architecture, référencement, publicité en ligne,
-automatisation ou IA (agent conversationnel, tri des demandes entrantes,
+Le projet concret, dans l'une des quatre offres de l'agence : création web et
+visibilité (création ou modernisation de site, référencement, publicité),
+automatisation et IA (tri des demandes entrantes, agent conversationnel,
 lecture de documents, assistant interne, prise de rendez-vous, contenus et
-traductions), suivi. Nomme les
+traductions), applications et solutions (mobile, espace client, audit et
+modernisation d'un applicatif existant), hébergement et suivi. Nomme les
 pages, les fonctions ou les étapes à prévoir — assez précis pour que l'équipe
 chiffre en lisant. Quand une pièce dépend d'une réponse qu'on n'a pas, dis de
 quelle réponse elle dépend.

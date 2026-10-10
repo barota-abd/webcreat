@@ -9,7 +9,7 @@ export default function ServiceTabs() {
   const [actif, setActif] = useState(0);
   const refs = useRef([]);
 
-  // Un lien « #service-seo » ouvre l'onglet correspondant puis fait défiler
+  // Un lien « #service-apps » ouvre l'onglet correspondant puis fait défiler
   // jusqu'à la section : sans cela, les liens du pied de page tomberaient
   // tous sur le même onglet par défaut.
   useEffect(() => {
@@ -54,7 +54,7 @@ export default function ServiceTabs() {
         <SectionHead
           etiquette="Nos services"
           titre="Tout ce qu'il faut pour exister en ligne"
-          texte="Neuf métiers sous le même toit, du premier site à la reprise d'un applicatif vieux de dix ans. Vous pouvez n'en prendre qu'un, ou nous confier l'ensemble et n'avoir qu'un seul interlocuteur."
+          texte="Quatre offres, et un seul interlocuteur quelle que soit celle que vous prenez. Chacune regroupe les prestations qui vont ensemble : vous n'avez pas à deviner laquelle vous concerne."
         />
 
         <div className="onglets">
@@ -111,22 +111,31 @@ export default function ServiceTabs() {
               <h3 className="h-l">{s.titre}</h3>
             </div>
 
+            <p className="panneau__pour">{s.pour}</p>
+
             <p className="chapo">{s.texte}</p>
 
-            <ul>
-              {s.points.map((p) => (
-                <li key={p}>
-                  <Coche taille={14} />
-                  <span>{p}</span>
-                </li>
-              ))}
-            </ul>
+            {/* Les prestations gardent leur intitulé : regrouper ne veut pas
+                dire fondre quatre métiers dans une liste indistincte. */}
+            {s.prestations.map((lot) => (
+              <div className="panneau__lot" key={lot.nom}>
+                <h4 className="panneau__lot-titre">{lot.nom}</h4>
+                <ul>
+                  {lot.points.map((p) => (
+                    <li key={p}>
+                      <Coche taille={14} />
+                      <span>{p}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
 
             <div className="panneau__pied">
               <span className="panneau__prix">
                 Tarif et délai sur devis, chiffrés après cadrage
               </span>
-              <a className="btn btn--action" href="#contact">
+              <a className="btn btn--action" href={s.lien}>
                 {s.cta} <Fleche />
               </a>
             </div>

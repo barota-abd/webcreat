@@ -9,9 +9,13 @@ export default function Hero() {
       <div className="hero__trame" aria-hidden="true" />
       <div className="wrap hero__in">
         <div>
+          {/* Sans ville annoncée, l'épingle n'a plus rien à désigner : la
+              pastille retombe sur l'ancienneté seule. */}
           <span className="pastille">
-            <Ico nom="epingle" taille={14} /> Agence web à {studio.ville} depuis{" "}
-            {studio.depuis}
+            <Ico nom={studio.ville ? "epingle" : "etoile"} taille={14} />{" "}
+            {studio.ville
+              ? `Agence web à ${studio.ville} depuis ${studio.depuis}`
+              : `Agence web et applications depuis ${studio.depuis}`}
           </span>
 
           <h1 className="h-xxl">

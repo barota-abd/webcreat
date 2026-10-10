@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { medias } from "../data/medias.js";
-import { besoins, echeances, studio } from "../data/site.js";
+import { besoins, budgets, echeances, studio } from "../data/site.js";
 import { Coche, Fleche, Ico } from "./Icons.jsx";
 import Media from "./Media.jsx";
 
@@ -11,6 +11,9 @@ const vide = {
   societe: "",
   besoin: besoins[0],
   echeance: echeances[1],
+  /* « Je ne sais pas encore » par défaut : poser une fourchette d'office
+     ancrerait la réponse, et refuser de répondre doit rester sans friction. */
+  budget: budgets[budgets.length - 1],
   message: "",
 };
 
@@ -135,7 +138,7 @@ export default function Contact() {
                   value={v.tel}
                   onChange={champ("tel")}
                   autoComplete="tel"
-                  placeholder="06 12 34 56 78"
+                  placeholder="Avec l'indicatif régional"
                 />
               </div>
 
@@ -180,6 +183,27 @@ export default function Contact() {
                   ))}
                 </select>
               </div>
+            </div>
+
+            {/* Le site n'affiche aucun tarif : cette fourchette remplace la
+                grille publique. Elle qualifie sans engager, et dire qu'on ne
+                sait pas est une réponse recevable. */}
+            <div className="champ">
+              <label htmlFor="f-budget">Votre enveloppe, si vous en avez une</label>
+              <select
+                id="f-budget"
+                name="budget"
+                value={v.budget}
+                onChange={champ("budget")}
+              >
+                {budgets.map((b) => (
+                  <option key={b}>{b}</option>
+                ))}
+              </select>
+              <small className="champ__aide">
+                Pour vous proposer quelque chose de réaliste dès le premier
+                appel. Rien n'est figé à ce stade.
+              </small>
             </div>
 
             <div className="champ" data-ko={err.message ? "1" : "0"}>

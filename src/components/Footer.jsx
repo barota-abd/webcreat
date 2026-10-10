@@ -27,7 +27,9 @@ export default function Footer({ liens = nav }) {
             </span>
             <p style={{ marginTop: "0.5rem" }}>
               Création de sites web, applications mobiles et référencement.
-              Une équipe à {studio.ville} depuis {studio.depuis}.
+              {studio.ville
+                ? ` Une équipe à ${studio.ville} depuis ${studio.depuis}.`
+                : ` À votre service depuis ${studio.depuis}.`}
             </p>
             {studio.neq && (
               <p style={{ fontSize: "0.82rem", color: "var(--c-faible)" }}>
@@ -82,7 +84,7 @@ export default function Footer({ liens = nav }) {
             <h4>Nous joindre</h4>
             <a href="#contact">Demander un devis</a>
             {studio.tel && <a href={`tel:${studio.telBrut}`}>{studio.tel}</a>}
-            <p>{studio.ville}</p>
+            {studio.ville && <p>{studio.ville}</p>}
             <p>Du lundi au vendredi, 9 h – 18 h</p>
             <p style={{ color: "var(--c-action)" }}>{studio.delai}</p>
           </div>

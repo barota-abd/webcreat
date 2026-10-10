@@ -67,7 +67,7 @@ les textes et `design.config.js` pour l'apparence.
 | `Hero` | accroche, photo, carte de positions de recherche |
 | `Partners` | bandeau défilant de certifications — masqué tant que vide |
 | `Why` | quatre arguments différenciants |
-| `ServiceTabs` | six services en onglets, pilotables au clavier et adressables |
+| `ServiceTabs` | quatre offres en onglets, chacune détaillée en prestations, pilotables au clavier et adressables |
 | `Stats` | bandeau de chiffres animés — masqué tant que vide |
 | `Process` | la méthode, unique : six étapes, dont les variantes IA |
 | `Ia` | offre IA : six prestations, la promesse d'audit, quatre engagements |
@@ -90,10 +90,9 @@ plus bas.
 
 L'offre IA vit dans trois tableaux de `src/data/site.js` : `servicesIA`
 (les six prestations), `etapesIA` (audit → pilote → production → mesure) et
-`gardesIA` (les engagements techniques : validation humaine, données en UE,
-traçabilité, règlement européen sur l'IA). Les prix affichés sont des points
-de départ commerciaux, pas des résultats clients — aucun chiffre de gain n'y
-est avancé, puisqu'il se mesure pendant le pilote.
+`gardesIA` (les engagements techniques : validation humaine, sous-traitants
+documentés, traçabilité, Loi 25). Aucun chiffre de gain n'y est avancé : il se
+mesure pendant le pilote, il ne se promet pas avant.
 
 **Textes** → `src/data/site.js`. Nom de l'agence, coordonnées, services et
 leurs prix, étapes, chiffres, réalisations, avis, articles, FAQ, bureaux,
@@ -283,7 +282,7 @@ structurelle doit être reportée dans les cinq fichiers.
 
 ## Contexte : entreprise québécoise
 
-Le site est écrit pour une agence établie au Québec (Repentigny, Lanaudière).
+Le site est écrit pour une agence québécoise qui n'annonce aucune implantation : `studio.ville` et `studio.region` sont vides, et tout ce qui en dépend disparaît de lui-même.
 Cela se traduit dans les données et les documents :
 
 - `studio` porte **`neq`** (Registre des entreprises du Québec) et **`taxes`**
@@ -317,11 +316,16 @@ anglaise existe, il reprend sa place dans `Topbar.jsx`.
 Le site n'affiche **aucun montant**. Le prix se donne après l'appel de
 cadrage, dans un devis écrit. Concrètement :
 
-- les onglets de services affichent un **délai**, pas un tarif ;
-- les cartes de l'offre IA affichent « Sur devis » ;
+- les onglets d'offres affichent « Tarif et délai sur devis, chiffrés après
+  cadrage » — ni montant ni durée, les deux dépendant du périmètre ;
+- les cartes de l'offre IA affichent « Sur devis · Durée selon le périmètre » ;
 - il n'y a **pas de section tarifs** : le devis gratuit se demande depuis le
   bouton de l'en-tête, les appels à l'action et le formulaire ;
-- le formulaire demande **une échéance** (`echeances`), pas un budget ;
+- le formulaire demande **une fourchette d'enveloppe** (`budgets`) en plus de
+  l'échéance (`echeances`). Une fourchette qualifie sans engager, là où une
+  grille publique annoncerait un montant que le cadrage démentirait. Elle
+  vaut « je ne sais pas encore » par défaut, pour que refuser de répondre ne
+  coûte rien ;
 - la FAQ répond « quels sont vos tarifs ? » et « comment se passe le
   paiement ? » — c'est là que ces questions se traitent, pas dans une section
   dédiée qui parlerait de l'agence au lieu de parler au client.
@@ -330,6 +334,25 @@ Si vous changez d'avis et voulez afficher des prix, ajoutez un champ `prix`
 aux entrées de `services` et `servicesIA` dans `src/data/site.js`, puis
 affichez-le dans `ServiceTabs.jsx` et `Ia.jsx` — les deux endroits portent
 aujourd'hui une mention « sur devis » à remplacer.
+
+### Les quatre offres
+
+`services` ne liste plus des métiers mais des offres, chacune portant ses
+`prestations` : neuf onglets obligeaient le visiteur à deviner lequel le
+concernait. Le suivi garde le sien plutôt que d'être relégué en complément —
+c'est le seul revenu qui rentre quand aucun projet ne signe.
+
+| Offre | `id` | Ce qu'elle regroupe |
+|---|---|---|
+| Création web & visibilité | `web` | création, modernisation, référencement, publicité |
+| Automatisation & IA | `ia` | renvoie à la section IA et à ses six prestations |
+| Applications & solutions | `apps` | mobile, audit applicatif, modernisation applicative |
+| Hébergement & suivi | `suivi` | hébergement géré, sauvegardes, sécurité, surveillance |
+
+Chaque offre porte un `lien` : les trois premières mènent au formulaire, sauf
+`ia` qui renvoie d'abord à sa section détaillée. `medias.services` est indexé
+sur ces quatre `id`, et les liens du pied de page (`#service-<id>`) suivent
+automatiquement.
 
 ## Assistant de qualification (IA)
 
@@ -508,7 +531,7 @@ concernée affiche un état d'attente qui explique quoi y mettre, ou disparaît 
 
 Même logique pour `direction` (la personne mise en avant dans la section
 Agence) : tant que `nom` est vide, la fiche bascule sur un bloc de contact
-neutre. Et pour `studio.siret`, masqué tant qu'il n'est pas renseigné.
+neutre. Et pour `studio.neq`, masqué tant qu'il n'est pas renseigné.
 
 ### Ces blocs d'aide ne partent pas en production
 
