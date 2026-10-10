@@ -594,58 +594,6 @@ p {
   font-size: 0.78rem;
 }
 
-/* ======================================================= bandeau de service */
-
-.topbar {
-  border-bottom: 1px solid var(--filet);
-  font-size: 0.76rem;
-  color: var(--texte-faible);
-}
-
-.topbar__in {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  min-height: 2.4rem;
-  padding-block: 0.3rem;
-  flex-wrap: wrap;
-}
-
-.topbar__g,
-.topbar__d {
-  display: flex;
-  align-items: center;
-  gap: 1.4rem;
-  flex-wrap: wrap;
-}
-
-.topbar a {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  color: var(--texte-doux);
-}
-
-.topbar a:hover {
-  color: var(--phos);
-}
-
-.topbar__tel {
-  color: var(--phos);
-}
-
-.topbar__note::before {
-  content: "// ";
-  color: var(--texte-faible);
-}
-
-@media (max-width: 720px) {
-  .topbar__note {
-    display: none;
-  }
-}
-
 /* ==================================================================== nav */
 
 .nav {
@@ -2051,14 +1999,6 @@ p {
   }
 }
 
-
-
-
-
-
-
-
-
 .form {
   border: 1px solid var(--filet-vif);
   background: var(--surface);
@@ -2405,7 +2345,6 @@ p {
   }
 }
 
-
 /* ======================================================= contrat partagé ==
    Cinq jetons que tout design doit fournir. Les composants n'ont le droit de
    citer que ceux-là dans leurs styles en ligne ; ils ne connaissent donc
@@ -2629,7 +2568,6 @@ p {
   cursor: not-allowed;
 }
 
-
 @media (prefers-reduced-motion: reduce) {
   .chat__attente span {
     animation: none;
@@ -2656,17 +2594,6 @@ p {
     animation: none;
   }
 }
-
-
-
-
-
-
-
-
-
-
-
 
 /* ------------------------------------------------ assistant : habillage */
 
@@ -2766,9 +2693,8 @@ p {
   }
 }
 
-/* Bandeaux de section : une image panoramique qui respire, sans voler la
-   vedette au texte qu'elle accompagne. */
-.ia-bandeau,
+/* Bandeau de la section Méthode : une image panoramique qui respire, sans
+   voler la vedette au texte qu'elle accompagne. */
 .methode-bandeau {
   margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
   max-height: 16rem;

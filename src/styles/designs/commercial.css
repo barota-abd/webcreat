@@ -478,63 +478,6 @@ p {
   }
 }
 
-/* ======================================================= bandeau de service */
-
-.topbar {
-  background: var(--encre);
-  color: #fff;
-  font-size: 0.82rem;
-}
-
-:root[data-theme="dark"] .topbar,
-:root:not([data-theme="light"]) .topbar {
-  border-bottom: 1px solid var(--bord);
-}
-
-.topbar__in {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  min-height: 2.6rem;
-  padding-block: 0.35rem;
-  flex-wrap: wrap;
-}
-
-.topbar__g,
-.topbar__d {
-  display: flex;
-  align-items: center;
-  gap: 1.25rem;
-  flex-wrap: wrap;
-}
-
-.topbar a {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  color: rgba(255, 255, 255, 0.86);
-}
-
-.topbar a:hover {
-  color: #fff;
-}
-
-.topbar__tel {
-  font-weight: 700;
-  font-family: var(--titre);
-}
-
-.topbar__note {
-  color: rgba(255, 255, 255, 0.62);
-}
-
-@media (max-width: 720px) {
-  .topbar__note {
-    display: none;
-  }
-}
-
 /* ==================================================================== nav */
 
 .nav {
@@ -1607,13 +1550,6 @@ p {
   }
 }
 
-
-
-
-
-
-
-
 .form {
   background: var(--papier);
   border: 1px solid var(--bord);
@@ -2625,7 +2561,6 @@ p {
   max-width: 90ch;
 }
 
-
 /* ======================================================= contrat partagé ==
    Cinq jetons que tout design doit fournir. Les composants n'ont le droit de
    citer que ceux-là dans leurs styles en ligne ; ils ne connaissent donc
@@ -2849,7 +2784,6 @@ p {
   cursor: not-allowed;
 }
 
-
 @media (prefers-reduced-motion: reduce) {
   .chat__attente span {
     animation: none;
@@ -2876,17 +2810,6 @@ p {
     animation: none;
   }
 }
-
-
-
-
-
-
-
-
-
-
-
 
 /* ------------------------------------------------ assistant : habillage */
 
@@ -2986,9 +2909,8 @@ p {
   }
 }
 
-/* Bandeaux de section : une image panoramique qui respire, sans voler la
-   vedette au texte qu'elle accompagne. */
-.ia-bandeau,
+/* Bandeau de la section Méthode : une image panoramique qui respire, sans
+   voler la vedette au texte qu'elle accompagne. */
 .methode-bandeau {
   margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
   max-height: 16rem;

@@ -1,7 +1,5 @@
-import { medias } from "../data/medias.js";
 import { gardesIA, servicesIA } from "../data/site.js";
 import { Coche, Fleche, Ico } from "./Icons.jsx";
-import Media from "./Media.jsx";
 import SectionHead from "./SectionHead.jsx";
 
 export default function Ia() {
@@ -46,14 +44,6 @@ export default function Ia() {
             </article>
           ))}
         </div>
-
-        <Media
-          media={medias.ia}
-          ratio="24 / 7"
-          className="ia-bandeau"
-          repli="Intelligence artificielle"
-          data-reveal
-        />
 
         {/* Ce qui distingue une mission IA : l'audit precede l'outil. Le
             deroule complet vit dans la section Methode, pas ici. */}

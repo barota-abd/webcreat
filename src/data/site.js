@@ -51,10 +51,10 @@ export const nav = [
    generique : aucune entreprise reelle n'y est nommee ni presentee comme
    cliente. */
 export const rangs = [
-  { n: 1, titre: "Votre entreprise", url: "votre-site.ca", vous: true },
-  { n: 2, titre: "Un concurrent direct", url: "concurrent-a.ca" },
-  { n: 3, titre: "Un autre concurrent", url: "concurrent-b.ca" },
-  { n: 4, titre: "Un annuaire professionnel", url: "annuaire-pro.ca" },
+  { n: 1, titre: "Votre entreprise", url: "votre-site.com", vous: true },
+  { n: 2, titre: "Un concurrent direct", url: "concurrent-a.com" },
+  { n: 3, titre: "Un autre concurrent", url: "concurrent-b.com" },
+  { n: 4, titre: "Un annuaire professionnel", url: "annuaire-pro.com" },
 ];
 
 /* Chiffres de preuve affiches sous l'accroche du heros.
@@ -130,6 +130,25 @@ export const services = [
     cta: "Je veux un site web",
   },
   {
+    id: "refonte",
+    icone: "eclair",
+    t: "#be123c",
+    onglet: "Modernisation de site web",
+    titre: "Reprendre votre site plutôt que le jeter",
+    texte:
+      "Votre site a quelques années, il est lent, il s'affiche mal sur téléphone et plus personne n'ose y toucher. Nous le remettons à niveau en gardant ce que vous avez déjà payé : vos contenus, vos adresses et votre référencement acquis.",
+    points: [
+      "Reprise de vos contenus existants, sans ressaisie",
+      "Redirections en place : aucune adresse perdue, aucun acquis de référencement sacrifié",
+      "Affichage repris sur mobile et tablette",
+      "Temps de chargement et accessibilité corrigés",
+      "Composants obsolètes et failles connues mis à jour",
+      "Back-office rendu utilisable par votre équipe",
+    ],
+    duree: "2 à 4 semaines",
+    cta: "Faire moderniser mon site",
+  },
+  {
     id: "apps",
     icone: "mobile",
     t: "#7c4dd4",
@@ -147,6 +166,44 @@ export const services = [
     ],
     duree: "10 à 14 semaines",
     cta: "Estimer mon application",
+  },
+  {
+    id: "audit",
+    icone: "document",
+    t: "#4d7c0f",
+    onglet: "Audit d'application existante",
+    titre: "Savoir ce que vaut votre application avant d'y remettre un sou",
+    texte:
+      "Une application qui tourne depuis dix ans, dont l'auteur est parti, et que plus personne n'ose modifier. Nous l'ouvrons, nous la mesurons, et nous vous remettons un état des lieux chiffré : ce qui tient, ce qui menace, et ce que coûte chaque option.",
+    points: [
+      "Lecture du code, de l'architecture et des dépendances",
+      "Inventaire des composants obsolètes et des failles connues",
+      "Points de rupture : ce qui cassera en premier, et quand",
+      "Trois scénarios chiffrés — maintenir, moderniser, remplacer",
+      "Rapport lisible par la direction, détail technique en annexe",
+      "Restitution d'une heure avec vos équipes",
+    ],
+    duree: "2 à 3 semaines",
+    cta: "Faire auditer mon application",
+  },
+  {
+    id: "architecture",
+    icone: "rouages",
+    t: "#0369a1",
+    onglet: "Modernisation applicative",
+    titre: "Moderniser sans jamais tout arrêter",
+    texte:
+      "La refonte d'un seul coup, un vendredi soir, se passe rarement bien. Nous remplaçons votre existant morceau par morceau, en gardant l'application en service du premier au dernier jour.",
+    points: [
+      "Migration par étapes : l'ancien et le nouveau cohabitent",
+      "Reprise des données avec contrôle de cohérence",
+      "Montée de version du socle technique et des bibliothèques",
+      "Tests automatisés posés avant de toucher au code",
+      "Retour arrière possible à chaque étape",
+      "Documentation et transfert à vos équipes",
+    ],
+    duree: "Par lots de 4 à 8 semaines",
+    cta: "Parler de ma modernisation",
   },
   {
     id: "seo",
@@ -713,8 +770,11 @@ export const besoins = [
   "Site vitrine",
   "Site bilingue français / anglais",
   "Boutique en ligne",
+  "Modernisation d'un site existant",
   "Application mobile",
   "Plateforme / espace client",
+  "Audit d'une application existante",
+  "Modernisation applicative / d'architecture",
   "Référencement SEO",
   "Google & Meta Ads",
   "Agent conversationnel (chatbot)",

@@ -25,7 +25,6 @@ import ServiceTabs from "./components/ServiceTabs.jsx";
 import Stats from "./components/Stats.jsx";
 import Team from "./components/Team.jsx";
 import Testimonials from "./components/Testimonials.jsx";
-import Topbar from "./components/Topbar.jsx";
 import Why from "./components/Why.jsx";
 import Work from "./components/Work.jsx";
 
@@ -50,7 +49,6 @@ export default function App() {
         Aller au contenu
       </a>
 
-      <Topbar />
       <Header theme={theme} basculer={basculer} actif={actif} liens={liens} />
 
       <main id="principal">

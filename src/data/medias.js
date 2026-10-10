@@ -75,7 +75,10 @@ export const medias = {
      deux services éloignés sans que la répétition se remarque. */
   services: {
     sites: POSTE_DEVELOPPEMENT,
+    refonte: ECRAN_CODE,
     apps: BUREAU_MOBILE,
+    audit: ATELIER_CADRAGE,
+    architecture: POSTE_DEVELOPPEMENT,
     seo: ECRAN_CODE,
     ads: ATELIER_CADRAGE,
     ia: IA_VISUEL,
@@ -83,10 +86,9 @@ export const medias = {
   },
 
   /* --------------------------------------------------------------- offre IA */
-  /* Bandeau de la section « Intelligence artificielle ». Le même visuel sert
-     à l'onglet de service du même nom : les deux ne sont jamais à l'écran en
-     même temps, la section Méthode les sépare. */
-  ia: IA_VISUEL,
+  /* Pas de bandeau dans la section « Intelligence artificielle » : les six
+     cartes se suffisent, et le visuel coupait la lecture juste avant la
+     promesse. IA_VISUEL reste utilisé par l'onglet de service du même nom. */
 
   /* ---------------------------------------------------------------- contact */
   /* Posé à côté du formulaire. Scène de travail générique : ce ne sont ni vos

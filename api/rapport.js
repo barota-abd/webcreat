@@ -64,14 +64,20 @@ genre de commerce a sa place ici, jamais dans la rubrique du dessus. Trois au
 maximum, aucune si l'échange ne porte rien.
 
 CE QUE NOUS PROPOSERIONS
-Le projet concret : type de site, pages et fonctions à prévoir. Assez précis
-pour que l'équipe chiffre en lisant. Quand une pièce dépend d'une réponse
-qu'on n'a pas, dis de quelle réponse elle dépend.
+Le projet concret, dans le périmètre de l'agence : création ou modernisation
+de site web, application mobile, audit d'application existante, modernisation
+applicative et d'architecture, référencement, publicité en ligne,
+automatisation ou IA (agent conversationnel, tri des demandes entrantes,
+lecture de documents, assistant interne, prise de rendez-vous, contenus et
+traductions), suivi. Nomme les
+pages, les fonctions ou les étapes à prévoir — assez précis pour que l'équipe
+chiffre en lisant. Quand une pièce dépend d'une réponse qu'on n'a pas, dis de
+quelle réponse elle dépend.
 
 CE QUI PEUT COINCER
 Seulement ce qui s'appuie sur un signe réel dans l'échange : contenu
 introuvable, attente irréaliste, décideur absent de la conversation, échéance
-tendue, demande hors de notre périmètre. Rien de tel : écris « rien de
+tendue, demande hors du périmètre ci-dessus. Rien de tel : écris « rien de
 visible ».
 
 TEMPÉRATURE

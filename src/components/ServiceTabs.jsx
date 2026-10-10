@@ -54,7 +54,7 @@ export default function ServiceTabs() {
         <SectionHead
           etiquette="Nos services"
           titre="Tout ce qu'il faut pour exister en ligne"
-          texte="Six métiers sous le même toit. Vous pouvez n'en prendre qu'un, ou nous confier l'ensemble et n'avoir qu'un seul interlocuteur."
+          texte="Neuf métiers sous le même toit, du premier site à la reprise d'un applicatif vieux de dix ans. Vous pouvez n'en prendre qu'un, ou nous confier l'ensemble et n'avoir qu'un seul interlocuteur."
         />
 
         <div className="onglets">
