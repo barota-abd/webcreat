@@ -28,17 +28,31 @@ const DELAI_APPARITION = 1000;
    coûter un rapport. */
 const MARQUEUR = /\[\[\s*RAPPORT\s*\]\]/i;
 
-/* Filet : si le modèle n'a toujours pas conclu passé ce nombre d'échanges,
-   on transmet quand même. Une longue conversation perdue serait le pire des
-   résultats. */
-const TOURS_MAX = 12;
+/* Filet, et uniquement un filet : si le modèle n'a pas conclu passé ce
+   nombre de messages, on transmet plutôt que de perdre l'échange.
+
+   Le compte porte sur les messages, pas sur les questions : accueil, puis
+   deux par tour. Le prompt mure à huit questions, soit dix-neuf messages en
+   comptant le résumé — le filet doit rester au-dessus, sinon il coupe
+   l'assistant au milieu d'une question et la fiche part incomplète. C'est
+   ce qu'il faisait à douze. Le serveur refuse au-delà de 24. */
+const TOURS_MAX = 21;
 
 /* Même exigence que le serveur : inutile de laisser partir une adresse que
    l'API refusera ensuite. */
 const COURRIEL = /^[^\s@<>()[\]{},;:"]+@[^\s@<>()[\]{},;:"]+\.[a-zA-Z]{2,}$/;
 
-const ACCUEIL =
-  "Merci ! Racontez-moi maintenant ce que vous avez en tête — même en deux mots. Je vous aide à y voir clair, et je prépare un résumé pour l'équipe.";
+/* Le seul message que le modèle n'écrit pas : il arrive avant le premier
+   appel. Trois formulations tirées au sort, pour qu'un visiteur qui revient
+   ne retrouve pas mot pour mot la même phrase. Il est retiré du fil envoyé
+   à l'API, donc le varier n'influence rien. */
+const ACCUEILS = [
+  "Merci ! Racontez-moi maintenant ce que vous avez en tête — même en deux mots. Je vous aide à y voir clair, et je prépare un résumé pour l'équipe.",
+  "Parfait. Alors, qu'est-ce qui vous amène ? Décrivez-le comme ça vient, je m'occupe de mettre de l'ordre et d'en tirer un résumé pour l'équipe.",
+  "C'est noté. Dites-moi en quelques mots ce que vous cherchez à faire — on part de là, et je prépare le résumé que l'équipe recevra.",
+];
+
+const ACCUEIL = ACCUEILS[Math.floor(Math.random() * ACCUEILS.length)];
 
 /* Trois entrées en main pour éviter le champ vide, qui est ce qui fait
    abandonner une fenêtre de discussion. */
@@ -93,8 +107,16 @@ export default function Chatbox() {
      de message une fois celle-ci franchie. */
   useEffect(() => {
     if (!ouvert) return;
-    (demarre ? champRef : porteRef).current?.focus();
-  }, [ouvert, demarre]);
+    if (!demarre) {
+      porteRef.current?.focus();
+      return;
+    }
+    /* Le champ est désactivé pendant l'attente, ce qui fait perdre le focus
+       au navigateur. On le rend dès qu'il redevient saisissable : sans ça,
+       il faut recliquer dans le champ après chaque réponse. */
+    if (enCours || termine) return;
+    champRef.current?.focus();
+  }, [ouvert, demarre, enCours, termine]);
 
   useEffect(() => {
     const onEchap = (e) => e.key === "Escape" && setOuvert(false);
